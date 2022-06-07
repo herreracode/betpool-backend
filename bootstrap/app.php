@@ -40,12 +40,12 @@ $app = new Laravel\Lumen\Application(
 
 $app->singleton(
     Illuminate\Contracts\Debug\ExceptionHandler::class,
-    App\Exceptions\Handler::class
+    BetPool\Exceptions\Handler::class
 );
 
 $app->singleton(
     Illuminate\Contracts\Console\Kernel::class,
-    App\Console\Kernel::class
+    BetPool\Console\Kernel::class
 );
 
 /*
@@ -73,11 +73,11 @@ $app->configure('app');
 */
 
 // $app->middleware([
-//     App\Http\Middleware\ExampleMiddleware::class
+//     BetPool\Http\Middleware\ExampleMiddleware::class
 // ]);
 
 // $app->routeMiddleware([
-//     'auth' => App\Http\Middleware\Authenticate::class,
+//     'auth' => BetPool\Http\Middleware\Authenticate::class,
 // ]);
 
 /*
@@ -91,9 +91,9 @@ $app->configure('app');
 |
 */
 
-// $app->register(App\Providers\AppServiceProvider::class);
-// $app->register(App\Providers\AuthServiceProvider::class);
-// $app->register(App\Providers\EventServiceProvider::class);
+// $app->register(BetPool\Providers\AppServiceProvider::class);
+// $app->register(BetPool\Providers\AuthServiceProvider::class);
+// $app->register(BetPool\Providers\EventServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
@@ -107,7 +107,7 @@ $app->configure('app');
 */
 
 $app->router->group([
-    'namespace' => 'App\Http\Controllers',
+    'namespace' => 'BetPool\Http\Controllers',
 ], function ($router) {
     require __DIR__.'/../routes/web.php';
 });

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace BetPool\Http\Controllers;
 
 class ExampleController extends Controller
 {
