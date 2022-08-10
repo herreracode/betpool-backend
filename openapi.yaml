@@ -1,0 +1,181 @@
+openapi: 3.0.0
+info:
+  description: "BetPool Services"
+  version: "1.0.0"
+  title: "BetPool Services"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    name: "Gerardo Herrera"
+    email: "ghgcoder@gmail.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+
+servers:
+  - url: "http://localhost/v1"
+    description: "Development"
+
+tags:
+- name: "beetpool"
+  description: "Access to beetpool"
+
+paths:
+  /Prediction/{uuidpool}/pool:
+    get:
+      tags:
+      - "predictions"
+      summary: "get Predictions by pool"
+      description: "get Predictions by pool"
+      operationId: "getPredictionsByPool"
+      parameters:
+        - name: "uuidpool"
+          in: "path"
+          required: true
+          description: "bet pool identifier"
+          schema:
+            type: string
+          example: "89b842b1-ab2d-48b7-9b29-bc72448adcb3"
+      
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _links:
+                    type: object
+                    properties:
+                      self:
+                        type: object
+                        properties:
+                          href:
+                            type: string
+                            example: "http://localhost/v1/predictions"
+                  _embedded:
+                    type: object
+                    properties:
+                      predictions:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Prediction"
+                  pagination:
+                    type: object
+                    properties:
+                      total:
+                        type: integer
+                        example: 100
+                      count:
+                        type: integer
+                        example: 25
+                      per_page:
+                        type: integer
+                        example: 25
+                      current_page:
+                        type: integer
+                        example: 2
+                      total_pages:
+                        type: integer
+                        example: 4
+                      _links:
+                        type: object
+                        properties:
+                          previous:
+                            type: string
+                            example: "http://localhost/v1/predictions/{uuidpool}/pool?page=1"
+                          next:
+                            type: string
+                            example: "http://localhost/v1/predictions/{uuidpool}/pool?page=3"
+                            
+components:
+  schemas:
+    Prediction:
+      title: "Prediction object"
+      type: "object"
+      properties:
+        uuid:
+          type: string
+          description: "Internal identifier for the prediction object"
+          example: "123e4567-e89b-12d3-a456-426614174000"
+          readOnly: true
+        status:
+          example: "__FINISH__"
+          type: string
+          enum:
+            - __FINISH__
+            - __PROCESS__
+            - __OPEN__
+        user:
+          type: object
+          properties:
+            name:
+              type: string
+              example: "jhon.doe"
+            uuid:
+              type: string
+              example: "123e4567-e89b-12d3-a456-426614174000"
+        pool:
+          type: object
+          description: "Name of the Pool"
+          readOnly: true
+          properties:
+            name:
+              type: string
+              example: "Real Barcelona"
+            uuid:
+              type: string
+              example: "123e4567-e89b-12d3-a456-426614174000"
+        match:
+          $ref: "#/components/schemas/Match"
+        score:
+          $ref: "#/components/schemas/Score"
+              
+    Match:
+      title: "Match object"
+      type: "object"
+      properties:
+        uuid:
+          type: string
+          description: "Internal identifier for the match object"
+          example: "123e4567-e89b-12d3-a456-426614174000"
+          readOnly: true
+        name :
+          type: string
+          description: "name of the match with home a visitor team"
+          example: "Barcelona vs Real Madrid"
+          readOnly: true
+        name_phase :
+          type: string
+          description: "phase of the competition"
+          example: "Group Phase"
+          readOnly: true
+        local_team :
+          type: string
+          description: "phase of the competition"
+          example:  "RMD"
+          readOnly: true
+        away_team :
+          type: string
+          description: "phase of the competition"
+          example:  "BAR"
+          readOnly: true
+        direct_elimination:
+          example: false
+          type: boolean
+        score:
+          $ref: "#/components/schemas/Score"
+          
+    Score:
+      title: "Score Object"
+      type: "object"
+      properties:
+        local_team:
+          type: string
+          example: "1"
+          description: "phase of the competition"
+        away_team: 
+          type: string
+          example: "0"
+          description: "phase of the competition"
+        
