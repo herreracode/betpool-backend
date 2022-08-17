@@ -87,6 +87,220 @@ paths:
                           next:
                             type: string
                             example: "http://localhost/v1/predictions/{uuidpool}/pool?page=3"
+      
+  /Prediction/{uuidpool}/pool/{uuiduser}/user:
+    get:
+      tags:
+      - "predictions"
+      summary: "get Predictions by pool and user uuid"
+      description: "get Predictions by pool and user uuid"
+      operationId: "getPredictionsByPoolAndUser"
+      parameters:
+        - name: "uuidpool"
+          in: "path"
+          required: true
+          description: "bet pool identifier"
+          schema:
+            type: string
+          example: "89b842b1-ab2d-48b7-9b29-bc72448adcb3"
+        - name: "uuiduser"
+          in: "path"
+          required: true
+          description: "user identifier"
+          schema:
+            type: string
+          example: "89b842b1-ab2d-48b7-9b29-bc72448adcb3"
+      
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _links:
+                    type: object
+                    properties:
+                      self:
+                        type: object
+                        properties:
+                          href:
+                            type: string
+                            example: "http://localhost/v1/predictions"
+                  _embedded:
+                    type: object
+                    properties:
+                      predictions:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Prediction"
+                  pagination:
+                    type: object
+                    properties:
+                      total:
+                        type: integer
+                        example: 100
+                      count:
+                        type: integer
+                        example: 25
+                      per_page:
+                        type: integer
+                        example: 25
+                      current_page:
+                        type: integer
+                        example: 2
+                      total_pages:
+                        type: integer
+                        example: 4
+                      _links:
+                        type: object
+                        properties:
+                          previous:
+                            type: string
+                            example: "http://localhost/v1/predictions/{uuidpool}/pool/{uuidpool}/user?page=1"
+                          next:
+                            type: string
+                            example: "http://localhost/v1/predictions/{uuidpool}/pool/{uuidpool}/user?page=3"
+  
+  
+    post:
+      tags:
+      - "predictions"
+      summary: "get Predictions by pool and user uuid"
+      description: "get Predictions by pool and user uuid"
+      operationId: "CreatePrediction"
+      parameters:
+        - name: "uuidpool"
+          in: "path"
+          required: true
+          description: "bet pool identifier"
+          schema:
+            type: string
+          example: "89b842b1-ab2d-48b7-9b29-bc72448adcb3"
+        - name: "uuiduser"
+          in: "path"
+          required: true
+          description: "user identifier"
+          schema:
+            type: string
+          example: "89b842b1-ab2d-48b7-9b29-bc72448adcb3"
+      
+      requestBody:
+        description: "Scholar pre-application object to be created"
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                math_uuid:
+                  type: string
+                  description: "match identifier"
+                  example: "11f12df8-0f1f-4add-b33e-9caa4ba8c85b"
+                score:
+                  type: object
+                  properties:
+                    local_team:
+                      type: string
+                      description: "local team score"
+                    away_team:
+                      type: string
+                      description: "away team score"
+      
+      responses:
+        201:
+          description: "Scholarship Pre-Application successfully created"
+        400:
+          description: "Bad request"
+          
+    
+  /Prediction/{uuid}/{uuidpool}/pool/{uuiduser}/user:  
+    put:
+      tags:
+      - "predictions"
+      summary: "get Predictions by pool and user uuid"
+      description: "get Predictions by pool and user uuid"
+      operationId: "UpdatedPrediction"
+      parameters:
+        - name: "uuid"
+          in: "path"
+          required: true
+          description: "uuid prediction identifier"
+          schema:
+            type: string
+          example: "89b842b1-ab2d-48b7-9b29-bc72448adcb3"
+        - name: "uuidpool"
+          in: "path"
+          required: true
+          description: "bet pool identifier"
+          schema:
+            type: string
+          example: "89b842b1-ab2d-48b7-9b29-bc72448adcb3"
+        - name: "uuiduser"
+          in: "path"
+          required: true
+          description: "user identifier"
+          schema:
+            type: string
+          example: "89b842b1-ab2d-48b7-9b29-bc72448adcb3"
+      
+      requestBody:
+        description: "Scholar pre-application object to be created"
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                score:
+                  type: object
+                  properties:
+                    local_team:
+                      type: string
+                      description: "local team score"
+                    away_team:
+                      type: string
+                      description: "away team score"
+      
+      responses:
+        201:
+          description: "Scholarship Pre-Application successfully created"
+        400:
+          description: "Bad request"
+
+    delete:
+      tags:
+        - "predictions"
+      summary: "Delete predictions"
+      description: ""
+      operationId: "DeletePredictions"
+      parameters:
+        - name: "uuid"
+          in: "path"
+          required: true
+          description: "uuid prediction identifier"
+          schema:
+            type: string
+          example: "89b842b1-ab2d-48b7-9b29-bc72448adcb3"
+        - name: "uuidpool"
+          in: "path"
+          required: true
+          description: "bet pool identifier"
+          schema:
+            type: string
+          example: "89b842b1-ab2d-48b7-9b29-bc72448adcb3"
+        - name: "uuiduser"
+          in: "path"
+          required: true
+          description: "user identifier"
+          schema:
+            type: string
+          example: "89b842b1-ab2d-48b7-9b29-bc72448adcb3"
+      responses:
+        200:
+          description: "OK"
+        404:
+          description: "Predictions not found"
+
                             
 components:
   schemas:
