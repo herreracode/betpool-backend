@@ -301,7 +301,81 @@ paths:
         404:
           description: "Predictions not found"
 
+  /Pool/{uuiduser}/user:
+  
+    get:
+      tags:
+        - "Pool"
+      summary: "Get Pools By User"
+      description: ""
+      operationId: "GetPoolsByUser"
+      parameters:
+        - name: "uuiduser"
+          in: "path"
+          required: true
+          description: "user identifier"
+          schema:
+            type: string
+          example: "89b842b1-ab2d-48b7-9b29-bc72448adcb3"
+      
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _links:
+                    type: object
+                    properties:
+                      self:
+                        type: object
+                        properties:
+                          href:
+                            type: string
+                            example: "http://localhost/v1/pools"
+                  _embedded:
+                    type: object
+                    properties:
+                      pool:
+                        $ref: "#/components/schemas/Pool"
+                      users:
+                        type: array
+                        items: 
+                          $ref: "#/components/schemas/User"
+                  pagination:
+                    type: object
+                    properties:
+                      total:
+                        type: integer
+                        example: 100
+                      count:
+                        type: integer
+                        example: 25
+                      per_page:
+                        type: integer
+                        example: 25
+                      current_page:
+                        type: integer
+                        example: 2
+                      total_pages:
+                        type: integer
+                        example: 4
+                      _links:
+                        type: object
+                        properties:
+                          previous:
+                            type: string
+                            example: "http://localhost/v1/predictions/{uuidpool}/pool/{uuidpool}/user?page=1"
+                          next:
+                            type: string
+                            example: "http://localhost/v1/predictions/{uuidpool}/pool/{uuidpool}/user?page=3"
                             
+        401:
+          description: "unauthenticated"
+          
+      
 components:
   schemas:
     Prediction:
@@ -392,4 +466,26 @@ components:
           type: string
           example: "0"
           description: "phase of the competition"
-        
+    
+    Pool:
+      title: "Pool Object"
+      type: "object"
+      properties:
+        name:
+          type: string
+          example: "Real Barca"
+          description: "phase of the competition"
+        uuid:
+          type: string
+          example: "123e4567-e89b-12d3-a456-426614174000"
+    
+    User:
+      title: "User Object"
+      type: "object"
+      properties:
+        name:
+          type: string
+          example: "HerreraCode32"
+        uuid:
+          type: string
+          example: "123e4567-e89b-12d3-a456-426614174000"
