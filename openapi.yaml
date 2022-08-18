@@ -187,7 +187,7 @@ paths:
           example: "89b842b1-ab2d-48b7-9b29-bc72448adcb3"
       
       requestBody:
-        description: "Scholar pre-application object to be created"
+        description: "object to be created"
         content:
           application/json:
             schema:
@@ -209,7 +209,7 @@ paths:
       
       responses:
         201:
-          description: "Scholarship Pre-Application successfully created"
+          description: "successfully created"
         400:
           description: "Bad request"
           
@@ -245,7 +245,7 @@ paths:
           example: "89b842b1-ab2d-48b7-9b29-bc72448adcb3"
       
       requestBody:
-        description: "Scholar pre-application object to be created"
+        description: "object to be created"
         content:
           application/json:
             schema:
@@ -263,7 +263,7 @@ paths:
       
       responses:
         201:
-          description: "Scholarship Pre-Application successfully created"
+          description: "successfully created"
         400:
           description: "Bad request"
 
@@ -375,7 +375,119 @@ paths:
         401:
           description: "unauthenticated"
           
-      
+    post:
+      tags:
+        - "Pool"
+      summary: "Create Pools By User"
+      description: ""
+      operationId: "CreatePoolByUser"
+      parameters:
+        - name: "uuiduser"
+          in: "path"
+          required: true
+          description: "user identifier"
+          schema:
+            type: string
+          example: "89b842b1-ab2d-48b7-9b29-bc72448adcb3"
+      requestBody:
+        description: "object to be created"
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_uuids:
+                  type: array
+                  items:
+                    type: string
+                    example: "0b8e5adb-57de-4443-8cd5-d13f850fa801"
+                name:
+                  type: string
+                  example: "real barca"
+      responses:
+        201:
+          description: "successfully created"
+        400:
+          description: "Bad request"
+          
+    
+  /Pool/{uuid}/{uuiduser}/user:  
+    put:
+      tags:
+        - "Pool"
+      summary: "Create Pools By User"
+      description: ""
+      operationId: "Update pool by user"
+      parameters:
+        - name: "uuiduser"
+          in: "path"
+          required: true
+          description: "user identifier"
+          schema:
+            type: string
+          example: "89b842b1-ab2d-48b7-9b29-bc72448adcb3"
+        - name: "uuid"
+          in: "path"
+          required: true
+          description: "pool identifier"
+          schema:
+            type: string
+          example: "89b842b1-ab2d-48b7-9b29-bc72448adcb3"
+
+      requestBody:
+        description: "object to be created"
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_uuids_add:
+                  type: array
+                  items:
+                    type: string
+                    example: "0b8e5adb-57de-4443-8cd5-d13f850fa801"
+                user_uuids_delete:
+                  type: array
+                  items:
+                    type: string
+                    example: "0b8e5adb-57de-4443-8cd5-d13f850fa801"
+                name:
+                  type: string
+                  example: "Real Barca"
+      responses:
+        201:
+          description: "successfully created"
+        400:
+          description: "Bad request"
+    
+    delete:
+      tags:
+        - "Pool"
+      summary: "Delete Pool"
+      description: ""
+      operationId: "DeletePool"
+      parameters:
+        - name: "uuiduser"
+          in: "path"
+          required: true
+          description: "user identifier"
+          schema:
+            type: string
+          example: "89b842b1-ab2d-48b7-9b29-bc72448adcb3"
+        - name: "uuid"
+          in: "path"
+          required: true
+          description: "pool identifier"
+          schema:
+            type: string
+          example: "89b842b1-ab2d-48b7-9b29-bc72448adcb3"
+      responses:
+        200:
+          description: "OK"
+        404:
+          description: "Pool not found"
+    
+        
 components:
   schemas:
     Prediction:
