@@ -15,7 +15,8 @@
     },
     "autoload": {
         "psr-4": {
-            "BetPool\\": "src/",
+            "BetPool\\": "app/",
+            "BetPoolCore\\": "src/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
         }

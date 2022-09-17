@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests;
+namespace BetPoolTest;
 
 use Laravel\Lumen\Testing\TestCase as BaseTestCase;
 
