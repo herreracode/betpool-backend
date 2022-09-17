@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Listeners;
+namespace BetPool\Listeners;
 
 use App\Events\ExampleEvent;
 use Illuminate\Contracts\Queue\ShouldQueue;
