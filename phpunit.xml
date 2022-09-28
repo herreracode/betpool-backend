@@ -13,6 +13,7 @@
             <directory suffix="Test.php">./tests/Team/Domain</directory>
             <directory suffix="Test.php">./tests/Competition/Domain</directory>
             <directory suffix="Test.php">./tests/Match/Domain</directory>
+            <directory suffix="Test.php">./tests/Pool/Domain</directory>
         </testsuite>
     </testsuites>
     <php>
