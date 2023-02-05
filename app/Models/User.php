@@ -58,4 +58,13 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+
+    /**
+     * get Pools user
+     */
+    public function pools()
+    {
+        return $this->belongsToMany(Pool::class);
+    }
 }
