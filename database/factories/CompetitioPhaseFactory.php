@@ -2,16 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\Pool;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Pool>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CompetitioPhase>
  */
-class PoolFactory extends Factory
+class CompetitioPhaseFactory extends Factory
 {
-    protected $model = Pool::class;
-
     /**
      * Define the model's default state.
      *
@@ -20,7 +17,7 @@ class PoolFactory extends Factory
     public function definition()
     {
         return [
-            'name' => "Pool {$this->faker->randomDigitNotNull()}",
+            //
         ];
     }
 }
