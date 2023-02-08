@@ -14,6 +14,6 @@ class CompetitionSeeder extends Seeder
      */
     public function run()
     {
-        //
+        
     }
 }
