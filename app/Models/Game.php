@@ -17,19 +17,13 @@ class Game extends Model
         return $this->belongsTo(CompetitionPhase::class);
     }
 
-    /**
-     * 
-     */
     public function localTeam()
     {
         return $this->belongsTo(Team::class, 'local_team_id');
     }
-    
-    /**
-     * 
-     */
+
     public function awayTeam()
     {
-        return $this->belongsTo(Team::class,'away_team_id');
+        return $this->belongsTo(Team::class, 'away_team_id');
     }
 }

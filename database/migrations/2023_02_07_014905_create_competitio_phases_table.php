@@ -15,8 +15,8 @@ return new class extends Migration
     public function up()
     {
         Schema::create('competition_phases', function (Blueprint $table) {
-            $table->id();            
-            $table->string("name");
+            $table->id();
+            $table->string('name');
             $table->foreignIdFor(Competition::class)->references('id')->on('competitions');
             $table->date('date_start')->nullable();
             $table->date('date_end')->nullable();

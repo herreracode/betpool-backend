@@ -16,8 +16,8 @@ return new class extends Migration
     {
         Schema::create('games', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("local_team_id")->references('id')->on('teams');
-            $table->foreignId("away_team_id")->references('id')->on('teams');
+            $table->foreignId('local_team_id')->references('id')->on('teams');
+            $table->foreignId('away_team_id')->references('id')->on('teams');
             $table->foreignIdFor(CompetitionPhase::class);
             $table->date('date_start')->nullable();
             $table->date('date_end')->nullable();

@@ -9,7 +9,6 @@ use Tests\TestCase;
 
 class ExampleTest extends TestCase
 {
-
     use RefreshDatabase;
 
     /**
@@ -21,7 +20,6 @@ class ExampleTest extends TestCase
     {
         $this->assertTrue(true);
     }
-
 
     public function test_models()
     {
