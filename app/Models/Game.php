@@ -26,4 +26,12 @@ class Game extends Model
     {
         return $this->belongsTo(Team::class, 'away_team_id');
     }
+
+    /**
+     * Get all of the post's comments.
+     */
+    public function scores()
+    {
+        return $this->morphMany(Score::class, 'scorable');
+    }
 }

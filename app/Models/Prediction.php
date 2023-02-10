@@ -24,4 +24,12 @@ class Prediction extends Model
     {
         return $this->belongsTo(Pool::class);
     }
+
+    /**
+     * Get all of the post's comments.
+     */
+    public function scores()
+    {
+        return $this->morphMany(Score::class, 'scorable');
+    }
 }

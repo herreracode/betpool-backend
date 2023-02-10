@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Score extends Model
 {
     use HasFactory;
+
+    /**
+     *
+     */
+    public function scorable()
+    {
+        return $this->morphTo();
+    }
 }
