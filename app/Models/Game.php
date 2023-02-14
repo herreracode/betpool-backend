@@ -5,6 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Game Model
+ * 
+ * @property Score $score
+ */
 class Game extends Model
 {
     use HasFactory;
@@ -30,7 +35,7 @@ class Game extends Model
     /**
      * Get all of the post's comments.
      */
-    public function scores()
+    public function score()
     {
         return $this->morphOne(Score::class, 'scorable');
     }

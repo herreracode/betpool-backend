@@ -3,18 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Game;
-use App\Models\Prediction;
-use App\Models\Score;
-use App\Models\User;
 use Inertia\Inertia;
 
 class TestController extends Controller
 {
     public function hola()
     {
-        $Score = User::all()->first();
+        $Game = Game::all()->first();
 
-        dd($Score->pools);
+        dd($Game->score->local_team_score);
 
         return Inertia::render('Dashboard');
     }
