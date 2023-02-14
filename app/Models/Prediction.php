@@ -24,12 +24,20 @@ class Prediction extends Model
     {
         return $this->belongsTo(Pool::class);
     }
+    
+    /**
+     * get game
+     */
+    public function game()
+    {
+        return $this->belongsTo(Game::class);
+    }
 
     /**
      * Get all of the post's comments.
      */
-    public function scores()
+    public function score()
     {
-        return $this->morphMany(Score::class, 'scorable');
+        return $this->morphOne(Score::class, 'scorable');
     }
 }

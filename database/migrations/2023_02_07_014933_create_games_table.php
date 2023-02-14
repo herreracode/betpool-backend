@@ -1,6 +1,9 @@
 <?php
 
 use App\Models\CompetitionPhase;
+use App\Models\Game;
+use App\Models\Pool;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -21,6 +24,15 @@ return new class extends Migration
             $table->foreignIdFor(CompetitionPhase::class);
             $table->date('date_start')->nullable();
             $table->date('date_end')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::create('predictions', function (Blueprint $table) {
+            $table->id();
+            $table->foreignIdFor(User::class)->references('id')->on('users');
+            $table->foreignIdFor(Pool::class)->references('id')->on('pools');
+            $table->foreignIdFor(Game::class)->references('id')->on('games');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

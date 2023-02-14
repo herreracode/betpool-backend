@@ -32,6 +32,6 @@ class Game extends Model
      */
     public function scores()
     {
-        return $this->morphMany(Score::class, 'scorable');
+        return $this->morphOne(Score::class, 'scorable');
     }
 }
