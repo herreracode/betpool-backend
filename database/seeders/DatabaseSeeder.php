@@ -22,5 +22,6 @@ class DatabaseSeeder extends Seeder
          ]);
 
         $this->call(CompetitionSeeder::class);
+        $this->call(TeamSeeder::class);
     }
 }
