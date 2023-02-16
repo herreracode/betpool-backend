@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\CompetitionPhase;
+use App\Models\Game;
+use App\Models\Team;
 use Illuminate\Database\Seeder;
 
 class GameSeeder extends Seeder
@@ -14,6 +16,16 @@ class GameSeeder extends Seeder
      */
     public function run()
     {
-        //
+        $CompetitionPhase = CompetitionPhase::all()->first();
+
+        Game::factory()
+            ->count(3)
+            ->for($CompetitionPhase)
+            ->for(
+                Team::factory()->create(), 'localTeam'
+            )->for(
+                Team::factory()->create(), 'awayTeam'
+            )
+            ->create();
     }
 }

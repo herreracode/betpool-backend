@@ -5,19 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-
-/**
- * @property int $local_team_score
- */
-class Score extends Model
+class CompetitionPhase extends Model
 {
     use HasFactory;
 
     /**
-     *
+     * Get the competition owns the CompetitionPhase.
      */
-    public function scorable()
+    public function competition()
     {
-        return $this->morphTo();
+        return $this->belongsTo(Competition::class);
     }
 }

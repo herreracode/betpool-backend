@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -59,12 +58,19 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
-
     /**
      * get Pools user
      */
     public function pools()
     {
-        return $this->belongsToMany(Pool::class);
+        return $this->belongsToMany(Pool::class,'users_pools');
+    } 
+    
+    /**
+     * get Predictions
+     */
+    public function predictions()
+    {
+        return $this->hasMany(Prediction::class);
     }
 }

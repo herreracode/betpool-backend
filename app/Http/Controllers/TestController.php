@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Game;
 use Inertia\Inertia;
 
 class TestController extends Controller
 {
-    
+    public function hola()
+    {
+        $Game = Game::all()->first();
 
-    public function hola(){
+        dd($Game->score->local_team_score);
 
         return Inertia::render('Dashboard');
-
     }
 }
