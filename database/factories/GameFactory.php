@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Team;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,8 @@ class GameFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'local_team_id' => Team::factory()->create(),
+            'away_team_id' => Team::factory()->create(),
         ];
     }
 }
