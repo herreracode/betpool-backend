@@ -15,6 +15,16 @@ class Game extends Model
     use HasFactory;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'local_team_id',
+        'away_team_id',
+    ];
+
+    /**
      * Get the competition owns the CompetitionPhase.
      */
     public function competitionPhase()

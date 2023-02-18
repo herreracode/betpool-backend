@@ -25,4 +25,9 @@ class CompetitionPhase extends Model
     {
         return $this->belongsTo(Competition::class);
     }
+
+    public function games()
+    {
+        return $this->hasMany(Game::class);
+    }
 }
