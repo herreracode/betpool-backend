@@ -2,7 +2,6 @@
 
 namespace App\Actions\Game;
 
-
 use App\Models\Game;
 use App\Models\Score;
 use Exception;
@@ -12,20 +11,19 @@ use Exception;
  */
 class UpdateGameResult
 {
-
     public function __invoke(
            Game $Game,
            int $localTeamScore,
            int $awayTeamScore,
-    ) : Score
-    {
+    ): Score {
         $Score = $Game->score()->create([
-            'local_team_score'  => $localTeamScore,
-            'away_team_score' => $awayTeamScore
+            'local_team_score' => $localTeamScore,
+            'away_team_score' => $awayTeamScore,
         ]);
 
-        if(!$Score)
-            throw new Exception("dont create Score");
+        if (! $Score) {
+            throw new Exception('dont create Score');
+        }
 
         return $Score;
     }

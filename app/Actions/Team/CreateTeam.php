@@ -20,7 +20,7 @@ class CreateTeam
 
         $Team->name = $name;
 
-        if (!$Team->save()) {
+        if (! $Team->save()) {
             throw new Exception('dont save team');
         }
 

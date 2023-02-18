@@ -12,7 +12,7 @@ class Score extends Model
 {
     use HasFactory;
 
-     /**
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
@@ -27,13 +27,13 @@ class Score extends Model
         return $this->morphTo();
     }
 
-    public function getLocalTeamScore(){
-
+    public function getLocalTeamScore()
+    {
         return $this->local_team_score;
     }
-    
-    public function getAwayTeamScore(){
 
+    public function getAwayTeamScore()
+    {
         return $this->away_team_score;
     }
 }

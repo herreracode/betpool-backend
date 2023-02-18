@@ -3,7 +3,6 @@
 namespace Tests\Unit\Game\Actions;
 
 use App\Actions\Game\CreateGame;
-use App\Actions\Team\CreateTeam;
 use App\Models\Competition;
 use App\Models\CompetitionPhase;
 use App\Models\Team;
@@ -29,9 +28,9 @@ class CreateGameActionTest extends TestCase
         ->for(Competition::factory())
         ->create();
 
-        $LocalTeam =  Team::factory()->create();
+        $LocalTeam = Team::factory()->create();
 
-        $AwayTeam =  Team::factory()->create();
+        $AwayTeam = Team::factory()->create();
 
         $Game = $this->CreateGameAction->__invoke(
             $CompetitionPhase,
@@ -44,7 +43,7 @@ class CreateGameActionTest extends TestCase
         $this->assertEquals($Game->awayTeam->id, $AwayTeam->id);
 
         $this->assertEquals($Game->awayTeam->id, $AwayTeam->id);
-        
+
         $this->assertEquals($Game->competitionPhase->id, $CompetitionPhase->id);
     }
 }
