@@ -63,9 +63,9 @@ class User extends Authenticatable
      */
     public function pools()
     {
-        return $this->belongsToMany(Pool::class,'users_pools');
-    } 
-    
+        return $this->belongsToMany(Pool::class, 'users_pools');
+    }
+
     /**
      * get Predictions
      */

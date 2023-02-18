@@ -8,15 +8,11 @@ use Exception;
 
 /**
  * Class CreateCompetition
- * 
- * @package App\Http\Actions\Competition
  */
 class CreateCompetitionPhase
 {
-
     public function __construct()
     {
-        
     }
 
     public function __invoke(Competition $Competition, $name)
@@ -26,13 +22,13 @@ class CreateCompetitionPhase
         $CompetitionPhase->name = $name;
 
         $CompetitionPhase = $Competition->competitionPhases()->create([
-            'name' => $name
+            'name' => $name,
         ]);
 
-        if(!$CompetitionPhase)
-            throw new Exception("dont save competition phase");
+        if (! $CompetitionPhase) {
+            throw new Exception('dont save competition phase');
+        }
 
         return $CompetitionPhase;
     }
-    
 }

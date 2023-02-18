@@ -19,7 +19,7 @@ class CreateCompetitionTest extends TestCase
 
         $this->CreateCompetitionAction = app(CreateCompetition::class);
     }
-    
+
     public function testCreateCompetition()
     {
         $CompetitionTest = Competition::factory()->make();

@@ -24,7 +24,7 @@ class Prediction extends Model
     {
         return $this->belongsTo(Pool::class);
     }
-    
+
     /**
      * get game
      */

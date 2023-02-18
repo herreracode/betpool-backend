@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Class Competition
  *
- * @package App\Models
  *
  * @property string name
  */

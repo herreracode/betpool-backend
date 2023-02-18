@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Game Model
- * 
+ *
  * @property Score $score
  */
 class Game extends Model

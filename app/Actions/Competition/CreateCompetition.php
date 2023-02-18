@@ -7,15 +7,11 @@ use Exception;
 
 /**
  * Class CreateCompetition
- * 
- * @package App\Http\Actions\Competition
  */
 class CreateCompetition
 {
-
     public function __construct()
     {
-        
     }
 
     public function __invoke($name)
@@ -24,10 +20,10 @@ class CreateCompetition
 
         $Competition->name = $name;
 
-        if(!$Competition->save())
-            throw new Exception("dont save competition");
+        if (! $Competition->save()) {
+            throw new Exception('dont save competition');
+        }
 
         return $Competition;
     }
-    
 }
