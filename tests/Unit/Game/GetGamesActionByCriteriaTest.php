@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\Game\Actions;
 
-use App\Actions\Game\GetGameByCriteriaQuery;
-use App\Actions\Game\GetGamesActionByCriteria;
+use App\Actions\Game\Query\GetGameByCriteriaQuery;
+use App\Actions\Game\Query\GetGamesActionByCriteria;
 use App\Models\Competition;
 use App\Models\CompetitionPhase;
 use App\Models\Game;

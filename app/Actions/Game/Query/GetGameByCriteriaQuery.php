@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\Game;
+namespace App\Actions\Game\Query;
 
 /**
  * Class GetGamesActionByCriteria
