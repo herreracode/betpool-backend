@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Actions\Competition;
+namespace App\Actions\Competition;
 
 use App\Models\Competition;
 use Exception;

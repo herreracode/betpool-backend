@@ -17,7 +17,11 @@ class CompetitionFactory extends Factory
     public function definition()
     {
         return [
-            //
+            "name" => $this->faker->randomElements([
+                "FIFA WORLD CUP",
+                "AMERICAN CUP",
+                "EUROPE CUP"
+            ])[0]
         ];
     }
 }
