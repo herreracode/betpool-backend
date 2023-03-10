@@ -27,4 +27,12 @@ class Pool extends Model
     {
         return $this->belongsToMany(User::class);
     }
+
+    /**
+     * get Pools user
+     */
+    public function competitions()
+    {
+        return $this->belongsToMany(Competition::class,'pools_competitions');
+    }
 }

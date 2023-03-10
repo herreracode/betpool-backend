@@ -3,15 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Game;
+use App\Models\Pool;
 use Inertia\Inertia;
 
 class TestController extends Controller
 {
     public function hola()
     {
-        $Game = Game::all()->first();
+        $Pool = Pool::all()->first();
 
-        dd($Game->score->local_team_score);
+        dd($Pool->competitions->first()->name);
 
         return Inertia::render('Dashboard');
     }
