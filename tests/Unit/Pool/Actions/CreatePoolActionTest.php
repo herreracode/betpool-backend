@@ -2,6 +2,10 @@
 
 namespace Tests\Unit\Game\Actions;
 
+use App\Actions\Pool\CreatePool;
+use App\Models\Competition;
+use App\Models\Pool;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutEvents;
 use Tests\TestCase;
@@ -15,12 +19,75 @@ class CreatePoolActionTest extends TestCase
     {
         parent::setup();
 
-        //$this->CreatePoolAction = app(CreateGame::class);
+        $this->CreatePoolAction = app(CreatePool::class);
     }
 
-    public function testCreatePool()
+    /**
+     * todo: assert para que el usuario guardado tenga rol creador
+     * todo: agregar competitions
+     *
+     * @return void
+     */
+    public function testCreatePoolHappyPath()
     {
-        
+        $UserCreator = User::factory()->create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+        ]);
+
+        $competitions = Competition::factory(2)->create();
+
+        $namePool = "liverpool FC";
+
+        $Pool = $this->CreatePoolAction->__invoke(
+            $UserCreator,
+            $namePool,
+            $competitions
+        );
+
+        $PoolCreated = Pool::find($Pool->id);
+
+        $this->assertInstanceOf(Pool::class, $PoolCreated);
+        $this->assertSame($namePool, $PoolCreated->name);
+        $this->assertSame($UserCreator->id, $Pool->users->first()->id);
+        $this->assertSame(2, $Pool->competitions->count());
+    }
+
+    /**
+     * todo: assert para que el usuario guardado tenga rol creador
+     * todo: agregar competitions
+     *
+     * @return void
+     */
+    public function testCreatePoolWithoutCompetitionsIterable()
+    {
+        $UserCreator = User::factory()->create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+        ]);
+
+        $namePool = "liverpool FC";
+
+        $Pool = $this->CreatePoolAction->__invoke(
+            $UserCreator,
+            $namePool
+        );
+
+        $PoolCreated = Pool::find($Pool->id);
+
+        $this->assertInstanceOf(Pool::class, $PoolCreated);
+        $this->assertSame($namePool, $PoolCreated->name);
+        $this->assertSame($UserCreator->id, $Pool->users->first()->id);
+    }
+
+    /**
+     * @return void
+     */
+    public function testThrowExceptionWhenCreatePoolWithVariousCompetitionIncludingSingleCompetition()
+    {
+        //todo: pending for implement
+
+        $this->assertTrue(true);
     }
 
 }
