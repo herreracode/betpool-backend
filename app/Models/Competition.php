@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  *
  * @property string name
+ * @property bool must_be_unique
  */
 class Competition extends Model
 {

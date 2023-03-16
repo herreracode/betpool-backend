@@ -3,6 +3,7 @@
 namespace Tests\Unit\Game\Actions;
 
 use App\Actions\Pool\CreatePool;
+use App\Exceptions\Pool\CompetitionMustBeUniqueInAPool;
 use App\Models\Competition;
 use App\Models\Pool;
 use App\Models\User;
@@ -85,9 +86,27 @@ class CreatePoolActionTest extends TestCase
      */
     public function testThrowExceptionWhenCreatePoolWithVariousCompetitionIncludingSingleCompetition()
     {
-        //todo: pending for implement
+        $this->expectException(CompetitionMustBeUniqueInAPool::class);
+        
+        $CompetitionUnique = Competition::factory()->mustBeUnique()->create();
 
-        $this->assertTrue(true);
+        $competitions = Competition::factory(2)->create();
+
+        $competitions = $competitions->push($CompetitionUnique);
+
+        $namePool = "liverpool FC";
+
+        $UserCreator = User::factory()->create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+        ]);
+
+        $this->CreatePoolAction->__invoke(
+            $UserCreator,
+            $namePool,
+            competitions : $competitions
+        );
     }
+
 
 }

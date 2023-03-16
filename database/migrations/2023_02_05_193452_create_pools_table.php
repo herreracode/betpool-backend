@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('pools', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->boolean('isClosed')->default(false);
+            $table->boolean('is_closed')->default(false);
             $table->softDeletes();
             $table->timestamps();
         });

@@ -2,9 +2,12 @@
 
 namespace App\Actions\Pool;
 
+use App\Exceptions\Pool\CompetitionMustBeUniqueInAPool;
+use App\Models\Competition;
 use App\Models\Pool;
 use App\Models\User;
 use Exception;
+use Illuminate\Support\Collection;
 
 /**
  * Class CreatePool
@@ -17,6 +20,16 @@ class CreatePool
         $namePool,
         iterable $competitions = null
     ): Pool {
+
+        $competitionsCollect = collect($competitions);
+
+        $haveCompetitionUnique = $competitionsCollect->count() > 1 && $competitionsCollect->filter(function (Competition $competition){
+            return $competition->must_be_unique;
+        })->count() > 0;
+
+        if($haveCompetitionUnique){
+            throw new CompetitionMustBeUniqueInAPool('Have competition unique');
+        }
 
         $Pool = new Pool();
 
