@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Competition\Actions;
+namespace Tests\Unit\Team\Actions;
 
 use App\Actions\Team\CreateTeam;
 use App\Models\Team;

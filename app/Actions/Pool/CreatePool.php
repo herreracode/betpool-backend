@@ -8,13 +8,14 @@ use App\Models\Pool;
 use App\Models\User;
 use Exception;
 use Illuminate\Support\Collection;
+use Spatie\Permission\Models\Role;
 
 /**
  * Class CreatePool
  */
 class CreatePool
 {
-    
+
     public function __invoke(
         User $UserCreator,
         $namePool,
@@ -34,17 +35,25 @@ class CreatePool
         $Pool = new Pool();
 
         $Pool->name = $namePool;
-        
+
         if (! $Pool->save()) {
             throw new Exception('dont save Pool');
         }
 
+        setPermissionsTeamId($Pool->id);
+
+        $RolePoolAdmin = Role::create([
+            'name' => '_POOL_ADMIN_'
+        ]);
+
+        $UserCreator->assignRole($RolePoolAdmin);
+
         //add users
         $Pool->users()->attach($UserCreator);
-        
+
         //add competitions to pool
         $competitions && $Pool->competitions()->attach($competitions);
-        
+
         return $Pool;
     }
 }

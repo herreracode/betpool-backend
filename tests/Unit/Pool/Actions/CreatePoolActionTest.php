@@ -1,14 +1,19 @@
 <?php
 
-namespace Tests\Unit\Game\Actions;
+namespace Tests\Unit\Pool\Actions;
 
 use App\Actions\Pool\CreatePool;
 use App\Exceptions\Pool\CompetitionMustBeUniqueInAPool;
 use App\Models\Competition;
 use App\Models\Pool;
 use App\Models\User;
+use Database\Seeders\RolesAndPermissionsSeeder;
+use Illuminate\Database\Events\MigrationsEnded;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutEvents;
+use Illuminate\Support\Facades\Event;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class CreatePoolActionTest extends TestCase
@@ -19,6 +24,8 @@ class CreatePoolActionTest extends TestCase
     protected function setUp(): void
     {
         parent::setup();
+
+        $this->app->make(\Spatie\Permission\PermissionRegistrar::class)->registerPermissions();
 
         $this->CreatePoolAction = app(CreatePool::class);
     }
@@ -31,6 +38,10 @@ class CreatePoolActionTest extends TestCase
      */
     public function testCreatePoolHappyPath()
     {
+
+        /**
+         * @var User $UserCreator
+         */
         $UserCreator = User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
@@ -49,9 +60,18 @@ class CreatePoolActionTest extends TestCase
         $PoolCreated = Pool::find($Pool->id);
 
         $this->assertInstanceOf(Pool::class, $PoolCreated);
+
         $this->assertSame($namePool, $PoolCreated->name);
+
         $this->assertSame($UserCreator->id, $Pool->users->first()->id);
+
         $this->assertSame(2, $Pool->competitions->count());
+
+        setPermissionsTeamId($Pool->id);
+
+        $RolePoolAdmin = Role::findByName('_POOL_ADMIN_');
+
+        $this->assertTrue($UserCreator->hasRole($RolePoolAdmin));
     }
 
     /**
@@ -79,6 +99,12 @@ class CreatePoolActionTest extends TestCase
         $this->assertInstanceOf(Pool::class, $PoolCreated);
         $this->assertSame($namePool, $PoolCreated->name);
         $this->assertSame($UserCreator->id, $Pool->users->first()->id);
+
+        setPermissionsTeamId($Pool->id);
+
+        $RolePoolAdmin = Role::findByName('_POOL_ADMIN_');
+
+        $this->assertTrue($UserCreator->hasRole($RolePoolAdmin));
     }
 
     /**
@@ -87,7 +113,7 @@ class CreatePoolActionTest extends TestCase
     public function testThrowExceptionWhenCreatePoolWithVariousCompetitionIncludingSingleCompetition()
     {
         $this->expectException(CompetitionMustBeUniqueInAPool::class);
-        
+
         $CompetitionUnique = Competition::factory()->mustBeUnique()->create();
 
         $competitions = Competition::factory(2)->create();
