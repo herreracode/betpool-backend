@@ -7,12 +7,8 @@ use App\Exceptions\Pool\CompetitionMustBeUniqueInAPool;
 use App\Models\Competition;
 use App\Models\Pool;
 use App\Models\User;
-use Database\Seeders\RolesAndPermissionsSeeder;
-use Illuminate\Database\Events\MigrationsEnded;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutEvents;
-use Illuminate\Support\Facades\Event;
-use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
@@ -31,8 +27,6 @@ class CreatePoolActionTest extends TestCase
     }
 
     /**
-     * todo: assert para que el usuario guardado tenga rol creador
-     * todo: agregar competitions
      *
      * @return void
      */
@@ -75,8 +69,6 @@ class CreatePoolActionTest extends TestCase
     }
 
     /**
-     * todo: assert para que el usuario guardado tenga rol creador
-     * todo: agregar competitions
      *
      * @return void
      */
@@ -130,9 +122,8 @@ class CreatePoolActionTest extends TestCase
         $this->CreatePoolAction->__invoke(
             $UserCreator,
             $namePool,
-            competitions : $competitions
+            competitions: $competitions
         );
     }
-
 
 }
