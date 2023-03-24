@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Enums\RoleUsers;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
@@ -74,5 +76,16 @@ class User extends Authenticatable
     public function predictions()
     {
         return $this->hasMany(Prediction::class);
+    }
+
+    public function addRoleUserCreatorByPool(Pool $Pool)
+    {
+        setPermissionsTeamId($Pool->id);
+
+        $RolePoolAdmin = Role::create([
+            'name' => RoleUsers::PoolAdmin
+        ]);
+
+        $this->assignRole($RolePoolAdmin);
     }
 }

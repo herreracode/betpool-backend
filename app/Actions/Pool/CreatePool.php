@@ -2,13 +2,8 @@
 
 namespace App\Actions\Pool;
 
-use App\Exceptions\Pool\CompetitionMustBeUniqueInAPool;
-use App\Models\Competition;
-use App\Models\Enums\RoleUsers;
 use App\Models\Pool;
 use App\Models\User;
-use Exception;
-use Spatie\Permission\Models\Role;
 
 /**
  * Class CreatePool
@@ -25,68 +20,20 @@ class CreatePool
         iterable $emailsPossiblesUsersPools = null
     ): Pool {
 
-        $this->haveCompetitionUnique($competitions);
+        $Pool = Pool::create($namePool);
 
-        $Pool = $this->createPool($namePool);
-
-        $this->assingRoleUserCreator($UserCreator, $Pool);
+        $UserCreator->addRoleUserCreatorByPool($Pool);
 
         //add user creator
-        $Pool->users()->attach($UserCreator);
+        $Pool->addUser($UserCreator);
 
         //add competitions to pool
-        $competitions && $Pool->competitions()->attach($competitions);
+        $competitions && $Pool->addCompetitions($competitions);
 
         //add invitations pool users
-        $emailsPossiblesUsersPools && $this->createInvitationsPool($Pool, $emailsPossiblesUsersPools);
+        $emailsPossiblesUsersPools && $Pool->createInvitationsPoolEmails($emailsPossiblesUsersPools);
 
         return $Pool;
     }
 
-    protected function haveCompetitionUnique(iterable $competitions = null)
-    {
-        $competitionsCollect = collect($competitions);
-
-        $haveMoreThanOne = $competitionsCollect->count() > 1;
-
-        $haveUniqueCompetition = $competitionsCollect->filter(function (Competition $competition){
-                return $competition->must_be_unique;
-            })->count() > 0;
-
-        if($haveMoreThanOne && $haveUniqueCompetition)
-            throw new CompetitionMustBeUniqueInAPool('Have competition unique');
-    }
-
-    protected function createPool(string $namePool)
-    {
-        $Pool = new Pool();
-
-        $Pool->name = $namePool;
-
-        if (! $Pool->save()) {
-            throw new Exception('dont save Pool');
-        }
-
-        return $Pool;
-    }
-
-    protected function assingRoleUserCreator(User $UserCreator, Pool $Pool)
-    {
-        setPermissionsTeamId($Pool->id);
-
-        $RolePoolAdmin = Role::create([
-            'name' => RoleUsers::PoolAdmin
-        ]);
-
-        $UserCreator->assignRole($RolePoolAdmin);
-    }
-
-    protected function createInvitationsPool(Pool $Pool, $emails)
-    {
-        foreach ($emails as $email){
-            $Pool->poolInvitationsEmails()->create([
-                'email' => $email,
-            ]);
-        }
-    }
 }
