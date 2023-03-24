@@ -3,13 +3,14 @@
 namespace Tests\Unit\Pool\Actions;
 
 use App\Actions\Pool\CreatePool;
+use App\Events\CreatedPool;
 use App\Exceptions\Pool\CompetitionMustBeUniqueInAPool;
 use App\Models\Competition;
 use App\Models\Pool;
-use App\Models\PoolInvitationsEmails;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutEvents;
+use Illuminate\Support\Facades\Event;
 use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
@@ -33,6 +34,7 @@ class CreatePoolActionTest extends TestCase
      */
     public function testCreatePoolHappyPath()
     {
+        Event::fake();
 
         /**
          * @var User $UserCreator
@@ -67,6 +69,8 @@ class CreatePoolActionTest extends TestCase
         $RolePoolAdmin = Role::findByName('_POOL_ADMIN_');
 
         $this->assertTrue($UserCreator->hasRole($RolePoolAdmin));
+
+        Event::assertDispatched(CreatedPool::class);
     }
 
     /**

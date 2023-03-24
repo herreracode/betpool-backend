@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
+use App\Events\CreatedPool;
 use App\Exceptions\Pool\CompetitionMustBeUniqueInAPool;
+use App\Models\Common\AggregateRoot;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 
@@ -12,7 +13,7 @@ use Illuminate\Support\Collection;
  * @property Collection $poolInvitationsEmails
  * @property string $name
  */
-class Pool extends Model
+class Pool extends AggregateRoot
 {
     use HasFactory, SoftDeletes;
 
@@ -59,6 +60,8 @@ class Pool extends Model
         if (! $Pool->save()) {
             throw new \Exception('dont save Pool');
         }
+
+        $Pool->record(new CreatedPool($Pool));
 
         return $Pool;
     }
