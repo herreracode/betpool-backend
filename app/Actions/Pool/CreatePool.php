@@ -21,7 +21,8 @@ class CreatePool
     public function __invoke(
         User $UserCreator,
         string $namePool,
-        iterable $competitions = null
+        iterable $competitions = null,
+        iterable $emailsPossiblesUsersPools = null
     ): Pool {
 
         $this->haveCompetitionUnique($competitions);
@@ -35,6 +36,9 @@ class CreatePool
 
         //add competitions to pool
         $competitions && $Pool->competitions()->attach($competitions);
+
+        //add invitations pool users
+        $emailsPossiblesUsersPools && $this->createInvitationsPool($Pool, $emailsPossiblesUsersPools);
 
         return $Pool;
     }
@@ -75,5 +79,14 @@ class CreatePool
         ]);
 
         $UserCreator->assignRole($RolePoolAdmin);
+    }
+
+    protected function createInvitationsPool(Pool $Pool, $emails)
+    {
+        foreach ($emails as $email){
+            $Pool->poolInvitationsEmails()->create([
+                'email' => $email,
+            ]);
+        }
     }
 }

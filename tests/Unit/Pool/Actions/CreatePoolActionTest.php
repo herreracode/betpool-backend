@@ -6,6 +6,7 @@ use App\Actions\Pool\CreatePool;
 use App\Exceptions\Pool\CompetitionMustBeUniqueInAPool;
 use App\Models\Competition;
 use App\Models\Pool;
+use App\Models\PoolInvitationsEmails;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutEvents;
@@ -125,5 +126,32 @@ class CreatePoolActionTest extends TestCase
             competitions: $competitions
         );
     }
+
+    public function testCreatePoolWhenSendPossiblesEmailsUsersInvitates()
+    {
+        $safesEmails = [];
+        $numberRandEmails = rand(1,6);
+
+        foreach (range(1, $numberRandEmails) as $item)
+            $safesEmails[] = fake()->safeEmail();
+
+        $namePool = "liverpool FC";
+
+        $UserCreator = User::factory()->create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+        ]);
+
+        $Pool = $this->CreatePoolAction->__invoke(
+            $UserCreator,
+            $namePool,
+            emailsPossiblesUsersPools: $safesEmails
+        );
+
+        $PoolsInvitationsEmails = $Pool->poolInvitationsEmails;
+
+        $this->assertTrue($PoolsInvitationsEmails->count() == $numberRandEmails);
+    }
+
 
 }
