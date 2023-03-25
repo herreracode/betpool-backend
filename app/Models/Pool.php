@@ -84,9 +84,9 @@ class Pool extends AggregateRoot
 
         $haveMoreThanOne = $competitionsCollect->count() > 1;
 
-        $haveUniqueCompetition = $competitionsCollect->filter(function (Competition $competition){
-                return $competition->must_be_unique;
-            })->count() > 0;
+        $haveUniqueCompetition = $competitionsCollect
+                ->filter(fn (Competition $competition) => $competition->must_be_unique)
+                ->count() > 0;
 
         if($haveMoreThanOne && $haveUniqueCompetition)
             throw new CompetitionMustBeUniqueInAPool('Have competition unique');
