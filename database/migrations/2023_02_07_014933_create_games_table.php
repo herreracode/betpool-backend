@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\Enums\GameStatus;
 
 return new class extends Migration
 {
@@ -22,6 +23,12 @@ return new class extends Migration
             $table->foreignId('local_team_id')->references('id')->on('teams');
             $table->foreignId('away_team_id')->references('id')->on('teams');
             $table->foreignIdFor(CompetitionPhase::class);
+            $table->enum('status',[
+                GameStatus::PENDING->value,
+                GameStatus::IN_PROGRESS->value,
+                GameStatus::FINISH->value,
+                GameStatus::POSTPONED->value,
+            ])->default(GameStatus::PENDING->value);
             $table->date('date_start')->nullable();
             $table->date('date_end')->nullable();
             $table->timestamps();

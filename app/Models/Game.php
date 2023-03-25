@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Enums\GameStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -9,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  * Game Model
  *
  * @property Score $score
+ * @property $status
  */
 class Game extends Model
 {
@@ -68,5 +70,25 @@ class Game extends Model
         }
 
         return $Score;
+    }
+
+    public function itIsPending()
+    {
+        return $this->status == GameStatus::PENDING->value;
+    }
+
+    public function itIsInProgress()
+    {
+        return $this->status == GameStatus::IN_PROGRESS->value;
+    }
+
+    public function itIsFinished()
+    {
+        return $this->status == GameStatus::FINISH->value;
+    }
+
+    public function itIsPostponed()
+    {
+        return $this->status == GameStatus::POSTPONED->value;
     }
 }
