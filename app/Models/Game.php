@@ -49,4 +49,24 @@ class Game extends Model
     {
         return $this->morphOne(Score::class, 'scorable');
     }
+
+    /**
+     * @param int $localTeamScore
+     * @param int $awayTeamScore
+     * @return Score
+     * @throws \Exception
+     */
+    public function updateGameResult(int $localTeamScore, int $awayTeamScore): Score
+    {
+        $Score = $this->score()->create([
+            'local_team_score' => $localTeamScore,
+            'away_team_score' => $awayTeamScore,
+        ]);
+
+        if (! $Score) {
+            throw new \Exception('dont create Score');
+        }
+
+        return $Score;
+    }
 }

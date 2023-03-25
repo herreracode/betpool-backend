@@ -11,20 +11,18 @@ use Exception;
  */
 class UpdateGameResult
 {
+    /**
+     * @param Game $Game
+     * @param int $localTeamScore
+     * @param int $awayTeamScore
+     * @return Score
+     * @throws Exception
+     */
     public function __invoke(
            Game $Game,
            int $localTeamScore,
            int $awayTeamScore,
     ): Score {
-        $Score = $Game->score()->create([
-            'local_team_score' => $localTeamScore,
-            'away_team_score' => $awayTeamScore,
-        ]);
-
-        if (! $Score) {
-            throw new Exception('dont create Score');
-        }
-
-        return $Score;
+        return $Game->updateGameResult($localTeamScore, $awayTeamScore);
     }
 }

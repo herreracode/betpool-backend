@@ -3,6 +3,7 @@
 namespace App\Actions\Game;
 
 use App\Models\CompetitionPhase;
+use App\Models\Game;
 use App\Models\Team;
 use Exception;
 
@@ -15,16 +16,8 @@ class CreateGame
            CompetitionPhase $CompetitionPhase,
            Team $LocalTeam,
            Team $AwayTeam
-    ) {
-        $Game = $CompetitionPhase->games()->create([
-            'local_team_id' => $LocalTeam->id,
-            'away_team_id' => $AwayTeam->id,
-        ]);
-
-        if (! $Game) {
-            throw new Exception('dont save Game');
-        }
-
-        return $Game;
+    ): Game
+    {
+        return $CompetitionPhase->addGame($LocalTeam, $AwayTeam);
     }
 }

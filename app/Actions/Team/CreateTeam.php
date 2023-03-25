@@ -14,16 +14,8 @@ class CreateTeam
     {
     }
 
-    public function __invoke($name)
+    public function __invoke($name) : Team
     {
-        $Team = new Team();
-
-        $Team->name = $name;
-
-        if (! $Team->save()) {
-            throw new Exception('dont save team');
-        }
-
-        return $Team;
+        return Team::create($name);
     }
 }

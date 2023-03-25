@@ -15,20 +15,15 @@ class CreateCompetitionPhase
     {
     }
 
-    public function __invoke(Competition $Competition, $name)
+
+    /**
+     * @param Competition $Competition
+     * @param $name
+     * @return CompetitionPhase
+     * @throws Exception
+     */
+    public function __invoke(Competition $Competition, $name) : CompetitionPhase
     {
-        $CompetitionPhase = new CompetitionPhase();
-
-        $CompetitionPhase->name = $name;
-
-        $CompetitionPhase = $Competition->competitionPhases()->create([
-            'name' => $name,
-        ]);
-
-        if (! $CompetitionPhase) {
-            throw new Exception('dont save competition phase');
-        }
-
-        return $CompetitionPhase;
+        return $Competition->addCompetitionPhase($name);
     }
 }

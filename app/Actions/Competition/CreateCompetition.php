@@ -14,16 +14,13 @@ class CreateCompetition
     {
     }
 
-    public function __invoke($name)
+    /**
+     * @param $name
+     * @return Competition
+     * @throws Exception
+     */
+    public function __invoke($name) : Competition
     {
-        $Competition = new Competition();
-
-        $Competition->name = $name;
-
-        if (! $Competition->save()) {
-            throw new Exception('dont save competition');
-        }
-
-        return $Competition;
+        return Competition::create($name);
     }
 }
