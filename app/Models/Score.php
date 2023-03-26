@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property int $local_team_score
+ * @property int $away_team_score
  */
 class Score extends Model
 {

@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property Score $score
+ */
 class Prediction extends Model
 {
     use HasFactory;
@@ -39,5 +42,42 @@ class Prediction extends Model
     public function score()
     {
         return $this->morphOne(Score::class, 'scorable');
+    }
+
+    public function getLocalTeamScore()
+    {
+        return $this->score->getLocalTeamScore();
+    }
+
+    public function getAwayTeamScore()
+    {
+        return $this->score->getAwayTeamScore();
+    }
+
+    public static function createWithValidations(
+        User $User,
+        Pool $Pool,
+        Game $Game,
+        int $localTeamScore,
+        int $awayTeamScore,
+    ): static
+    {
+        $Prediction = new static();
+
+        $Prediction->user_id = $User->id;
+        $Prediction->pool_id = $Pool->id;
+        $Prediction->game_id = $Game->id;
+
+        if (! $Prediction->save()) {
+            throw new \Exception('dont save competition');
+        }
+
+        $Score = new Score();
+        $Score->local_team_score = $localTeamScore;
+        $Score->away_team_score = $awayTeamScore;
+
+        $Prediction->score()->save($Score);
+
+        return $Prediction;
     }
 }

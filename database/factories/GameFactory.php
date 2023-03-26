@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Enums\GameStatus;
 use App\Models\Team;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -21,5 +22,14 @@ class GameFactory extends Factory
             'local_team_id' => Team::factory()->create(),
             'away_team_id' => Team::factory()->create(),
         ];
+    }
+
+    public function inProgress()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'status' => GameStatus::IN_PROGRESS->value,
+            ];
+        });
     }
 }
