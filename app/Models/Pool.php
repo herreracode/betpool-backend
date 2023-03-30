@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Events\CreatedPool;
 use App\Exceptions\Pool\CompetitionMustBeUniqueInAPool;
+use App\Exceptions\Pool\UserDoesntBelongToThePool;
 use App\Models\Common\AggregateRoot;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -16,6 +17,8 @@ use Illuminate\Support\Collection;
 class Pool extends AggregateRoot
 {
     use HasFactory, SoftDeletes;
+
+    protected const NAME_TABLE_INTERMEDIATE_USER = 'users_pools';
 
     /**
      * The attributes that are mass assignable.
@@ -32,7 +35,7 @@ class Pool extends AggregateRoot
      */
     public function users()
     {
-        return $this->belongsToMany(User::class,'users_pools');
+        return $this->belongsToMany(User::class,static::NAME_TABLE_INTERMEDIATE_USER);
     }
 
     /**
@@ -99,5 +102,20 @@ class Pool extends AggregateRoot
                 'email' => $email,
             ]);
         }
+    }
+
+    /**
+     * @return bool
+     */
+    public function doesItbelongsToThePool(User $User) :bool
+    {
+        $doesItBelongsToThePool = $this->users()->where([
+            static::NAME_TABLE_INTERMEDIATE_USER .'.user_id' => $User->id
+        ])->count() > 0;
+
+        if (!$doesItBelongsToThePool)
+            throw UserDoesntBelongToThePool::create("User {$User->id} doesnt belong to pool {$this->id}");
+
+        return true;
     }
 }

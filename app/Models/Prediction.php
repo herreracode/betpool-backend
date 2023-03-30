@@ -62,6 +62,10 @@ class Prediction extends Model
         int $awayTeamScore,
     ): static
     {
+
+        //validations
+        $Pool->doesItbelongsToThePool($User);
+
         $Prediction = new static();
 
         $Prediction->user_id = $User->id;

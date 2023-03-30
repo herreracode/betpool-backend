@@ -3,7 +3,7 @@
 namespace Prediction\Actions;
 
 use App\Actions\Prediction\CreatePrediction;
-use App\Actions\Team\CreateTeam;
+use App\Exceptions\Pool\UserDoesntBelongToThePool;
 use App\Models\Competition;
 use App\Models\CompetitionPhase;
 use App\Models\Game;
@@ -63,7 +63,29 @@ class CreatePredictionActionTest extends TestCase
 
     public function testThrowExceptionWhenUserDoesntBelongToThePool()
     {
+        $this->expectException(UserDoesntBelongToThePool::class);
 
+        $User = User::factory()->create();
+
+        $Pool = Pool::factory()
+            ->create();
+
+        $Game = Game::factory()
+            ->for(CompetitionPhase::factory()
+                ->for(Competition::factory()))
+            ->create();
+
+        $localTeamScore = rand(1,7);
+
+        $awayTeamScore = rand(1,7);
+
+        $this->CreatePredictionAction->__invoke(
+            $User,
+            $Pool,
+            $Game,
+            $localTeamScore,
+            $awayTeamScore,
+        );
     }
 
     public function testThrowExceptionWhenGameIsNotInPending()
