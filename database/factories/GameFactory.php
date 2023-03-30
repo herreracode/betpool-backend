@@ -32,4 +32,13 @@ class GameFactory extends Factory
             ];
         });
     }
+
+    public function inPending()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'status' => GameStatus::PENDING->value,
+            ];
+        });
+    }
 }

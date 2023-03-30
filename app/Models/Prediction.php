@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Exceptions\Prediction\GameIsNotStateValid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -65,6 +66,9 @@ class Prediction extends Model
 
         //validations
         $Pool->doesItbelongsToThePool($User);
+
+        if(!$Game->itIsPending())
+            throw GameIsNotStateValid::create("game is not state pending");
 
         $Prediction = new static();
 

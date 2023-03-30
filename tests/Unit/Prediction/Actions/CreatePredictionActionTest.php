@@ -4,6 +4,7 @@ namespace Prediction\Actions;
 
 use App\Actions\Prediction\CreatePrediction;
 use App\Exceptions\Pool\UserDoesntBelongToThePool;
+use App\Exceptions\Prediction\GameIsNotStateValid;
 use App\Models\Competition;
 use App\Models\CompetitionPhase;
 use App\Models\Game;
@@ -36,6 +37,7 @@ class CreatePredictionActionTest extends TestCase
             ->create();
 
         $Game = Game::factory()
+            ->inPending()
             ->for(CompetitionPhase::factory()
                 ->for(Competition::factory()))
             ->create();
@@ -90,7 +92,31 @@ class CreatePredictionActionTest extends TestCase
 
     public function testThrowExceptionWhenGameIsNotInPending()
     {
+        $this->expectException(GameIsNotStateValid::class);
 
+        $User = User::factory()->create();
+
+        $Pool = Pool::factory()
+            ->hasAttached($User)
+            ->create();
+
+        $Game = Game::factory()
+            ->inProgress()
+            ->for(CompetitionPhase::factory()
+                ->for(Competition::factory()))
+            ->create();
+
+        $localTeamScore = rand(1,7);
+
+        $awayTeamScore = rand(1,7);
+
+        $this->CreatePredictionAction->__invoke(
+            $User,
+            $Pool,
+            $Game,
+            $localTeamScore,
+            $awayTeamScore,
+        );
     }
 
     public function testThrowExceptionWhenUserHavePredictionInThisGameAndPool()
