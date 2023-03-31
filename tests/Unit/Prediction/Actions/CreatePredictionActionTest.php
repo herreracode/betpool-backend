@@ -4,6 +4,7 @@ namespace Prediction\Actions;
 
 use App\Actions\Prediction\CreatePrediction;
 use App\Exceptions\Pool\UserDoesntBelongToThePool;
+use App\Exceptions\Prediction\GameIsAboutToStart;
 use App\Exceptions\Prediction\GameIsNotStateValid;
 use App\Models\Competition;
 use App\Models\CompetitionPhase;
@@ -36,7 +37,16 @@ class CreatePredictionActionTest extends TestCase
             ->hasAttached($User)
             ->create();
 
-        $Game = Game::factory()
+        $timeInMinutesToExpiredPeriod = rand(1, 30);
+
+        $dateCreatePrediction = new \DateTime();
+
+        $nowTimeStampAddTime = (new \DateTime())
+            ->modify("+{$timeInMinutesToExpiredPeriod} minutes");
+
+        $Game = Game::factory([
+            'date_start' => $nowTimeStampAddTime
+        ])
             ->inPending()
             ->for(CompetitionPhase::factory()
                 ->for(Competition::factory()))
@@ -47,11 +57,12 @@ class CreatePredictionActionTest extends TestCase
         $awayTeamScore = rand(1,7);
 
         $Prediction = $this->CreatePredictionAction->__invoke(
-            $User,
-            $Pool,
-            $Game,
-            $localTeamScore,
-            $awayTeamScore,
+            User : $User,
+            Pool : $Pool,
+            Game : $Game,
+            localTeamScore : $localTeamScore,
+            awayTeamScore : $awayTeamScore,
+            dateCreatePrediction : $dateCreatePrediction
         );
 
         $this->assertInstanceOf(Prediction::class, $Prediction);
@@ -126,8 +137,39 @@ class CreatePredictionActionTest extends TestCase
 
     public function testThrowExceptionWhenPeriodToCreatePredictionHasExpiredBeforeTheGame()
     {
+        $this->expectException(GameIsAboutToStart::class);
+
         $timeInMinutesToExpiredPeriod = 30;
 
+        $User = User::factory()->create();
 
+        $Pool = Pool::factory()
+            ->hasAttached($User)
+            ->create();
+
+        $localTeamScore = rand(1, 7);
+
+        $awayTeamScore = rand(1, 7);
+
+        $dateCreatePrediction = new \DateTime();
+
+        $nowTimeStampAddTimeToExpired = (new \DateTime())
+            ->modify("+{$timeInMinutesToExpiredPeriod} minutes");
+
+        $Game = Game::factory([
+            'date_start' => $nowTimeStampAddTimeToExpired
+        ])->inPending()
+            ->for(CompetitionPhase::factory()
+                ->for(Competition::factory()))
+            ->create();
+
+        $this->CreatePredictionAction->__invoke(
+            User : $User,
+            Pool : $Pool,
+            Game : $Game,
+            localTeamScore : $localTeamScore,
+            awayTeamScore : $awayTeamScore,
+            dateCreatePrediction : $dateCreatePrediction
+        );
     }
 }

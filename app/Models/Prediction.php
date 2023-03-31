@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
+use App\Exceptions\Prediction\GameIsAboutToStart;
 use App\Exceptions\Prediction\GameIsNotStateValid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property Score $score
+ * @property int $pool_id
+ * @property int $game_id
+ * @property int $user_id
  */
 class Prediction extends Model
 {
@@ -61,6 +65,7 @@ class Prediction extends Model
         Game $Game,
         int $localTeamScore,
         int $awayTeamScore,
+        \DateTime $dateTimeCreate = new \DateTime(),
     ): static
     {
 
@@ -70,11 +75,15 @@ class Prediction extends Model
         if(!$Game->itIsPending())
             throw GameIsNotStateValid::create("game is not state pending");
 
+        if($Game->isAboutToStart($dateTimeCreate))
+            throw GameIsAboutToStart::create("game is about to start");
+
         $Prediction = new static();
 
         $Prediction->user_id = $User->id;
         $Prediction->pool_id = $Pool->id;
         $Prediction->game_id = $Game->id;
+        $Prediction->setCreatedAt($dateTimeCreate->format('Y-m-d H:i:s'));
 
         if (! $Prediction->save()) {
             throw new \Exception('dont save competition');

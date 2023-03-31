@@ -22,7 +22,7 @@ class CreateGameActionTest extends TestCase
         $this->CreateGameAction = app(CreateGame::class);
     }
 
-    public function testCreateCompetition()
+    public function testCreateGame()
     {
         $CompetitionPhase = CompetitionPhase::factory()
         ->for(Competition::factory())
@@ -35,7 +35,8 @@ class CreateGameActionTest extends TestCase
         $Game = $this->CreateGameAction->__invoke(
             $CompetitionPhase,
             $LocalTeam,
-            $AwayTeam
+            $AwayTeam,
+            new \DateTime()
         );
 
         $this->assertEquals($Game->localTeam->id, $LocalTeam->id);

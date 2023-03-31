@@ -34,11 +34,12 @@ class CompetitionPhase extends Model
         return $this->hasMany(Game::class);
     }
 
-    public function addGame(Team $LocalTeam, Team $AwayTeam) : Game
+    public function addGame(Team $LocalTeam, Team $AwayTeam, \DateTime $DateStartGame) : Game
     {
         $Game = $this->games()->create([
             'local_team_id' => $LocalTeam->id,
             'away_team_id' => $AwayTeam->id,
+            'date_start' => $DateStartGame->format('Y-m-d H:i:s')
         ]);
 
         if (! $Game) {

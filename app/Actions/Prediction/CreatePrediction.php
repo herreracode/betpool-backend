@@ -19,14 +19,15 @@ class CreatePrediction
         Game $Game,
         int $localTeamScore,
         int $awayTeamScore,
+        \DateTime $dateCreatePrediction = new \DateTime()
     ): Prediction
     {
-        $Prediction = Prediction::createWithValidations( $User,
+        $Prediction = Prediction::createWithValidations($User,
          $Pool,
          $Game,
          $localTeamScore,
-         $awayTeamScore);
-
+         $awayTeamScore,
+         $dateCreatePrediction);
 
         return $Prediction;
     }

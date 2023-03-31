@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Common\Traits\HasTimestamp;
 use App\Models\Enums\GameStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,10 +12,13 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property Score $score
  * @property $status
+ * @property $date_start
  */
 class Game extends Model
 {
-    use HasFactory;
+    use HasFactory, HasTimestamp;
+
+    const MINUTES_DIFFERENCE_GAME_TO_START = 30;
 
     /**
      * The attributes that are mass assignable.
@@ -24,6 +28,7 @@ class Game extends Model
     protected $fillable = [
         'local_team_id',
         'away_team_id',
+        'date_start',
     ];
 
     /**
@@ -90,5 +95,10 @@ class Game extends Model
     public function itIsPostponed()
     {
         return $this->status == GameStatus::POSTPONED->value;
+    }
+
+    public function isAboutToStart(\DateTime $dateTime) :bool
+    {
+        return $this->date_start->diff($dateTime)->i >= static::MINUTES_DIFFERENCE_GAME_TO_START;
     }
 }

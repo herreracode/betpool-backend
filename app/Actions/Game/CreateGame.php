@@ -15,9 +15,10 @@ class CreateGame
     public function __invoke(
            CompetitionPhase $CompetitionPhase,
            Team $LocalTeam,
-           Team $AwayTeam
+           Team $AwayTeam,
+           \DateTime $DateStartGame
     ): Game
     {
-        return $CompetitionPhase->addGame($LocalTeam, $AwayTeam);
+        return $CompetitionPhase->addGame($LocalTeam, $AwayTeam, $DateStartGame);
     }
 }

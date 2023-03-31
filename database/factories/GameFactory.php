@@ -21,6 +21,7 @@ class GameFactory extends Factory
         return [
             'local_team_id' => Team::factory()->create(),
             'away_team_id' => Team::factory()->create(),
+            'date_start' => $this->faker->dateTime('Y-m-d H:i:s'),
         ];
     }
 

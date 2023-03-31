@@ -29,7 +29,7 @@ return new class extends Migration
                 GameStatus::FINISH->value,
                 GameStatus::POSTPONED->value,
             ])->default(GameStatus::PENDING->value);
-            $table->date('date_start')->nullable();
+            $table->date('date_start');
             $table->date('date_end')->nullable();
             $table->timestamps();
         });
