@@ -54,5 +54,7 @@ class UpdateGameActionTest extends TestCase
         $this->assertEquals($Score->getLocalTeamScore(), $localTeamScore);
 
         $this->assertEquals($Score->getAwayTeamScore(), $awayTeamScore);
+
+        $this->assertTrue($Game->itIsFinished());
     }
 }

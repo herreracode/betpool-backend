@@ -74,6 +74,8 @@ class Game extends Model
             throw new \Exception('dont create Score');
         }
 
+        $this->finish();
+
         return $Score;
     }
 
@@ -100,5 +102,12 @@ class Game extends Model
     public function isAboutToStart(\DateTime $dateTime) :bool
     {
         return $this->date_start->diff($dateTime)->i >= static::MINUTES_DIFFERENCE_GAME_TO_START;
+    }
+
+    public function finish()
+    {
+        $this->status = GameStatus::FINISH->value;
+
+        $this->save();
     }
 }
