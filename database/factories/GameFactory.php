@@ -42,4 +42,13 @@ class GameFactory extends Factory
             ];
         });
     }
+
+    public function inFinish()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'status' => GameStatus::FINISH->value,
+            ];
+        });
+    }
 }

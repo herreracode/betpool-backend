@@ -3,15 +3,19 @@
 namespace App\Models;
 
 use App\Exceptions\Prediction\GameIsAboutToStart;
+use App\Exceptions\Prediction\GameIsNotFinishedToClosePrediction;
 use App\Exceptions\Prediction\GameIsNotStateValid;
+use App\Models\Enums\PredictionStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property Score $score
+ * @property Game $Game
  * @property int $pool_id
  * @property int $game_id
  * @property int $user_id
+ * @property int $status
  */
 class Prediction extends Model
 {
@@ -96,5 +100,25 @@ class Prediction extends Model
         $Prediction->score()->save($Score);
 
         return $Prediction;
+    }
+
+    public function itIsInPending()
+    {
+        return $this->status == PredictionStatus::PENDING->value;
+    }
+
+    public function itIsInClose()
+    {
+        return $this->status == PredictionStatus::CLOSE->value;
+    }
+
+    public function close()
+    {
+        if(!$this->Game->itIsFinished())
+            throw GameIsNotFinishedToClosePrediction::create('Game is not finished to close prediction');
+
+        $this->status = PredictionStatus::CLOSE->value;
+
+        $this->save();
     }
 }
