@@ -8,7 +8,8 @@ use App\Models\Prediction;
 class CalculateNumberOfPointsEarned
 {
     protected const POINT_HIT_EXACT_RESULT = 12;
-    protected const HIT_GAME_WINNER_AND_NUMBER_GOALS = 7;
+    protected const HIT_GAME_WINNER_AND_NUMBER_GOALS_ONE_TEAM = 7;
+    protected const HIT_GAME_RESULT_NOT_EXACT = 5;
 
     public function __invoke(
             Prediction $Prediction,
@@ -28,16 +29,23 @@ class CalculateNumberOfPointsEarned
 
         $gameWinner = $ScoreGame->local_team_score > $ScoreGame->away_team_score
             ? 'local_team_score'
-            : 'away_team_score';
+            : ($ScoreGame->away_team_score > $ScoreGame->local_team_score
+                ? 'away_team_score'
+                : 'draw');
 
         $predictionWinner = $ScorePrediction->local_team_score > $ScorePrediction->away_team_score
             ? 'local_team_score'
-            : 'away_team_score';
+            : ($ScorePrediction->away_team_score > $ScorePrediction->local_team_score
+                ? 'away_team_score'
+                : 'draw');
 
-        $hitGameWinner = $gameWinner == $predictionWinner;
+        $hitResultGame = $gameWinner == $predictionWinner;
 
-        if($hitGameWinner && ($isEqualLocalScoreTeam || $isEqualAwayScoreTeam))
-            return static::HIT_GAME_WINNER_AND_NUMBER_GOALS;
+        if($hitResultGame && ($isEqualLocalScoreTeam || $isEqualAwayScoreTeam))
+            return static::HIT_GAME_WINNER_AND_NUMBER_GOALS_ONE_TEAM;
+
+        if($hitResultGame)
+            return static::HIT_GAME_RESULT_NOT_EXACT;
 
         return 0;
     }
