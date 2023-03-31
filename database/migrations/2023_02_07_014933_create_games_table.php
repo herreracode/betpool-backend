@@ -44,6 +44,7 @@ return new class extends Migration
                 PredictionStatus::PENDING->value,
                 PredictionStatus::CLOSE->value,
             ])->default(GameStatus::PENDING->value);
+            $table->integer('points_earned')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

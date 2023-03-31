@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $game_id
  * @property int $user_id
  * @property int $status
+ * @property int $points_earned
  */
 class Prediction extends Model
 {
