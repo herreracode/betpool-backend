@@ -16,6 +16,7 @@ class CalculateNumberOfPointsEarnedTest extends TestCase
 {
 
     const POINT_HIT_EXACT_RESULT = 12;
+    const HIT_GAME_WINNER_AND_NUMBER_GOALS = 7;
 
     protected function setUp(): void
     {
@@ -76,5 +77,55 @@ class CalculateNumberOfPointsEarnedTest extends TestCase
         );
 
         $this->assertTrue($pointsEarned == static::POINT_HIT_EXACT_RESULT);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function testCalculatePointsEarnedHitGameWinnerAndNumberGoalsOf1Team()
+    {
+        $Competition = Competition::factory();
+
+        $CompetitionPhase = CompetitionPhase::factory()->for($Competition);
+
+        $Game = Game::factory()
+            ->inProgress()
+            ->for($CompetitionPhase)
+            ->create();
+
+        Score::factory([
+            'local_team_score' => 3,
+            'away_team_score' => 1,
+            'scorable_type' => $Game::class,
+            'scorable_id' => $Game->id
+        ])->create();
+
+        $User = User::factory()->create();
+
+        $Pool = Pool::factory()
+            ->hasAttached($User)
+            ->hasAttached($Competition)
+            ->create();
+
+        $Prediction = Prediction::factory()
+            ->for($User)
+            ->for($Pool)
+            ->for($Game)
+            ->inPending()
+            ->create();
+
+        Score::factory([
+            'local_team_score' => 3,
+            'away_team_score' => 2,
+            'scorable_type' => $Prediction::class,
+            'scorable_id' => $Prediction->id,
+        ])->create();
+
+        $pointsEarned = $this->CalculateNumberOfPointsEarned->__invoke(
+            $Prediction,
+            $Game
+        );
+
+        $this->assertTrue($pointsEarned == static::HIT_GAME_WINNER_AND_NUMBER_GOALS);
     }
 }
