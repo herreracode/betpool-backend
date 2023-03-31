@@ -10,6 +10,9 @@ class CalculateNumberOfPointsEarned
     protected const POINT_HIT_EXACT_RESULT = 12;
     protected const HIT_GAME_WINNER_AND_NUMBER_GOALS_ONE_TEAM = 7;
     protected const HIT_GAME_RESULT_NOT_EXACT = 5;
+    protected const HIT_NUMBER_SCORE_ONE_TEAM = 2;
+
+    protected const NOT_HIT_ANYTHING = 0;
 
     public function __invoke(
             Prediction $Prediction,
@@ -47,6 +50,9 @@ class CalculateNumberOfPointsEarned
         if($hitResultGame)
             return static::HIT_GAME_RESULT_NOT_EXACT;
 
-        return 0;
+        if($isEqualLocalScoreTeam || $isEqualAwayScoreTeam)
+            return static::HIT_NUMBER_SCORE_ONE_TEAM;
+
+        return static::NOT_HIT_ANYTHING;
     }
 }
