@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\DomainServices\Prediction\CalculateNumberOfPointsEarned;
 use App\Exceptions\Prediction\GameIsAboutToStart;
 use App\Exceptions\Prediction\GameIsNotFinishedToClosePrediction;
 use App\Exceptions\Prediction\GameIsNotStateValid;
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property Score $score
- * @property Game $Game
+ * @property Game $game
  * @property int $pool_id
  * @property int $game_id
  * @property int $user_id
@@ -113,12 +114,17 @@ class Prediction extends Model
         return $this->status == PredictionStatus::CLOSE->value;
     }
 
-    public function close()
+    public function close(CalculateNumberOfPointsEarned $calculateNumberOfPointsEarned)
     {
         if(!$this->Game->itIsFinished())
             throw GameIsNotFinishedToClosePrediction::create('Game is not finished to close prediction');
 
         $this->status = PredictionStatus::CLOSE->value;
+
+        $this->points_earned = $calculateNumberOfPointsEarned(
+            $this,
+            $this->game
+        );
 
         $this->save();
     }

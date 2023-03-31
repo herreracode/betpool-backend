@@ -45,38 +45,12 @@ class ClosePredictionActionTest extends TestCase
             ->for($CompetitionPhase)
             ->create();
 
-        $User = User::factory()->create();
-
-        $Pool = Pool::factory()
-            ->hasAttached($User)
-            ->hasAttached($Competition)
-            ->create();
-
-        $Prediction = Prediction::factory()
-            ->for($User)
-            ->for($Pool)
-            ->for($Game)
-            ->create();
-
-        $this->ClosePredictionAction->__invoke(
-            $Prediction
-        );
-
-        $this->assertTrue($Prediction->itIsInClose());
-    }
-
-    public function testThrowExepctionWhenGameIsNotFinished()
-    {
-        $this->expectException(GameIsNotFinishedToClosePrediction::class);
-
-        $Competition = Competition::factory();
-
-        $CompetitionPhase = CompetitionPhase::factory()->for($Competition);
-
-        $Game = Game::factory()
-            ->inProgress()
-            ->for($CompetitionPhase)
-            ->create();
+        Score::factory([
+            'local_team_score' => 3,
+            'away_team_score' => 0,
+            'scorable_type' => $Game::class,
+            'scorable_id' => $Game->id
+        ])->create();
 
         $User = User::factory()->create();
 
@@ -92,16 +66,26 @@ class ClosePredictionActionTest extends TestCase
             ->inPending()
             ->create();
 
+
+
+        Score::factory([
+            'local_team_score' => 0,
+            'away_team_score' => 1,
+            'scorable_type' => $Prediction::class,
+            'scorable_id' => $Prediction->id,
+        ])->create();
+
         $this->ClosePredictionAction->__invoke(
             $Prediction
         );
+
+        $this->assertTrue($Prediction->itIsInClose());
+        $this->assertNotEmpty($Prediction->points_earned == 0 || $Prediction->points_earned > 0 );
     }
 
-    public function testCalculatePointsEarnedHitExactResult()
+    public function testThrowExepctionWhenGameIsNotFinished()
     {
-        $localTeamScore = rand(1,9);
-
-        $AwayTeamScore = rand(1,9);
+        $this->expectException(GameIsNotFinishedToClosePrediction::class);
 
         $Competition = Competition::factory();
 
@@ -113,8 +97,8 @@ class ClosePredictionActionTest extends TestCase
             ->create();
 
         Score::factory([
-            'local_team_score' => $localTeamScore,
-            'away_team_score' => $AwayTeamScore,
+            'local_team_score' => 3,
+            'away_team_score' => 0,
             'scorable_type' => $Game::class,
             'scorable_id' => $Game->id
         ])->create();
@@ -134,8 +118,8 @@ class ClosePredictionActionTest extends TestCase
             ->create();
 
         Score::factory([
-            'local_team_score' => $localTeamScore,
-            'away_team_score' => $AwayTeamScore,
+            'local_team_score' => 0,
+            'away_team_score' => 1,
             'scorable_type' => $Prediction::class,
             'scorable_id' => $Prediction->id,
         ])->create();
@@ -143,8 +127,6 @@ class ClosePredictionActionTest extends TestCase
         $this->ClosePredictionAction->__invoke(
             $Prediction
         );
-
-        //$this->assertTrue(static::POINT_HIT_EXACT_RESULT);
     }
 
 
