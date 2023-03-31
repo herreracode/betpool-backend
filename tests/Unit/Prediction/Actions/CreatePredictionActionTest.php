@@ -22,6 +22,8 @@ class CreatePredictionActionTest extends TestCase
     use RefreshDatabase;
     use WithoutEvents;
 
+    const TIME_IN_MINUTES_TO_EXPIRED_PERIOD = 30;
+
     protected function setUp(): void
     {
         parent::setup();
@@ -37,7 +39,7 @@ class CreatePredictionActionTest extends TestCase
             ->hasAttached($User)
             ->create();
 
-        $timeInMinutesToExpiredPeriod = rand(1, 30);
+        $timeInMinutesToExpiredPeriod = rand(1, static::TIME_IN_MINUTES_TO_EXPIRED_PERIOD);
 
         $dateCreatePrediction = new \DateTime();
 
@@ -139,7 +141,7 @@ class CreatePredictionActionTest extends TestCase
     {
         $this->expectException(GameIsAboutToStart::class);
 
-        $timeInMinutesToExpiredPeriod = 30;
+        $timeInMinutesToExpiredPeriod = static::TIME_IN_MINUTES_TO_EXPIRED_PERIOD;
 
         $User = User::factory()->create();
 
