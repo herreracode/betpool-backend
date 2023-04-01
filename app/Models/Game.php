@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Events\CreatedPool;
+use App\Events\GameUpdateResult;
+use App\Models\Common\AggregateRoot;
 use App\Models\Common\Contracts\Scorable;
 use App\Models\Common\Traits\HasScore;
 use App\Models\Common\Traits\HasTimestamp;
@@ -18,7 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property $status
  * @property $date_start
  */
-class Game extends Model implements Scorable
+class Game extends AggregateRoot implements Scorable
 {
     use HasFactory, HasTimestamp, HasScore;
 
@@ -72,6 +75,8 @@ class Game extends Model implements Scorable
 
         $this->finish();
 
+        $this->record(new GameUpdateResult($this));
+
         return $Score;
     }
 
@@ -100,7 +105,7 @@ class Game extends Model implements Scorable
         return $this->date_start->diff($dateTime)->i >= static::MINUTES_DIFFERENCE_GAME_TO_START;
     }
 
-    public function finish()
+    protected function finish()
     {
         $this->status = GameStatus::FINISH->value;
 

@@ -2,6 +2,7 @@
 
 namespace App\Actions\Game;
 
+use App\Events\Common\Contracts\EventBus;
 use App\Models\Game;
 use App\Models\Score;
 use Exception;
@@ -11,6 +12,11 @@ use Exception;
  */
 class UpdateGameResult
 {
+    public function __construct(protected EventBus $eventBus)
+    {
+    }
+
+
     /**
      * @param Game $Game
      * @param int $localTeamScore
@@ -23,6 +29,11 @@ class UpdateGameResult
            int $localTeamScore,
            int $awayTeamScore,
     ): Score {
-        return $Game->updateGameResult($localTeamScore, $awayTeamScore);
+
+        $Score = $Game->updateGameResult($localTeamScore, $awayTeamScore);
+
+        $this->eventBus->dispatch($Game->pullDomainEvents());
+
+        return $Score;
     }
 }
