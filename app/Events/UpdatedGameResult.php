@@ -4,7 +4,7 @@ namespace App\Events;
 
 use App\Events\Common\DomainEvent;
 
-class GameUpdateResult extends DomainEvent
+class UpdatedGameResult extends DomainEvent
 {
 
 }

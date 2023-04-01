@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Events\CreatedPool;
-use App\Events\GameUpdateResult;
+use App\Events\UpdatedGameResult;
 use App\Models\Common\AggregateRoot;
 use App\Models\Common\Contracts\Scorable;
 use App\Models\Common\Traits\HasScore;
@@ -75,7 +75,7 @@ class Game extends AggregateRoot implements Scorable
 
         $this->finish();
 
-        $this->record(new GameUpdateResult($this));
+        $this->record(new UpdatedGameResult($this));
 
         return $Score;
     }

@@ -3,7 +3,7 @@
 namespace Tests\Unit\Game\Actions;
 
 use App\Actions\Game\UpdateGameResult;
-use App\Events\GameUpdateResult;
+use App\Events\UpdatedGameResult;
 use App\Models\Competition;
 use App\Models\CompetitionPhase;
 use App\Models\Game;
@@ -61,6 +61,6 @@ class UpdateGameActionTest extends TestCase
 
         $this->assertTrue($Game->itIsFinished());
 
-        Event::assertDispatched(GameUpdateResult::class);
+        Event::assertDispatched(UpdatedGameResult::class);
     }
 }
