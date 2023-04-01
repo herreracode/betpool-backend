@@ -19,38 +19,24 @@ class CalculateNumberOfPointsEarned
             Game $Game
     ): int
     {
-        $ScorePrediction = $Prediction->score;
+        $isEqualLocalScoreTeam = $Prediction->getLocalTeamScore() == $Game->getLocalTeamScore();
 
-        $ScoreGame = $Game->score;
-
-        $isEqualLocalScoreTeam = $ScorePrediction->local_team_score == $ScoreGame->local_team_score;
-
-        $isEqualAwayScoreTeam = $ScorePrediction->away_team_score == $ScoreGame->away_team_score;
+        $isEqualAwayScoreTeam = $Prediction->getAwayTeamScore() == $Game->getAwayTeamScore();
 
         if($isEqualLocalScoreTeam && $isEqualAwayScoreTeam)
             return static::POINT_HIT_EXACT_RESULT;
 
-        $gameWinner = $ScoreGame->local_team_score > $ScoreGame->away_team_score
-            ? 'local_team_score'
-            : ($ScoreGame->away_team_score > $ScoreGame->local_team_score
-                ? 'away_team_score'
-                : 'draw');
+        $hitAtLeastOneResult = $isEqualLocalScoreTeam || $isEqualAwayScoreTeam;
 
-        $predictionWinner = $ScorePrediction->local_team_score > $ScorePrediction->away_team_score
-            ? 'local_team_score'
-            : ($ScorePrediction->away_team_score > $ScorePrediction->local_team_score
-                ? 'away_team_score'
-                : 'draw');
+        $hitResultGame = $Prediction->getTeamWinner()?->id == $Game->getTeamWinner()?->id;
 
-        $hitResultGame = $gameWinner == $predictionWinner;
-
-        if($hitResultGame && ($isEqualLocalScoreTeam || $isEqualAwayScoreTeam))
+        if($hitResultGame && $hitAtLeastOneResult)
             return static::HIT_GAME_WINNER_AND_NUMBER_GOALS_ONE_TEAM;
 
         if($hitResultGame)
             return static::HIT_GAME_RESULT_NOT_EXACT;
 
-        if($isEqualLocalScoreTeam || $isEqualAwayScoreTeam)
+        if($hitAtLeastOneResult)
             return static::HIT_NUMBER_SCORE_ONE_TEAM;
 
         return static::NOT_HIT_ANYTHING;

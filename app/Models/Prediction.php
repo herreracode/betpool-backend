@@ -6,6 +6,8 @@ use App\DomainServices\Prediction\CalculateNumberOfPointsEarned;
 use App\Exceptions\Prediction\GameIsAboutToStart;
 use App\Exceptions\Prediction\GameIsNotFinishedToClosePrediction;
 use App\Exceptions\Prediction\GameIsNotStateValid;
+use App\Models\Common\Contracts\Scorable;
+use App\Models\Common\Traits\HasScore;
 use App\Models\Enums\PredictionStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -19,9 +21,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $status
  * @property int $points_earned
  */
-class Prediction extends Model
+class Prediction extends Model implements Scorable
 {
-    use HasFactory;
+    use HasFactory, HasScore;
 
     /**
      * get user
@@ -47,23 +49,7 @@ class Prediction extends Model
         return $this->belongsTo(Game::class);
     }
 
-    /**
-     * Get all of the post's comments.
-     */
-    public function score()
-    {
-        return $this->morphOne(Score::class, 'scorable');
-    }
 
-    public function getLocalTeamScore()
-    {
-        return $this->score->getLocalTeamScore();
-    }
-
-    public function getAwayTeamScore()
-    {
-        return $this->score->getAwayTeamScore();
-    }
 
     public static function createWithValidations(
         User $User,
@@ -128,4 +114,16 @@ class Prediction extends Model
 
         $this->save();
     }
+
+    public function getLocalTeam(): Team
+    {
+        return $this->game->localTeam;
+    }
+
+    public function getAwayTeam(): Team
+    {
+        return $this->game->awayTeam;
+    }
+
+
 }
