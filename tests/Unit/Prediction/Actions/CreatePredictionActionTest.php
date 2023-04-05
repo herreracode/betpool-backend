@@ -39,7 +39,7 @@ class CreatePredictionActionTest extends TestCase
             ->hasAttached($User)
             ->create();
 
-        $timeInMinutesToExpiredPeriod = rand(1, static::TIME_IN_MINUTES_TO_EXPIRED_PERIOD);
+        $timeInMinutesToExpiredPeriod = 29;
 
         $dateCreatePrediction = new \DateTime();
 
@@ -141,7 +141,7 @@ class CreatePredictionActionTest extends TestCase
     {
         $this->expectException(GameIsAboutToStart::class);
 
-        $timeInMinutesToExpiredPeriod = static::TIME_IN_MINUTES_TO_EXPIRED_PERIOD;
+        $timeInMinutesToExpiredPeriod = static::TIME_IN_MINUTES_TO_EXPIRED_PERIOD + rand(1,10);
 
         $User = User::factory()->create();
 

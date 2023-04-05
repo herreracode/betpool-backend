@@ -17,7 +17,8 @@ class ScoreFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'local_team_score' => rand(0,4),
+            'away_team_score' => rand(0,4),
         ];
     }
 }

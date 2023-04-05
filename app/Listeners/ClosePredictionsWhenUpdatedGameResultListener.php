@@ -2,8 +2,10 @@
 
 namespace App\Listeners;
 
+use App\Actions\Prediction\ClosePrediction;
 use App\Events\CreatedPool;
 use App\Events\UpdatedGameResult;
+use App\Models\Prediction;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
@@ -23,7 +25,7 @@ class ClosePredictionsWhenUpdatedGameResultListener implements ShouldQueue
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(protected ClosePrediction $ClosePrediction)
     {
         //
     }
@@ -38,17 +40,25 @@ class ClosePredictionsWhenUpdatedGameResultListener implements ShouldQueue
     {
         //obtener el game del evento $event->getAggregate()
 
+        $Game = $event->getAggregate();
+
         //buscar las predicciones para cerrar
+        $page = 1;
 
-        //deben estar paginadas. de 50 en 50 para no forzar la memoria ni la BD con un query abierto.
+        do{
+            $Predictions = Prediction::where([
+                'game_id' => $Game->id
+            ])
+                ->forPage($page,10)
+                ->get();
 
-        //ver la posibilidad de hacer las busquedas con el query builder para no cargar los modelos.
-        // aunque con la paginacion estariamos blindando ese escenario de memoria)
+            $countPredictions = $Predictions->count();
 
-        //en caso de hacer las busquedas con el query builder, utilizar un repositorio.
+            $Predictions
+                ->each(fn (Prediction $prediction) => $this->ClosePrediction->__invoke($prediction));
 
-        // realizar unn $Prediction->close($calculateNumberOfPointsEarned)
+            $page+= 1;
 
-        return $event->getAggregate();
+        }while($countPredictions != 0);
     }
 }
