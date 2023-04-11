@@ -35,11 +35,11 @@ class CompetitionSeeder extends Seeder
 
             $Competition->save();
 
-            foreach (static::COMPETITIONS_PHASES as $phase)
+            foreach (static::COMPETITIONS_PHASES as $phase) {
                 $Competition->competitionPhases()->create([
                     'name' => $phase,
                 ]);
+            }
         }
-
     }
 }

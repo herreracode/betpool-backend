@@ -17,7 +17,12 @@ class CompetitionPhaseFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => $this->faker->randomElements([
+                'OCTAVOS',
+                'CUARTOS',
+                'SEMIFINAL',
+                'FINAL',
+            ])[0],
         ];
     }
 }

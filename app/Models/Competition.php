@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Class Competition
  *
- * @package App\Models
  *
  * @property string name
+ * @property bool must_be_unique
  */
 class Competition extends Model
 {
@@ -22,5 +22,36 @@ class Competition extends Model
     public function competitionPhases()
     {
         return $this->hasMany(CompetitionPhase::class);
+    }
+
+    /**
+     * @param $name
+     * @return static
+     * @throws \Exception
+     */
+    public static function create($name) :static
+    {
+        $Competition = new static();
+
+        $Competition->name = $name;
+
+        if (! $Competition->save()) {
+            throw new \Exception('dont save competition');
+        }
+
+        return $Competition;
+    }
+
+    public function addCompetitionPhase($name) : CompetitionPhase
+    {
+        $CompetitionPhase = $this->competitionPhases()->create([
+            'name' => $name,
+        ]);
+
+        if (! $CompetitionPhase) {
+            throw new \Exception('dont save competition phase');
+        }
+
+        return $CompetitionPhase;
     }
 }

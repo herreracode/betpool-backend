@@ -17,7 +17,21 @@ class CompetitionFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => $this->faker->randomElements([
+                'FIFA WORLD CUP',
+                'AMERICAN CUP',
+                'EUROPE CUP',
+            ])[0],
+            'must_be_unique' => false,
         ];
+    }
+
+    public function mustBeUnique()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'must_be_unique' => true,
+            ];
+        });
     }
 }

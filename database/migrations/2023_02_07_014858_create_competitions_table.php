@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->date('date_start')->nullable();
             $table->date('date_end')->nullable();
+            $table->boolean('must_be_unique')->default(false);
             $table->timestamps();
         });
     }

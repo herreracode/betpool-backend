@@ -2,13 +2,23 @@
 
 namespace App\Models;
 
+use App\Events\CreatedPool;
+use App\Exceptions\Pool\CompetitionMustBeUniqueInAPool;
+use App\Exceptions\Pool\UserDoesntBelongToThePool;
+use App\Models\Common\AggregateRoot;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
 
-class Pool extends Model
+/**
+ * @property Collection $poolInvitationsEmails
+ * @property string $name
+ */
+class Pool extends AggregateRoot
 {
     use HasFactory, SoftDeletes;
+
+    protected const NAME_TABLE_INTERMEDIATE_USER = 'users_pools';
 
     /**
      * The attributes that are mass assignable.
@@ -25,6 +35,87 @@ class Pool extends Model
      */
     public function users()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class,static::NAME_TABLE_INTERMEDIATE_USER);
+    }
+
+    /**
+     * get Pools user
+     */
+    public function competitions()
+    {
+        return $this->belongsToMany(Competition::class,'pools_competitions');
+    }
+
+    /**
+     * get Pools user
+     */
+    public function poolInvitationsEmails()
+    {
+        return $this->hasMany(PoolInvitationsEmails::class);
+    }
+
+    public static function create(string $namePool)
+    {
+        $Pool = new static();
+
+        $Pool->name = $namePool;
+
+        if (! $Pool->save()) {
+            throw new \Exception('dont save Pool');
+        }
+
+        $Pool->record(new CreatedPool($Pool));
+
+        return $Pool;
+    }
+
+    public function addUser(User $User)
+    {
+        $this->users()->attach($User);
+    }
+
+    public function addCompetitions($competitions)
+    {
+        $this->haveCompetitionUnique($competitions);
+
+        $this->competitions()->attach($competitions);
+    }
+
+    protected function haveCompetitionUnique(iterable $competitions = null)
+    {
+        $competitionsCollect = collect($competitions);
+
+        $haveMoreThanOne = $competitionsCollect->count() > 1;
+
+        $haveUniqueCompetition = $competitionsCollect
+                ->filter(fn (Competition $competition) => $competition->must_be_unique)
+                ->count() > 0;
+
+        if($haveMoreThanOne && $haveUniqueCompetition)
+            throw new CompetitionMustBeUniqueInAPool('Have competition unique');
+    }
+
+    public function createInvitationsPoolEmails(iterable $emails)
+    {
+        foreach ($emails as $email){
+            $this->poolInvitationsEmails()->create([
+                'email' => $email,
+            ]);
+        }
+    }
+
+    /**
+     * @return bool
+     */
+    public function doesItbelongsToThePool(User $User) :bool
+    {
+        $doesItBelongsToThePool = $this->users()->where([
+            static::NAME_TABLE_INTERMEDIATE_USER .'.user_id' => $User->id
+        ])->count() > 0;
+
+        if (!$doesItBelongsToThePool)
+            throw UserDoesntBelongToThePool::create("User {$User->id} doesnt belong to pool {$this->id}");
+
+        return true;
     }
 }

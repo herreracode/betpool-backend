@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Enums\GameStatus;
+use App\Models\Enums\PredictionStatus;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,5 +21,14 @@ class PredictionFactory extends Factory
         return [
             //
         ];
+    }
+
+    public function inPending()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'status' => PredictionStatus::PENDING->value,
+            ];
+        });
     }
 }

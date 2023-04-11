@@ -17,7 +17,7 @@ class TeamFactory extends Factory
     public function definition()
     {
         return [
-            'name' => "Team {$this->faker->country()}",
+            'name' => "Team {$this->faker->unique()->country()}",
         ];
     }
 }

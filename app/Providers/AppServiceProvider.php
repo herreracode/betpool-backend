@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Events\Common\Contracts\EventBus as EventBusContract;
+use App\Events\Common\EventBusLaravel;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(EventBusContract::class, EventBusLaravel::class);
     }
 
     /**
