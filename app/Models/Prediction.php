@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $user_id
  * @property int $status
  * @property int $points_earned
+ * @property int $pool_round_id
  */
 class Prediction extends Model implements Scorable
 {
@@ -59,6 +60,7 @@ class Prediction extends Model implements Scorable
         User $User,
         Pool $Pool,
         Game $Game,
+        PoolRound $PoolRound,
         int $localTeamScore,
         int $awayTeamScore,
         \DateTime $dateTimeCreate = new \DateTime(),
@@ -79,6 +81,7 @@ class Prediction extends Model implements Scorable
         $Prediction->user_id = $User->id;
         $Prediction->pool_id = $Pool->id;
         $Prediction->game_id = $Game->id;
+        $Prediction->pool_round_id = $PoolRound->id;
         $Prediction->setCreatedAt($dateTimeCreate->format('Y-m-d H:i:s'));
 
         if (! $Prediction->save()) {

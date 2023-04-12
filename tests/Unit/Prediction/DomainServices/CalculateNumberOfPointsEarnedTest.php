@@ -7,6 +7,7 @@ use App\Models\Competition;
 use App\Models\CompetitionPhase;
 use App\Models\Game;
 use App\Models\Pool;
+use App\Models\PoolRound;
 use App\Models\Prediction;
 use App\Models\Score;
 use App\Models\User;
@@ -64,10 +65,15 @@ class CalculateNumberOfPointsEarnedTest extends TestCase
             ->hasAttached($Competition)
             ->create();
 
+        $PoolRound = PoolRound::factory()
+            ->for($Pool)
+            ->create();
+
         $Prediction = Prediction::factory()
             ->for($User)
             ->for($Pool)
             ->for($Game)
+            ->for($PoolRound)
             ->inPending()
             ->create();
 
@@ -114,9 +120,14 @@ class CalculateNumberOfPointsEarnedTest extends TestCase
             ->hasAttached($Competition)
             ->create();
 
+        $PoolRound = PoolRound::factory()
+            ->for($Pool)
+            ->create();
+
         $Prediction = Prediction::factory()
             ->for($User)
             ->for($Pool)
+            ->for($PoolRound)
             ->for($Game)
             ->inPending()
             ->create();
@@ -161,9 +172,14 @@ class CalculateNumberOfPointsEarnedTest extends TestCase
             ->hasAttached($Competition)
             ->create();
 
+        $PoolRound = PoolRound::factory()
+            ->for($Pool)
+            ->create();
+
         $Prediction = Prediction::factory()
             ->for($User)
             ->for($Pool)
+            ->for($PoolRound)
             ->for($Game)
             ->inPending()
             ->create();
@@ -208,10 +224,15 @@ class CalculateNumberOfPointsEarnedTest extends TestCase
             ->hasAttached($Competition)
             ->create();
 
+        $PoolRound = PoolRound::factory()
+            ->for($Pool)
+            ->create();
+
         $Prediction = Prediction::factory()
             ->for($User)
             ->for($Pool)
             ->for($Game)
+            ->for($PoolRound)
             ->inPending()
             ->create();
 
@@ -255,10 +276,15 @@ class CalculateNumberOfPointsEarnedTest extends TestCase
             ->hasAttached($Competition)
             ->create();
 
+        $PoolRound = PoolRound::factory()
+            ->for($Pool)
+            ->create();
+
         $Prediction = Prediction::factory()
             ->for($User)
             ->for($Pool)
             ->for($Game)
+            ->for($PoolRound)
             ->inPending()
             ->create();
 

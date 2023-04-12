@@ -64,11 +64,7 @@ class CreatePoolActionTest extends TestCase
 
         $this->assertSame(2, $Pool->competitions->count());
 
-        setPermissionsTeamId($Pool->id);
-
-        $RolePoolAdmin = Role::findByName('_POOL_ADMIN_');
-
-        $this->assertTrue($UserCreator->hasRole($RolePoolAdmin));
+        $this->assertTrue($UserCreator->hasRolePoolAdmin($Pool));
 
         Event::assertDispatched(CreatedPool::class);
     }
