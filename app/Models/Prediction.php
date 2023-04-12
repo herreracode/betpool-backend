@@ -49,6 +49,10 @@ class Prediction extends Model implements Scorable
         return $this->belongsTo(Game::class);
     }
 
+    public function poolRound()
+    {
+        return $this->belongsTo(PoolRound::class);
+    }
 
 
     public static function createWithValidations(
