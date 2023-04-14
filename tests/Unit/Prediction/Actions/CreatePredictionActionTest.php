@@ -10,6 +10,7 @@ use App\Models\Competition;
 use App\Models\CompetitionPhase;
 use App\Models\Game;
 use App\Models\Pool;
+use App\Models\PoolRound;
 use App\Models\Prediction;
 use App\Models\Team;
 use App\Models\User;
@@ -39,6 +40,10 @@ class CreatePredictionActionTest extends TestCase
             ->hasAttached($User)
             ->create();
 
+        $PoolRound = PoolRound::factory()
+            ->for($Pool)
+            ->create();
+
         $timeInMinutesToExpiredPeriod = 29;
 
         $dateCreatePrediction = new \DateTime();
@@ -62,6 +67,7 @@ class CreatePredictionActionTest extends TestCase
             User : $User,
             Pool : $Pool,
             Game : $Game,
+            PoolRound: $PoolRound,
             localTeamScore : $localTeamScore,
             awayTeamScore : $awayTeamScore,
             dateCreatePrediction : $dateCreatePrediction
@@ -85,6 +91,10 @@ class CreatePredictionActionTest extends TestCase
         $Pool = Pool::factory()
             ->create();
 
+        $PoolRound = PoolRound::factory()
+            ->for($Pool)
+            ->create();
+
         $Game = Game::factory()
             ->for(CompetitionPhase::factory()
                 ->for(Competition::factory()))
@@ -98,6 +108,7 @@ class CreatePredictionActionTest extends TestCase
             $User,
             $Pool,
             $Game,
+            $PoolRound,
             $localTeamScore,
             $awayTeamScore,
         );
@@ -111,6 +122,10 @@ class CreatePredictionActionTest extends TestCase
 
         $Pool = Pool::factory()
             ->hasAttached($User)
+            ->create();
+
+        $PoolRound = PoolRound::factory()
+            ->for($Pool)
             ->create();
 
         $Game = Game::factory()
@@ -127,6 +142,7 @@ class CreatePredictionActionTest extends TestCase
             $User,
             $Pool,
             $Game,
+            $PoolRound,
             $localTeamScore,
             $awayTeamScore,
         );
@@ -149,6 +165,10 @@ class CreatePredictionActionTest extends TestCase
             ->hasAttached($User)
             ->create();
 
+        $PoolRound = PoolRound::factory()
+            ->for($Pool)
+            ->create();
+
         $localTeamScore = rand(1, 7);
 
         $awayTeamScore = rand(1, 7);
@@ -169,6 +189,7 @@ class CreatePredictionActionTest extends TestCase
             User : $User,
             Pool : $Pool,
             Game : $Game,
+            PoolRound :$PoolRound,
             localTeamScore : $localTeamScore,
             awayTeamScore : $awayTeamScore,
             dateCreatePrediction : $dateCreatePrediction
