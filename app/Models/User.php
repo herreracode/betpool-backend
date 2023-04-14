@@ -88,4 +88,13 @@ class User extends Authenticatable
 
         $this->assignRole($RolePoolAdmin);
     }
+
+    public function hasRolePoolAdmin(Pool $Pool):bool
+    {
+        setPermissionsTeamId($Pool->id);
+
+        $RolePoolAdmin = Role::findByName('_POOL_ADMIN_');
+
+        return $this->hasRole($RolePoolAdmin);
+    }
 }

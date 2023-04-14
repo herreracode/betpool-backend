@@ -8,6 +8,7 @@ use App\Models\Competition;
 use App\Models\CompetitionPhase;
 use App\Models\Game;
 use App\Models\Pool;
+use App\Models\PoolRound;
 use App\Models\Prediction;
 use App\Models\Score;
 use App\Models\Team;
@@ -48,11 +49,18 @@ class ClosePredictionsWhenUpdatedGameResultListenerTest extends TestCase
             ->hasScore()
             ->create();
 
+        $Pool = Pool::factory();
+
+        $PoolRound = PoolRound::factory()
+            ->for($Pool)
+            ->create();
+
         Prediction::factory(50)
             ->inPending()
             ->for($Game)
             ->for(User::factory())
-            ->for(Pool::factory())
+            ->for($Pool)
+            ->for($PoolRound)
             ->hasScore()
             ->create();
 

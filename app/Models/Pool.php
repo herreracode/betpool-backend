@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Events\CreatedPool;
 use App\Exceptions\Pool\CompetitionMustBeUniqueInAPool;
 use App\Exceptions\Pool\UserDoesntBelongToThePool;
+use App\Exceptions\PoolRound\GameIsNotPending;
+use App\Exceptions\PoolRound\UserDoesNotHaveTheRequiredRole;
 use App\Models\Common\AggregateRoot;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -44,6 +46,14 @@ class Pool extends AggregateRoot
     public function competitions()
     {
         return $this->belongsToMany(Competition::class,'pools_competitions');
+    }
+
+    /**
+     * get Pools user
+     */
+    public function poolRound()
+    {
+        return $this->hasMany(PoolRound::class);
     }
 
     /**
@@ -115,6 +125,42 @@ class Pool extends AggregateRoot
 
         if (!$doesItBelongsToThePool)
             throw UserDoesntBelongToThePool::create("User {$User->id} doesnt belong to pool {$this->id}");
+
+        return true;
+    }
+
+    public function createRound(User $UserCreator, iterable $Games) :PoolRound
+    {
+        $this->someGameIsInNonPendingState($Games);
+
+        $this->userCreatorIsPoolAdmin($UserCreator);
+
+        $PoolRound = $this->poolRound()->create();
+
+        $PoolRound->games()->attach($Games);
+
+        return $PoolRound;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function someGameIsInNonPendingState(iterable $Games):bool
+    {
+        $someGameIsInNonPendingState = collect($Games)
+                ->filter(fn (Game $Game) => !$Game->itIsPending())
+                ->count() > 0;
+
+        if($someGameIsInNonPendingState)
+            throw GameIsNotPending::create("some game is not pending");
+
+        return true;
+    }
+
+    protected function userCreatorIsPoolAdmin(User $UserCreator):bool
+    {
+        if(!$UserCreator->hasRolePoolAdmin($this))
+            throw UserDoesNotHaveTheRequiredRole::create('the user dont have the require role');
 
         return true;
     }
