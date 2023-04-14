@@ -11,7 +11,7 @@ use Illuminate\Foundation\Testing\WithoutEvents;
 use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
-class CreateGameActionTest extends TestCase
+class EspnApiTest extends TestCase
 {
     use RefreshDatabase;
     use WithoutEvents;
