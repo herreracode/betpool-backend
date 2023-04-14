@@ -33,15 +33,19 @@ class EspnApiTest extends TestCase
         foreach ($json['events'] as $event){
 
             var_dump($event['status']['type']['name']);
-            //var_dump($event['competitions'][0]['competitors']);
+
+            $teams = [];
 
             foreach($event['competitions'][0]['competitors'] as $competitors){
 
-                var_dump($competitors['homeAway']); //competitors si hay que recorrerlo
-                var_dump($competitors['team']['name']); //competitors si hay que recorrerlo
-                var_dump($competitors['winner']); //competitors si hay que recorrerlo
-                var_dump($competitors['score']); //competitors si hay que recorrerlo
+                $teams[$competitors['homeAway']] = [
+                        'name' => $competitors['team']['name'],
+                        'score' => $competitors['score'],
+                        'winner' => $competitors['winner'],
+                ];
             }
+
+            dd($teams);
 
             dd("asdas");
             $array[] = $event;
