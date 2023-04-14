@@ -19,8 +19,8 @@ class CreateCompetition
      * @return Competition
      * @throws Exception
      */
-    public function __invoke($name) : Competition
+    public function __invoke($name, $externalApiKey) : Competition
     {
-        return Competition::create($name);
+        return Competition::create($name, $externalApiKey);
     }
 }
