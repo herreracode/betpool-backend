@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Actions\Game\CreateGame;
-use App\Actions\Team\CreateTeam;
+use App\Actions\Team\FindOrCreateTeam;
 use App\Models\Competition;
 use Illuminate\Support\Facades\Http;
 
@@ -12,7 +12,7 @@ class GameSeederApi extends \Illuminate\Database\Seeder
     public function run()
     {
         $CreateGame = app(CreateGame::class);
-        $CreateTeam = app(CreateTeam::class);
+        $FindOrCreateTeam = app(FindOrCreateTeam::class);
 
         $slug = 'eng.1';
 
@@ -37,6 +37,7 @@ class GameSeederApi extends \Illuminate\Database\Seeder
                     'name' => $competitors['team']['name'],
                     'score' => $competitors['score'],
                     'winner' => $competitors['winner'],
+                    'abbreviation' => $competitors['team']['abbreviation'],
                 ];
             }
 
@@ -49,13 +50,15 @@ class GameSeederApi extends \Illuminate\Database\Seeder
                 ->pop();
 
             //deben ser findOrCreate por abreviatura
-            $LocalTeam = $CreateTeam->__invoke(
-                $localTeamArray['name']
+            $LocalTeam = $FindOrCreateTeam->__invoke(
+                $localTeamArray['name'],
+                $localTeamArray['abbreviation']
             );
 
             //deben ser findOrCreate por abreviatura
-            $AwayTeam = $CreateTeam->__invoke(
-                $awayTeamArray['name']
+            $AwayTeam = $FindOrCreateTeam->__invoke(
+                $awayTeamArray['name'],
+                $awayTeamArray['abbreviation']
             );
 
             $Game = $CreateGame->__invoke(

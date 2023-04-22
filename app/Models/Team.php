@@ -13,11 +13,12 @@ class Team extends Model
 {
     use HasFactory;
 
-    public static function create($name) : static
+    public static function create($name, $abbreviation) : static
     {
         $Team = new static();
 
         $Team->name = $name;
+        $Team->abbreviation = $abbreviation;
 
         if (! $Team->save()) {
             throw new \Exception('dont save team');

@@ -18,6 +18,7 @@ class TeamFactory extends Factory
     {
         return [
             'name' => "Team {$this->faker->unique()->country()}",
+            'abbreviation' => $this->faker->unique()->countryISOAlpha3,
         ];
     }
 }
