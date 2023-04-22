@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Actions\Game\Command\CreateGameCommand;
 use App\Actions\Game\CreateGame;
 use App\Actions\Team\FindOrCreateTeam;
 use App\Models\Competition;
@@ -61,11 +62,15 @@ class GameSeederApi extends \Illuminate\Database\Seeder
                 $awayTeamArray['abbreviation']
             );
 
+            $Command = new CreateGameCommand(
+                competitionPhaseId:$Competition->competitionPhases->first()->id,
+                localTeamId: $LocalTeam->id,
+                awayTeamId: $AwayTeam->id,
+                dateStartGame: ( new \DateTime($event['date']))->format('Y-m-d H:i:s')
+            );
+
             $Game = $CreateGame->__invoke(
-                $Competition->competitionPhases->first(),
-                $LocalTeam,
-                $AwayTeam,
-                new \DateTime($event['date'])
+                $Command
             );
         }
     }

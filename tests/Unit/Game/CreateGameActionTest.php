@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Game\Actions;
 
+use App\Actions\Game\Command\CreateGameCommand;
 use App\Actions\Game\CreateGame;
 use App\Models\Competition;
 use App\Models\CompetitionPhase;
@@ -32,12 +33,14 @@ class CreateGameActionTest extends TestCase
 
         $AwayTeam = Team::factory()->create();
 
-        $Game = $this->CreateGameAction->__invoke(
-            $CompetitionPhase,
-            $LocalTeam,
-            $AwayTeam,
-            new \DateTime()
+        $Command = new CreateGameCommand(
+            competitionPhaseId: $CompetitionPhase->id,
+            localTeamId: $LocalTeam->id,
+            awayTeamId: $AwayTeam->id,
+            dateStartGame: (new \DateTime())->format('Y-m-d H:i:s')
         );
+
+        $Game = $this->CreateGameAction->__invoke($Command);
 
         $this->assertEquals($Game->localTeam->id, $LocalTeam->id);
 

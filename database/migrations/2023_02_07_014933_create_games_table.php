@@ -32,6 +32,7 @@ return new class extends Migration
             ])->default(GameStatus::PENDING->value);
             $table->dateTime('date_start');
             $table->dateTime('date_end')->nullable();
+            $table->bigInteger('external_api_id_espn')->nullable();
             $table->timestamps();
         });
 
