@@ -22,10 +22,10 @@ class GameSeederApi extends \Illuminate\Database\Seeder
 
         $keyExternalApi = $Competition->key_external_api;
 
-        $json = Http::get("https://site.api.espn.com/apis/site/v2/sports/soccer/{$keyExternalApi}/scoreboard?dates=20230426")
-            ->json();
+        //$json = Http::get("https://site.api.espn.com/apis/site/v2/sports/soccer/{$keyExternalApi}/scoreboard?dates=20230426")
+        //   ->json();
 
-        $array = [];
+        $json = json_decode(file_get_contents(__DIR__ . '/json/espnResponseTest.json', true), true);
 
         foreach ($json['events'] as $event) {
 
@@ -65,7 +65,7 @@ class GameSeederApi extends \Illuminate\Database\Seeder
                 $Competition->competitionPhases->first(),
                 $LocalTeam,
                 $AwayTeam,
-                new \DateTime()
+                new \DateTime($event['date'])
             );
         }
     }
