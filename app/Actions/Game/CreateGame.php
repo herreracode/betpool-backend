@@ -39,10 +39,15 @@ class CreateGame
             'id' => $CreateGameCommand->competitionPhaseId
         ])->first();
 
+        $additionalData = [
+            'external_api_id_espn' => $CreateGameCommand->externalApiIdEspn
+        ];
+
         return $CompetitionPhase->addGame(
             $LocalTeam,
             $AwayTeam,
-            new \DateTime($CreateGameCommand->dateStartGame)
+            new \DateTime($CreateGameCommand->dateStartGame),
+            aditionalData : $additionalData
         );
     }
 }

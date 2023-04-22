@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property Team $localTeam
  * @property $status
  * @property $date_start
+ * @property $external_api_id_espn
  */
 class Game extends AggregateRoot implements Scorable
 {
@@ -122,5 +123,11 @@ class Game extends AggregateRoot implements Scorable
         return $this->awayTeam;
     }
 
+    public function addAditionalData(array $data)
+    {
+        foreach ($data as $key => $value)
+            $this->setAttribute($key, $value);
 
+        return $this->save();
+    }
 }

@@ -14,7 +14,8 @@ class CreateGameCommand
         public int $competitionPhaseId,
         public int $localTeamId,
         public int $awayTeamId,
-        public string $dateStartGame
+        public string $dateStartGame,
+        public int|null $externalApiIdEspn = null
     )
     {
     }

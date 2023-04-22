@@ -66,7 +66,8 @@ class GameSeederApi extends \Illuminate\Database\Seeder
                 competitionPhaseId:$Competition->competitionPhases->first()->id,
                 localTeamId: $LocalTeam->id,
                 awayTeamId: $AwayTeam->id,
-                dateStartGame: ( new \DateTime($event['date']))->format('Y-m-d H:i:s')
+                dateStartGame: ( new \DateTime($event['date']))->format('Y-m-d H:i:s'),
+                externalApiIdEspn: $event['id']
             );
 
             $Game = $CreateGame->__invoke(

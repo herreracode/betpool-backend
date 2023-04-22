@@ -50,4 +50,29 @@ class CreateGameActionTest extends TestCase
 
         $this->assertEquals($Game->competitionPhase->id, $CompetitionPhase->id);
     }
+
+    public function testCreateGameWithExternalApiKeyEspn()
+    {
+        $CompetitionPhase = CompetitionPhase::factory()
+            ->for(Competition::factory())
+            ->create();
+
+        $LocalTeam = Team::factory()->create();
+
+        $AwayTeam = Team::factory()->create();
+
+        $externalApiIdEspn = 12345;
+
+        $Command = new CreateGameCommand(
+            competitionPhaseId: $CompetitionPhase->id,
+            localTeamId: $LocalTeam->id,
+            awayTeamId: $AwayTeam->id,
+            dateStartGame: (new \DateTime())->format('Y-m-d H:i:s'),
+            externalApiIdEspn: $externalApiIdEspn
+        );
+
+        $Game = $this->CreateGameAction->__invoke($Command);
+
+        $this->assertEquals($externalApiIdEspn, $Game->external_api_id_espn);
+    }
 }
