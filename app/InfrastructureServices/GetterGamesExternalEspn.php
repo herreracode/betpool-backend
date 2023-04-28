@@ -41,7 +41,7 @@ class GetterGamesExternalEspn implements GetterGamesExternalApi
                 ->filter(fn($teamArraykey, $value) => !($value == 'home'))
                 ->pop();
 
-            $Response->setDataLocalTeam([]);
+            $Response->setDataLocalTeam();
             $Response->setDataAwayTeam([]);
 
             $Response->setDataStartGame($event['date']);
