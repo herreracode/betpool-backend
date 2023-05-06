@@ -6,6 +6,7 @@ use App\Actions\Game\Contract\GetterGamesExternalApi;
 use App\Actions\Game\CreateGame;
 use App\Actions\Game\CreateGamesForExternalApi;
 use App\Actions\Team\FindOrCreateTeam;
+use App\Models\Competition;
 use Database\Factories\CompetitionFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutEvents;
@@ -23,16 +24,13 @@ class CreateGameForExternalApiTest extends TestCase
 
     public function testHappyPath()
     {
-        $GetterGamesExternalApi = $this->mock(GetterGamesExternalApi::class);
+        $GetterGamesExternalApi = $this->createMock(GetterGamesExternalApi::class);
 
-        $json = json_decode(file_get_contents(__DIR__ . '/json/espnResponseTest.json', true), true);;
+        $json = json_decode(file_get_contents(__DIR__ . '/json/espnResponseTest.json', true), true);
 
         $GetterGamesExternalApi
-            ->expects($this->once())
             ->method('get')
             ->willReturn($json);
-
-        die();
 
         $this->CreateGameForExternalApi = new CreateGamesForExternalApi(
             $GetterGamesExternalApi,
@@ -40,8 +38,7 @@ class CreateGameForExternalApiTest extends TestCase
             app(CreateGame::class),
         );
 
-
-        $Competition = CompetitionFactory::factory([
+        $Competition = Competition::factory([
             'name'             => 'English premier league',
             'key_external_api' => 'eng.1',
         ])->create();
@@ -49,8 +46,6 @@ class CreateGameForExternalApiTest extends TestCase
         $this
             ->CreateGameForExternalApi
             ->__invoke($Competition, (new \DateTime())->format('Y-m-d H:i:s'));
-
-
     }
 
 }
