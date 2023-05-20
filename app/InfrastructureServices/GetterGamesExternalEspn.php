@@ -5,17 +5,20 @@ namespace App\InfrastructureServices;
 use App\Actions\Game\Contract\GetterGamesExternalApi;
 use App\Actions\Game\RequestGetterGamesExternalApi;
 use App\Actions\Game\ResponseGetterGamesExternalApi;
-use Illuminate\Support\Facades\Http;
+use App\Http\Clients\Common\ApiClient;
 
 class GetterGamesExternalEspn implements GetterGamesExternalApi
 {
+    public function __construct(protected ApiClient $ApiClient)
+    {
+    }
+
     public function get(RequestGetterGamesExternalApi $requestGetterGamesExternalApi): array
     {
         $Competition = $requestGetterGamesExternalApi->Competition;
         $dateToSearch = $requestGetterGamesExternalApi->dateToSearch;
 
-        $json = Http::get("https://site.api.espn.com/apis/site/v2/sports/soccer/{$Competition->keyExternalApi}/scoreboard?dates={$dateToSearch}")
-           ->json();
+        $json = $this->ApiClient->get($Competition, $dateToSearch);
 
         foreach ($json['events'] as $event) {
 
@@ -41,8 +44,8 @@ class GetterGamesExternalEspn implements GetterGamesExternalApi
                 ->filter(fn($teamArraykey, $value) => !($value == 'home'))
                 ->pop();
 
-            $Response->setDataLocalTeam();
-            $Response->setDataAwayTeam([]);
+            $Response->setDataLocalTeam($localTeamArray);
+            $Response->setDataAwayTeam($awayTeamArray);
 
             $Response->setDataStartGame($event['date']);
             $Response->setDataAditional([

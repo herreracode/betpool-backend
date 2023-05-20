@@ -9,8 +9,9 @@ use Illuminate\Database\Eloquent\Model;
  * Class Competition
  *
  *
- * @property string name
- * @property bool must_be_unique
+ * @property string $name
+ * @property bool   $must_be_unique
+ * @property string $keyExternalApi
  */
 class Competition extends Model
 {

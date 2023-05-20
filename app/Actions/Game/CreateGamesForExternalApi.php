@@ -17,7 +17,7 @@ class CreateGamesForExternalApi
     ){
     }
 
-    public function __invoke(Competition $Competition, $dateToSearch){
+    public function __invoke(Competition $Competition, $dateToSearch): array{
 
         $RequestGetterGamesExternalApi = new RequestGetterGamesExternalApi(
             Competition: $Competition,
@@ -26,25 +26,22 @@ class CreateGamesForExternalApi
 
         $arrayResponses = $this->GetterGamesExternalApi->get($RequestGetterGamesExternalApi);
 
-        var_dump($arrayResponses);
-        die();
-
         foreach ($arrayResponses as $Response) {
 
             $localTeamData = $Response->getDataLocalTeam();
 
             $awayTeamData = $Response->getDataAwayTeam();
 
-            //deben ser findOrCreate por abreviatura
+            //must be findOrCreate by Abbreviation
             $LocalTeam = $this->FindOrCreateTeam->__invoke(
-                $localTeamData->name,
-                $localTeamData->abbreviation
+                data_get($localTeamData,'name'),
+                data_get($localTeamData,'abbreviation')
             );
 
-            //deben ser findOrCreate por abreviatura
+            //must be findOrCreate by Abbreviation
             $AwayTeam = $this->FindOrCreateTeam->__invoke(
-                $awayTeamData->name,
-                $awayTeamData->abbreviation
+                data_get($awayTeamData,'name'),
+                data_get($awayTeamData,'abbreviation')
             );
 
             $Command = new CreateGameCommand(
@@ -52,12 +49,14 @@ class CreateGamesForExternalApi
                 localTeamId: $LocalTeam->id,
                 awayTeamId: $AwayTeam->id,
                 dateStartGame: ( new \DateTime($Response->getDataStartGame()))->format('Y-m-d H:i:s'),
-                externalApiIdEspn: $Response->getDataAditional()->external_api_id_espn
+                externalApiIdEspn: data_get($Response->getDataAditional(),'external_api_id_espn')
             );
 
-            $Game = $this->CreateGame->__invoke(
+            $Games[] = $this->CreateGame->__invoke(
                 $Command
             );
         }
+
+        return $Games;
     }
 }
