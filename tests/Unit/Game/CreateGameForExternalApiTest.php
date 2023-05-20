@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Game;
 
-use App\Actions\Game\Contract\GetterGamesExternalApi;
 use App\Actions\Game\CreateGame;
 use App\Actions\Game\CreateGamesForExternalApi;
 use App\Actions\Team\FindOrCreateTeam;
@@ -10,7 +9,6 @@ use App\Http\Clients\Common\ApiClient;
 use App\InfrastructureServices\GetterGamesExternalEspn;
 use App\Models\Competition;
 use App\Models\CompetitionPhase;
-use Database\Factories\CompetitionFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutEvents;
 use Tests\TestCase;

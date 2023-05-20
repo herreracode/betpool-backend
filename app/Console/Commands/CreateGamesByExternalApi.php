@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Actions\Game\CreateGamesForExternalApi;
 use App\Models\Competition;
 use Illuminate\Console\Command;
 
@@ -30,18 +31,30 @@ class CreateGamesByExternalApi extends Command
     {
         $Competitions = Competition::all();
 
-        $Competitions->each($this->createGameByCompetition());
+        $CreateGamesForExternalApi = app(CreateGamesForExternalApi::class);
+
+        $Competitions
+            ->each(
+                $this->createGameByCompetition($CreateGamesForExternalApi)
+            );
 
         return Command::SUCCESS;
     }
 
-    protected function createGameByCompetition()
+    protected function createGameByCompetition($CreateGamesForExternalApi)
     {
-        return function (Competition $Competition){
+        return function (Competition $Competition) use($CreateGamesForExternalApi) {
 
-
-
-
+            $CreateGamesForExternalApi
+                ->__invoke(
+                    $Competition,
+                    $this->getDateToSearchGames()
+                );
         };
+    }
+
+    protected function getDateToSearchGames()
+    {
+        return '20230520';
     }
 }

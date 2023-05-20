@@ -23,7 +23,7 @@ class EspnApiClient implements ApiClient
     {
         $basePath = static::BASE_PATH;
 
-        return Http::get("{$basePath}{$Competition->keyExternalApi}/scoreboard?dates={$dateToSearch}")
+        return Http::get("{$basePath}{$Competition->key_external_api}/scoreboard?dates={$dateToSearch}")
             ->json();
     }
 
