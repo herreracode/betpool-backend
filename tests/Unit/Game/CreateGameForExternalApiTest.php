@@ -55,4 +55,36 @@ class CreateGameForExternalApiTest extends TestCase
         $this->assertNotEmpty($Games);
     }
 
+    public function testWithEventsArrayEmptyWhenDontGamesToPlay()
+    {
+        $ApiClient = $this->createMock(ApiClient::class);
+
+        $json = json_decode(file_get_contents(__DIR__ . '/json/espnResponseTestWithEventsEmpty.json', true), true);
+
+        $ApiClient
+            ->method('get')
+            ->willReturn($json);
+
+        $GetterGamesExternalApi = new GetterGamesExternalEspn($ApiClient);
+
+        $this->CreateGameForExternalApi = new CreateGamesForExternalApi(
+            $GetterGamesExternalApi,
+            app(FindOrCreateTeam::class),
+            app(CreateGame::class),
+        );
+
+        $Competition = Competition::factory([
+            'name'             => 'English premier league',
+            'key_external_api' => 'eng.1',
+        ])->create();
+
+        CompetitionPhase::factory()->for($Competition)->create();
+
+        $Games = $this
+            ->CreateGameForExternalApi
+            ->__invoke($Competition, (new \DateTime())->format('Y-m-d H:i:s'));
+
+        $this->assertEmpty($Games);
+    }
+
 }

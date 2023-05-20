@@ -26,6 +26,8 @@ class CreateGamesForExternalApi
 
         $arrayResponses = $this->GetterGamesExternalApi->get($RequestGetterGamesExternalApi);
 
+        $Games = [];
+
         foreach ($arrayResponses as $Response) {
 
             $localTeamData = $Response->getDataLocalTeam();

@@ -20,6 +20,8 @@ class GetterGamesExternalEspn implements GetterGamesExternalApi
 
         $json = $this->ApiClient->get($Competition, $dateToSearch);
 
+        $finalResponse = [];
+
         foreach ($json['events'] as $event) {
 
             $Response = new ResponseGetterGamesExternalApi();

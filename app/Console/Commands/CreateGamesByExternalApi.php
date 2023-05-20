@@ -22,6 +22,8 @@ class CreateGamesByExternalApi extends Command
      */
     protected $description = 'hello';
 
+    const NUMBER_DAYS_TO_CREATE = 8;
+
     /**
      * Execute the console command.
      *
@@ -33,28 +35,54 @@ class CreateGamesByExternalApi extends Command
 
         $CreateGamesForExternalApi = app(CreateGamesForExternalApi::class);
 
-        $Competitions
-            ->each(
-                $this->createGameByCompetition($CreateGamesForExternalApi)
-            );
+        $dates = $this->getDateToSearchGames();
+
+        try {
+
+            if(is_array($dates)){
+
+                foreach ($dates as $date)
+                    $Competitions
+                        ->each(
+                            $this->createGameByCompetition($CreateGamesForExternalApi, $date)
+                        );
+            }else{
+                $Competitions
+                    ->each(
+                        $this->createGameByCompetition($CreateGamesForExternalApi, $dates)
+                    );
+            }
+
+        } catch(\Exception $e){
+            //code for fail
+        }
 
         return Command::SUCCESS;
     }
 
-    protected function createGameByCompetition($CreateGamesForExternalApi)
+    protected function createGameByCompetition($CreateGamesForExternalApi, $date)
     {
-        return function (Competition $Competition) use($CreateGamesForExternalApi) {
+        return function (Competition $Competition) use($CreateGamesForExternalApi, $date) {
 
             $CreateGamesForExternalApi
                 ->__invoke(
                     $Competition,
-                    $this->getDateToSearchGames()
+                    $date
                 );
         };
     }
 
-    protected function getDateToSearchGames()
+    protected function getDateToSearchGames() : array
     {
-        return '20230520';
+        $dates = [];
+
+        foreach (range(1, static::NUMBER_DAYS_TO_CREATE) as $numberDaysTo)
+        {
+            $dates[] = (new \DateTime())
+                ->modify("+{$numberDaysTo} day")
+                ->format('Ymd');
+        }
+
+        return $dates;
     }
 }
