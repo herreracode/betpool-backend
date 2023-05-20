@@ -55,7 +55,8 @@ class UpdateGamesByExternalApi extends Command
             }
 
         } catch(\Exception $e){
-            //code for fail
+            var_dump("asdasdas");
+            var_dump($e->getMessage());
         }
 
         return Command::SUCCESS;
