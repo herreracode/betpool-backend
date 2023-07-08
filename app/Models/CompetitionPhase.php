@@ -34,9 +34,12 @@ class CompetitionPhase extends Model
         return $this->hasMany(Game::class);
     }
 
-    public function addGame(Team $LocalTeam, Team $AwayTeam, \DateTime $DateStartGame) : Game
+    public function addGame(Team $LocalTeam,
+                            Team $AwayTeam,
+                            \DateTime $DateStartGame,
+                            array $aditionalData = []) : Game
     {
-        $Game = $this->games()->create([
+        $Game = $this->games()->firstOrCreate([
             'local_team_id' => $LocalTeam->id,
             'away_team_id' => $AwayTeam->id,
             'date_start' => $DateStartGame->format('Y-m-d H:i:s')
@@ -45,6 +48,8 @@ class CompetitionPhase extends Model
         if (! $Game) {
             throw new \Exception('dont save Game');
         }
+
+        count($aditionalData) > 0 && $Game->addAditionalData($aditionalData);
 
         return $Game;
     }

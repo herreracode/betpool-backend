@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('teams', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('abbreviation');
             $table->string('country_iso_code_two')->nullable();
             $table->softDeletes();
             $table->timestamps();

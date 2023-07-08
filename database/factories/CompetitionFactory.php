@@ -23,6 +23,7 @@ class CompetitionFactory extends Factory
                 'EUROPE CUP',
             ])[0],
             'must_be_unique' => false,
+            'key_external_api' => 'eng.1',
         ];
     }
 

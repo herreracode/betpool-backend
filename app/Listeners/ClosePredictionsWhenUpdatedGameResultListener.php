@@ -18,7 +18,7 @@ class ClosePredictionsWhenUpdatedGameResultListener implements ShouldQueue
      *
      * @var string|null
      */
-    public $connection = 'databases';
+    public $connection = 'database';
 
     /**
      * Create the event listener.

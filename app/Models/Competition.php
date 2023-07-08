@@ -9,8 +9,9 @@ use Illuminate\Database\Eloquent\Model;
  * Class Competition
  *
  *
- * @property string name
- * @property bool must_be_unique
+ * @property string $name
+ * @property bool   $must_be_unique
+ * @property string $keyExternalApi
  */
 class Competition extends Model
 {
@@ -29,11 +30,12 @@ class Competition extends Model
      * @return static
      * @throws \Exception
      */
-    public static function create($name) :static
+    public static function create($name, $externalApiKey) :static
     {
         $Competition = new static();
 
         $Competition->name = $name;
+        $Competition->key_external_api = $externalApiKey;
 
         if (! $Competition->save()) {
             throw new \Exception('dont save competition');

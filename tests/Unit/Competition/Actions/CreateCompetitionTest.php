@@ -24,7 +24,7 @@ class CreateCompetitionTest extends TestCase
     {
         $CompetitionTest = Competition::factory()->make();
 
-        $CompetitionCreate = $this->CreateCompetitionAction->__invoke($CompetitionTest->name);
+        $CompetitionCreate = $this->CreateCompetitionAction->__invoke($CompetitionTest->name, $CompetitionTest->key_external_api);
 
         $this->assertEquals($CompetitionTest->name, $CompetitionCreate->name);
     }
