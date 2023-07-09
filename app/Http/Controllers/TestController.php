@@ -10,10 +10,6 @@ class TestController extends Controller
 {
     public function hola()
     {
-        $Pool = Pool::all()->first();
-
-        dd($Pool->competitions->first()->name);
-
         return Inertia::render('Dashboard');
     }
 }
