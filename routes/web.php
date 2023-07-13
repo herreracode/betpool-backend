@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\TestController;
+use App\Http\Controllers\ViewControllers\PoolViewController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -31,4 +32,8 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/dashboard', [TestController::class, 'hola'])->name('dashboard');
+    
+    //Pool routes
+    Route::get('/pool/{id}', [PoolViewController::class, 'getPoolIndividualView'])->name('pool.indiviual-view');
+
 });
