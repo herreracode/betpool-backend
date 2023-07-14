@@ -1,6 +1,11 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
+import PoolIndividualView from '@/Pages/Pool/PoolIndividualView.vue';
 import { Link } from "@inertiajs/vue3";
+import {ref} from 'vue';
+import PoolCreate from "@/Pages/Pool/PoolCreate.vue";
+
+const dialog = ref(false);
 
 </script>
 
@@ -16,7 +21,7 @@ import { Link } from "@inertiajs/vue3";
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                     <v-toolbar color="blue" title="Pools">
-                        <v-btn prepend-icon="$vuetify">
+                        <v-btn @click="dialog = !dialog" prepend-icon="$vuetify">
                             crear pool
                         </v-btn>
                     </v-toolbar>
@@ -39,6 +44,16 @@ import { Link } from "@inertiajs/vue3";
                             </v-col>
                         </v-row>
                     </v-container>
+                    <div class="text-center">
+                        <v-dialog
+                            v-model="dialog"
+                            width="auto"
+                        >
+                            <v-card>
+                                <PoolCreate/>
+                            </v-card>
+                        </v-dialog>
+                    </div>
                 </div>
             </div>
         </div>
