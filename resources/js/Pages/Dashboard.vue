@@ -7,6 +7,22 @@ import PoolCreate from "@/Pages/Pool/PoolCreate.vue";
 
 const dialog = ref(false);
 
+const onCancelCreatePool = () => {
+    
+    toogleDialogCreatePool();
+};
+
+const onCreatedPool = () => {
+    
+    toogleDialogCreatePool();
+};
+
+const toogleDialogCreatePool = () => {
+    
+    //close modal
+    dialog.value = !dialog.value;
+}; 
+
 </script>
 
 <template>
@@ -47,10 +63,14 @@ const dialog = ref(false);
                     <div class="text-center">
                         <v-dialog
                             v-model="dialog"
-                            width="auto"
+                            persistent
+                            width="1024"
                         >
                             <v-card>
-                                <PoolCreate/>
+                                <PoolCreate 
+                                @cancel-create-pool="onCancelCreatePool"
+                                @created-pool="onCreatedPool"
+                                />
                             </v-card>
                         </v-dialog>
                     </div>
