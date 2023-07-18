@@ -2,7 +2,9 @@
     "private": true,
     "scripts": {
         "dev": "vite",
-        "build": "vite build"
+        "build": "vite build",
+        "test": "vitest",
+        "coverage": "vitest run --coverage"
     },
     "devDependencies": {
         "@inertiajs/vue3": "^1.0.0",
@@ -19,7 +21,10 @@
         "vue": "^3.2.31"
     },
     "dependencies": {
+        "@vue/test-utils": "^2.4.0",
+        "jsdom": "^22.1.0",
         "vite-plugin-vuetify": "^1.0.2",
+        "vitest": "^0.33.0",
         "vuetify": "^3.3.8"
     }
 }
