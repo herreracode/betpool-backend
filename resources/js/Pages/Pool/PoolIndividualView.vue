@@ -22,17 +22,17 @@ const desserts = ref([
 const dialogCreateRound = ref(false);
 
 const onCancelCreatePoolRound = () => {
-    
+
     toogleDialogCreatePoolRound();
 };
 
 const onCreatedPoolRound = () => {
-    
+
     toogleDialogCreatePoolRound();
 };
 
 const toogleDialogCreatePoolRound = () => {
-    
+
     //close modal
     dialogCreateRound.value = !dialogCreateRound.value;
 }; 
@@ -68,11 +68,14 @@ const toogleDialogCreatePoolRound = () => {
                                         Round Pools {{ n }}
                                     </v-card-title>
                                     <v-card-actions>
-                                        <v-btn color="info" prepend-icon="$vuetify">
-                                            <Link :href="route('pool.indiviual-view', n)"
-                                                class="text-indigo-600 hover:text-indigo-800 w-fit self-end font-semibold">
-                                            view
-                                            </Link>
+                                        <v-btn color="primary" size="x-small">
+                                            partidos
+                                        </v-btn>
+                                        <v-btn color="primary" size="x-small">
+                                            predicciones
+                                        </v-btn>
+                                        <v-btn color="primary" size="x-small">
+                                            crear predicciones
                                         </v-btn>
                                     </v-card-actions>
                                 </v-card>
@@ -117,7 +120,8 @@ const toogleDialogCreatePoolRound = () => {
                             </v-toolbar-items>
                         </v-toolbar>
                         <v-card>
-                            <PoolCreateRound @cancel-create-pool-round="onCancelCreatePoolRound" @created-pool-round="onCreatedPoolRound">
+                            <PoolCreateRound @cancel-create-pool-round="onCancelCreatePoolRound"
+                                @created-pool-round="onCreatedPoolRound">
                             </PoolCreateRound>
                         </v-card>
                     </v-dialog>
