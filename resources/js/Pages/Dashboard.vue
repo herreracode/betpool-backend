@@ -1,6 +1,5 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import PoolIndividualView from '@/Pages/Pool/PoolIndividualView.vue';
 import { Link } from "@inertiajs/vue3";
 import {ref} from 'vue';
 import PoolCreate from "@/Pages/Pool/PoolCreate.vue";

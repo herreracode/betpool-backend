@@ -1,50 +1,41 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
+import PoolCreateRound from "@/Pages/Pool/PoolRoundCreate.vue";
 
-import {ref} from 'vue';
+import { ref } from 'vue';
 
 const desserts = ref([
-          {
-            name: 'Frozen Yogurt',
-            puntos: 159,
-          },
-          {
-            name: 'Ice cream sandwich',
-            puntos: 237,
-          },
-          {
-            name: 'Eclair',
-            puntos: 262,
-          },
-          {
-            name: 'Cupcake',
-            puntos: 305,
-          },
-          {
-            name: 'Gingerbread',
-            puntos: 356,
-          },
-          {
-            name: 'Jelly bean',
-            puntos: 375,
-          },
-          {
-            name: 'Lollipop',
-            puntos: 392,
-          },
-          {
-            name: 'Honeycomb',
-            puntos: 408,
-          },
-          {
-            name: 'Donut',
-            puntos: 452,
-          },
-          {
-            name: 'KitKat',
-            puntos: 518,
-          },
-        ]);
+    {
+        name: 'Jhon doe',
+        puntos: 25,
+    },
+    {
+        name: 'Test 2',
+        puntos: 12,
+    },
+    {
+        name: 'Eclair',
+        puntos: 7,
+    },
+]);
+
+const dialogCreateRound = ref(false);
+
+const onCancelCreatePoolRound = () => {
+    
+    toogleDialogCreatePoolRound();
+};
+
+const onCreatedPoolRound = () => {
+    
+    toogleDialogCreatePoolRound();
+};
+
+const toogleDialogCreatePoolRound = () => {
+    
+    //close modal
+    dialogCreateRound.value = !dialogCreateRound.value;
+}; 
 </script>
 
 <template>
@@ -56,7 +47,7 @@ const desserts = ref([
                 </h2>
             </div>
             <div>
-                <v-btn color="info">
+                <v-btn @click="dialogCreateRound = !dialogCreateRound" color="info">
                     Crear Round
                 </v-btn>
                 <v-btn color="info">
@@ -110,6 +101,26 @@ const desserts = ref([
                             </tr>
                         </tbody>
                     </v-table>
+                </div>
+                <div class="text-center">
+                    <v-dialog v-model="dialogCreateRound" fullscreen :scrim="false" transition="dialog-bottom-transition">
+                        <v-toolbar dark color="info">
+                            <v-btn icon dark @click="dialogCreateRound = false">
+                                X
+                            </v-btn>
+                            <v-toolbar-title>Pool Round</v-toolbar-title>
+                            <v-spacer></v-spacer>
+                            <v-toolbar-items>
+                                <v-btn variant="text" @click="dialogCreateRound = false">
+                                    Save
+                                </v-btn>
+                            </v-toolbar-items>
+                        </v-toolbar>
+                        <v-card>
+                            <PoolCreateRound @cancel-create-pool-round="onCancelCreatePoolRound" @created-pool-round="onCreatedPoolRound">
+                            </PoolCreateRound>
+                        </v-card>
+                    </v-dialog>
                 </div>
             </div>
         </div>
