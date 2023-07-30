@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\ViewControllers\PoolViewController;
+use App\Http\Controllers\ViewControllers\PoolRoundViewController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -35,5 +36,8 @@ Route::middleware([
     
     //Pool routes
     Route::get('/pool/{id}', [PoolViewController::class, 'getPoolIndividualView'])->name('pool.indiviual-view');
+    
+    //Pool Round Routes
+    Route::get('/pool-round/{id}', [PoolRoundViewController::class, 'getPoolRoundIndividualView'])->name('pool-round.indiviual-view');
 
 });

@@ -1,6 +1,7 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
 import PoolCreateRound from "@/Pages/Pool/PoolRoundCreate.vue";
+import { Link } from "@inertiajs/vue3";
 
 import { ref } from 'vue';
 
@@ -68,15 +69,10 @@ const toogleDialogCreatePoolRound = () => {
                                         Round Pools {{ n }}
                                     </v-card-title>
                                     <v-card-actions>
-                                        <v-btn color="primary" size="x-small">
-                                            partidos
-                                        </v-btn>
-                                        <v-btn color="primary" size="x-small">
-                                            predicciones
-                                        </v-btn>
-                                        <v-btn color="primary" size="x-small">
-                                            crear predicciones
-                                        </v-btn>
+                                        <Link as="button" :href="route('pool-round.indiviual-view', n)"
+                                            class="text-indigo-600 hover:text-indigo-800 w-fit self-end font-semibold">
+                                        ver
+                                        </Link>
                                     </v-card-actions>
                                 </v-card>
                             </v-col>
