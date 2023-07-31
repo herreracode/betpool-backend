@@ -2,6 +2,7 @@
 
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { ref } from 'vue';
+import { Link } from "@inertiajs/vue3";
 
 //todo: changes types
 interface Games {
@@ -11,7 +12,7 @@ interface Games {
 
 interface Props {
     number: number | string,
-    games: Games [],
+    games: Games[],
     predictions: [] | null
 }
 
@@ -31,8 +32,12 @@ const tab = ref(null);
             </div>
             <div>
                 <v-btn color="info">
+                    <Link :href="route('predictions.create-view')"
+                        class="text-indigo-600 hover:text-indigo-800 w-fit self-end font-semibold">
                     Crear Predicciones
+                    </Link>
                 </v-btn>
+
             </div>
         </template>
         <div class="py-12">

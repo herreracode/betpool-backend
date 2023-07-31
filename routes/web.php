@@ -3,6 +3,7 @@
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\ViewControllers\PoolViewController;
 use App\Http\Controllers\ViewControllers\PoolRoundViewController;
+use App\Http\Controllers\ViewControllers\PredictionViewController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -39,5 +40,8 @@ Route::middleware([
     
     //Pool Round Routes
     Route::get('/pool-round/{id}', [PoolRoundViewController::class, 'getPoolRoundIndividualView'])->name('pool-round.indiviual-view');
+    
+    //Predictions routes
+    Route::get('/create-predictions', [PredictionViewController::class, 'createPredictionsView'])->name('predictions.create-view');
 
 });
