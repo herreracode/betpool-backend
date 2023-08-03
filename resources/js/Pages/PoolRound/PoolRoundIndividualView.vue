@@ -31,12 +31,10 @@ const tab = ref(null);
                 </h2>
             </div>
             <div>
-                <v-btn color="info">
                     <Link :href="route('predictions.create-view')"
-                        class="text-indigo-600 hover:text-indigo-800 w-fit self-end font-semibold">
+                        class="v-btn v-btn--elevated v-theme--light bg-info v-btn--density-default v-btn--size-default v-btn--variant-elevated">
                     Crear Predicciones
                     </Link>
-                </v-btn>
 
             </div>
         </template>
