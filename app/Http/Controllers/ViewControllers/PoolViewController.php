@@ -16,4 +16,9 @@ class PoolViewController extends Controller
     {
         return Inertia::render('Pool/PoolIndividualView');
     }
+    
+    public function getPoolCreateView()
+    {
+        return Inertia::render('Pool/PoolCreate');
+    }
 }

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { Link } from "@inertiajs/vue3";
-import {ref} from 'vue';
+import { ref } from 'vue';
 import PoolCreate from "@/Pages/Pool/PoolCreate.vue";
 import Pool from "@/Models/Pool";
 
@@ -14,20 +14,20 @@ const dialog = ref(false);
 const props = defineProps<Props>()
 
 const onCancelCreatePool = () => {
-    
+
     toogleDialogCreatePool();
 };
 
 const onCreatedPool = () => {
-    
+
     toogleDialogCreatePool();
 };
 
 const toogleDialogCreatePool = () => {
-    
+
     //close modal
     dialog.value = !dialog.value;
-}; 
+};
 
 </script>
 
@@ -43,16 +43,17 @@ const toogleDialogCreatePool = () => {
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                     <v-toolbar color="blue" title="Pools">
-                        <v-btn @click="dialog = !dialog" prepend-icon="$vuetify">
-                            crear pool
-                        </v-btn>
+                        <Link :href="route('pool.create-view')"
+                            class="text-indigo-600 hover:text-indigo-800 w-fit self-end font-semibold">
+                        viewdasdasdas
+                        </Link>
                     </v-toolbar>
                     <v-container class="pools_container">
                         <v-row>
                             <v-col v-for=" pool in props.pools" :key="pool.uuid" cols="12" sm="4">
                                 <v-card>
                                     <v-card-title class="text-h5">
-                                         {{ pool.name }}
+                                        {{ pool.name }}
                                     </v-card-title>
                                     <v-card-actions>
                                         <v-btn color="info" prepend-icon="$vuetify">
@@ -66,20 +67,6 @@ const toogleDialogCreatePool = () => {
                             </v-col>
                         </v-row>
                     </v-container>
-                    <div class="text-center">
-                        <v-dialog
-                            v-model="dialog"
-                            persistent
-                            width="1024"
-                        >
-                            <v-card>
-                                <PoolCreate 
-                                @cancel-create-pool="onCancelCreatePool"
-                                @created-pool="onCreatedPool"
-                                />
-                            </v-card>
-                        </v-dialog>
-                    </div>
                 </div>
             </div>
         </div>

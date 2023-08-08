@@ -38,6 +38,8 @@ Route::middleware([
     //Pool routes
     Route::get('/pool/{id}', [PoolViewController::class, 'getPoolIndividualView'])->name('pool.indiviual-view');
     
+    Route::get('/pool-create-view/', [PoolViewController::class, 'getPoolCreateView'])->name('pool.create-view');
+    
     //Pool Round Routes
     Route::get('/pool-round/{id}', [PoolRoundViewController::class, 'getPoolRoundIndividualView'])->name('pool-round.indiviual-view');
     
