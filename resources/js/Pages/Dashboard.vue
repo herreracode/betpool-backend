@@ -1,10 +1,17 @@
-<script setup>
+<script setup lang="ts">
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { Link } from "@inertiajs/vue3";
 import {ref} from 'vue';
 import PoolCreate from "@/Pages/Pool/PoolCreate.vue";
+import Pool from "@/Models/Pool";
+
+interface Props {
+    pools: Pool[],
+}
 
 const dialog = ref(false);
+
+const props = defineProps<Props>()
 
 const onCancelCreatePool = () => {
     
@@ -42,14 +49,14 @@ const toogleDialogCreatePool = () => {
                     </v-toolbar>
                     <v-container class="pools_container">
                         <v-row>
-                            <v-col v-for="n in 10" :key="n" cols="12" sm="4">
+                            <v-col v-for=" pool in props.pools" :key="pool.uuid" cols="12" sm="4">
                                 <v-card>
                                     <v-card-title class="text-h5">
-                                        Pools {{ n }}
+                                         {{ pool.name }}
                                     </v-card-title>
                                     <v-card-actions>
                                         <v-btn color="info" prepend-icon="$vuetify">
-                                            <Link :href="route('pool.indiviual-view',  n)"
+                                            <Link :href="route('pool.indiviual-view', pool.uuid)"
                                                 class="text-indigo-600 hover:text-indigo-800 w-fit self-end font-semibold">
                                             view
                                             </Link>
