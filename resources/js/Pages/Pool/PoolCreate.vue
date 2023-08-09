@@ -6,6 +6,13 @@ import HttpClient from '@/Shared/HttpClient.ts';
 
 const emit = defineEmits(['createdPool', 'cancelCreatePool'])
 
+interface Props {
+    competitions: [],
+}
+
+
+const props = defineProps<Props>()
+
 const createPool = async () => {
 
     const json = await HttpClient.post(route('pool.store'), formPool);
@@ -48,7 +55,7 @@ const formPool = reactive({
                                                 required></v-text-field>
                                         </v-col>
                                         <v-col cols="12" sm="12">
-                                            <v-select :items="['Liga Española', 'Premier League', 'Serie A']"
+                                            <v-select :items="competitions" :item-title="'name'" :item-value="'id'"
                                                 v-model="formPool.competitions" variant="outlined"
                                                 label="Competiciones favoritas" required multiple chips></v-select>
                                         </v-col>

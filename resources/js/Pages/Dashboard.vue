@@ -44,8 +44,8 @@ const toogleDialogCreatePool = () => {
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                     <v-toolbar color="blue" title="Pools">
                         <Link :href="route('pool.create-view')"
-                            class="text-indigo-600 hover:text-indigo-800 w-fit self-end font-semibold">
-                        viewdasdasdas
+                            class="v-btn v-btn--elevated v-theme--light bg-info v-btn--density-default v-btn--size-default v-btn--variant-elevated">
+                        Crear Pool
                         </Link>
                     </v-toolbar>
                     <v-container class="pools_container">

@@ -41,11 +41,17 @@ class CreateGamesByExternalApi extends Command
 
             if(is_array($dates)){
 
-                foreach ($dates as $date)
+                foreach ($dates as $date){
+
+                    echo "searching {$date}";
+
                     $Competitions
-                        ->each(
-                            $this->createGameByCompetition($CreateGamesForExternalApi, $date)
-                        );
+                    ->each(
+                        $this->createGameByCompetition($CreateGamesForExternalApi, $date)
+                    );
+
+                }
+                    
             }else{
                 $Competitions
                     ->each(

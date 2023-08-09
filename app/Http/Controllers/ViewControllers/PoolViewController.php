@@ -4,6 +4,7 @@ namespace App\Http\Controllers\ViewControllers;
 
 use Inertia\Inertia;
 use App\Http\Controllers\Controller;
+use App\Models\Competition;
 
 class PoolViewController extends Controller
 {
@@ -19,6 +20,8 @@ class PoolViewController extends Controller
     
     public function getPoolCreateView()
     {
-        return Inertia::render('Pool/PoolCreate');
+        return Inertia::render('Pool/PoolCreate',[
+            'competitions' => Competition::all()
+        ]);
     }
 }
