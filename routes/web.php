@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApiControllers\PoolPostController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\ViewControllers\PoolViewController;
 use App\Http\Controllers\ViewControllers\PoolRoundViewController;
@@ -33,6 +34,9 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
+
+    //Views controller
+
     Route::get('/dashboard', [TestController::class, 'hola'])->name('dashboard');
     
     //Pool routes
@@ -45,5 +49,8 @@ Route::middleware([
     
     //Predictions routes
     Route::get('/create-predictions', [PredictionViewController::class, 'createPredictionsView'])->name('predictions.create-view');
+
+
+    Route::post('/pools', PoolPostController::class)->name('pool.store');
 
 });
