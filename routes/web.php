@@ -35,7 +35,9 @@ Route::middleware([
     'verified',
 ])->group(function () {
 
-    //Views controller
+    /**
+     * Views controller
+     */
 
     Route::get('/dashboard', [TestController::class, 'hola'])->name('dashboard');
     
@@ -49,6 +51,11 @@ Route::middleware([
     
     //Predictions routes
     Route::get('/create-predictions', [PredictionViewController::class, 'createPredictionsView'])->name('predictions.create-view');
+
+
+    /**
+     * end Views controller
+     */
 
 
     Route::post('/pools', PoolPostController::class)->name('pool.store');
