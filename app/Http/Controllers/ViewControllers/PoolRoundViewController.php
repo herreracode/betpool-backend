@@ -26,4 +26,11 @@ class PoolRoundViewController extends Controller
             ]
         ]);
     }
+
+    public function getPoolRoundCreateView()
+    {
+        return Inertia::render('PoolRound/PoolRoundCreate', [
+            
+        ]);
+    }
 }

@@ -1,6 +1,5 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import PoolCreateRound from "@/Pages/Pool/PoolRoundCreate.vue";
 import { Link } from "@inertiajs/vue3";
 
 import { ref } from 'vue';
@@ -48,9 +47,10 @@ const toogleDialogCreatePoolRound = () => {
                 </h2>
             </div>
             <div>
-                <v-btn @click="dialogCreateRound = !dialogCreateRound" color="info">
+                <Link :href="route('pool-round.create-view')"
+                    class="v-btn v-btn--elevated v-theme--light bg-info v-btn--density-default v-btn--size-default v-btn--variant-elevated">
                     Crear Round
-                </v-btn>
+                </Link>
                 <v-btn color="info">
                     Invitar Usuario
                 </v-btn>
@@ -100,27 +100,6 @@ const toogleDialogCreatePoolRound = () => {
                             </tr>
                         </tbody>
                     </v-table>
-                </div>
-                <div class="text-center">
-                    <v-dialog v-model="dialogCreateRound" fullscreen :scrim="false" transition="dialog-bottom-transition">
-                        <v-toolbar dark color="info">
-                            <v-btn icon dark @click="dialogCreateRound = false">
-                                X
-                            </v-btn>
-                            <v-toolbar-title>Pool Round</v-toolbar-title>
-                            <v-spacer></v-spacer>
-                            <v-toolbar-items>
-                                <v-btn variant="text" @click="dialogCreateRound = false">
-                                    Save
-                                </v-btn>
-                            </v-toolbar-items>
-                        </v-toolbar>
-                        <v-card>
-                            <PoolCreateRound @cancel-create-pool-round="onCancelCreatePoolRound"
-                                @created-pool-round="onCreatedPoolRound">
-                            </PoolCreateRound>
-                        </v-card>
-                    </v-dialog>
                 </div>
             </div>
         </div>
