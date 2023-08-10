@@ -10,24 +10,16 @@ class TestController extends Controller
 {
     public function hola()
     {
+        $Pools = auth()->user()->pools;
+
+        $formatPool = $Pools->map(fn($x) => $x->only([
+            'name',
+            'id',
+            'is_closed',
+        ]))->toArray();
+
         return Inertia::render('Dashboard', [
-            'pools' => [
-                [
-                    'name' => "pool 2",
-                    'uuid' => fake()->uuid(),
-                    'is_closed' => false,
-                ],
-                [
-                    'name' => "pool 3",
-                    'uuid' => fake()->uuid(),
-                    'is_closed' => false
-                ],
-                [
-                    'name' => "pool 4",
-                    'uuid' => fake()->uuid(),
-                    'is_closed' => true
-                ],
-            ]
+            'pools' => $formatPool
         ]);
     }
 }

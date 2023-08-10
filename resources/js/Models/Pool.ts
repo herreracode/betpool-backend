@@ -1,5 +1,5 @@
 export default interface Pool {
     name: string;
-    uuid: string;
+    id: string;
     is_closed: boolean;
 }

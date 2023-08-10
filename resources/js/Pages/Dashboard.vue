@@ -2,7 +2,6 @@
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { Link } from "@inertiajs/vue3";
 import { ref } from 'vue';
-import PoolCreate from "@/Pages/Pool/PoolCreate.vue";
 import Pool from "@/Models/Pool";
 
 interface Props {
@@ -50,14 +49,14 @@ const toogleDialogCreatePool = () => {
                     </v-toolbar>
                     <v-container class="pools_container">
                         <v-row>
-                            <v-col v-for=" pool in props.pools" :key="pool.uuid" cols="12" sm="4">
+                            <v-col v-for=" pool in props.pools" :key="pool.id" cols="12" sm="4">
                                 <v-card>
                                     <v-card-title class="text-h5">
                                         {{ pool.name }}
                                     </v-card-title>
                                     <v-card-actions>
                                         <v-btn color="info" prepend-icon="$vuetify">
-                                            <Link :href="route('pool.indiviual-view', pool.uuid)"
+                                            <Link :href="route('pool.indiviual-view', pool.id)"
                                                 class="text-indigo-600 hover:text-indigo-800 w-fit self-end font-semibold">
                                             view
                                             </Link>
