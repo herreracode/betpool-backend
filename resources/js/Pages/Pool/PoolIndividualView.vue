@@ -1,8 +1,16 @@
-<script setup>
+<script setup lang="ts">
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { Link } from "@inertiajs/vue3";
 
 import { ref } from 'vue';
+import Pool from "@/Models/Pool";
+
+interface Props {
+    pool: Pool,
+}
+
+
+const props = defineProps<Props>()
 
 const desserts = ref([
     {
@@ -47,7 +55,7 @@ const toogleDialogCreatePoolRound = () => {
                 </h2>
             </div>
             <div>
-                <Link :href="route('pool-round.create-view')"
+                <Link :href="route('pool-round.create-view', pool.id)"
                     class="v-btn v-btn--elevated v-theme--light bg-info v-btn--density-default v-btn--size-default v-btn--variant-elevated">
                     Crear Round
                 </Link>

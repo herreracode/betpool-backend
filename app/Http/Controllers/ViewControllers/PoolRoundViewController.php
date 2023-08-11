@@ -2,11 +2,17 @@
 
 namespace App\Http\Controllers\ViewControllers;
 
+use App\Models\Pool;
+use App\Queries\Games\GetGamesForPoolRound;
 use Inertia\Inertia;
 use App\Http\Controllers\Controller;
 
 class PoolRoundViewController extends Controller
 {
+
+    public function __construct(public GetGamesForPoolRound $GetGamesForPoolRound){
+
+    }
 
     public function getPoolRoundIndividualView($idPoolRound)
     {
@@ -27,10 +33,15 @@ class PoolRoundViewController extends Controller
         ]);
     }
 
-    public function getPoolRoundCreateView()
+    public function getPoolRoundCreateView($idPool)
     {
+        $Pool = Pool::find($idPool);
+
         return Inertia::render('PoolRound/PoolRoundCreate', [
-            
+            'games' => $this->GetGamesForPoolRound->__invoke(
+                auth()->user(),
+                $Pool
+            ) 
         ]);
     }
 }

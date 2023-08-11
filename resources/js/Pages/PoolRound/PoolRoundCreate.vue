@@ -18,7 +18,6 @@ interface Props {
     games: [],
 }
 
-
 const props = defineProps<Props>()
 
 const formPoolRound = reactive({
@@ -44,9 +43,10 @@ const formPoolRound = reactive({
                                 <v-container>
                                     <v-row>
                                         <v-col cols="12" sm="12">
-                                            <v-select :items="games" :item-title="'name'" :item-value="'id'"
-                                                v-model="formPoolRound.games" variant="outlined"
-                                                label="Partidos" required multiple chips></v-select>
+                                            <v-select :items="games" :item-title="'description'" :item-value="'id'"
+                                                v-model="formPoolRound.games" variant="outlined" label="Partidos" required
+                                                multiple chips closable-chips>
+                                            </v-select>
                                         </v-col>
                                     </v-row>
                                 </v-container>

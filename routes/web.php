@@ -50,7 +50,7 @@ Route::middleware([
     //Pool Round Routes
     Route::get('/pool-round/{id}', [PoolRoundViewController::class, 'getPoolRoundIndividualView'])->name('pool-round.indiviual-view');
 
-    Route::get('/pool-round-create-view/', [PoolRoundViewController::class, 'getPoolRoundCreateView'])->name('pool-round.create-view');
+    Route::get('/pool-round-create-view/{id_pool}', [PoolRoundViewController::class, 'getPoolRoundCreateView'])->name('pool-round.create-view');
     
     //Predictions routes
     Route::get('/create-predictions', [PredictionViewController::class, 'createPredictionsView'])->name('predictions.create-view');
