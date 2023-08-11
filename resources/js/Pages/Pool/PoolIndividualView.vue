@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { Link } from "@inertiajs/vue3";
-
 import { ref } from 'vue';
 import Pool from "@/Models/Pool";
 
 interface Props {
     pool: Pool,
 }
-
 
 const props = defineProps<Props>()
 
@@ -27,23 +25,6 @@ const desserts = ref([
     },
 ]);
 
-const dialogCreateRound = ref(false);
-
-const onCancelCreatePoolRound = () => {
-
-    toogleDialogCreatePoolRound();
-};
-
-const onCreatedPoolRound = () => {
-
-    toogleDialogCreatePoolRound();
-};
-
-const toogleDialogCreatePoolRound = () => {
-
-    //close modal
-    dialogCreateRound.value = !dialogCreateRound.value;
-}; 
 </script>
 
 <template>

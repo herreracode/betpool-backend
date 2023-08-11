@@ -3,13 +3,11 @@ import AppLayout from '@/Layouts/AppLayout.vue'
 import { Link, router } from "@inertiajs/vue3"
 import { reactive } from 'vue'
 import HttpClient from '@/Shared/HttpClient.ts';
-
-const emit = defineEmits(['createdPool', 'cancelCreatePool'])
+import Competition from '@/Models/Competition';
 
 interface Props {
-    competitions: [],
+    competitions: Competition[],
 }
-
 
 const props = defineProps<Props>()
 
@@ -18,10 +16,6 @@ const createPool = async () => {
     const json = await HttpClient.post(route('pool.store'), formPool);
 
     alert("se ha creado el pool")
-
-    console.log(json)
-
-    console.log("hacer fetch al backend para crear pool")
 
     router.visit(route('dashboard'), { method: 'get' })
 };

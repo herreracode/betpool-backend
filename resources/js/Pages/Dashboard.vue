@@ -1,32 +1,13 @@
 <script setup lang="ts">
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { Link } from "@inertiajs/vue3";
-import { ref } from 'vue';
 import Pool from "@/Models/Pool";
 
 interface Props {
     pools: Pool[],
 }
 
-const dialog = ref(false);
-
 const props = defineProps<Props>()
-
-const onCancelCreatePool = () => {
-
-    toogleDialogCreatePool();
-};
-
-const onCreatedPool = () => {
-
-    toogleDialogCreatePool();
-};
-
-const toogleDialogCreatePool = () => {
-
-    //close modal
-    dialog.value = !dialog.value;
-};
 
 </script>
 
