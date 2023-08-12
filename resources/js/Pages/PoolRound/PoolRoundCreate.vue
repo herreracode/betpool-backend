@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { router } from "@inertiajs/vue3"
+import { Link, router } from "@inertiajs/vue3"
 import AppLayout from '@/Layouts/AppLayout.vue'
 import { reactive } from 'vue'
 import HttpClient from '@/Shared/HttpClient';
@@ -59,9 +59,10 @@ const formPoolRound = reactive({
                             </v-card-text>
                             <v-card-actions>
                                 <v-spacer></v-spacer>
-                                <v-btn color="blue-darken-1" variant="text" @click="$emit('cancelCreatePoolRound')">
-                                    Cancelar
-                                </v-btn>
+                                <Link :href="route('pool.indiviual-view', id_pool)"
+                                    class="v-btn v-btn--elevated v-theme--light bg-error v-btn--density-default v-btn--size-default v-btn--variant-elevated">
+                                Cancelar
+                                </Link>
                                 <v-btn color="blue-darken-1" variant="text" @click="createPoolRound()">
                                     Guardar
                                 </v-btn>
