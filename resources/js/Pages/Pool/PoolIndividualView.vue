@@ -3,9 +3,11 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 import { Link } from "@inertiajs/vue3";
 import { ref } from 'vue';
 import Pool from "@/Models/Pool";
+import PoolRound from "@/Models/PoolRound";
 
 interface Props {
     pool: Pool,
+    pool_rounds: PoolRound[],
 }
 
 const props = defineProps<Props>()
@@ -32,7 +34,7 @@ const desserts = ref([
         <template #header>
             <div>
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    Pool nombre
+                    Pool {{ pool.name }}
                 </h2>
             </div>
             <div>
@@ -52,13 +54,13 @@ const desserts = ref([
                     </v-toolbar>
                     <v-container class="round_Zpools_container">
                         <v-row>
-                            <v-col v-for="n in 3" :key="n" cols="12" sm="4">
+                            <v-col v-for=" poolRound in props.pool_rounds" :key="poolRound.id" cols="12" sm="4">
                                 <v-card>
                                     <v-card-title>
-                                        Round Pools {{ n }}
+                                        Round Pools {{ poolRound.id }}
                                     </v-card-title>
                                     <v-card-actions>
-                                        <Link as="button" :href="route('pool-round.indiviual-view', n)"
+                                        <Link as="button" :href="route('pool-round.indiviual-view', poolRound.id)"
                                             class="text-indigo-600 hover:text-indigo-800 w-fit self-end font-semibold">
                                         ver
                                         </Link>

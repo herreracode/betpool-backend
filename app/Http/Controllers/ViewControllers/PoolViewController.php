@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\ViewControllers;
 
+use App\Models\Pool;
 use Inertia\Inertia;
 use App\Http\Controllers\Controller;
 use App\Models\Competition;
@@ -15,10 +16,13 @@ class PoolViewController extends Controller
     
     public function getPoolIndividualView($idPool)
     {
+        $Pool = Pool::find($idPool);
+
+        
+
         return Inertia::render('Pool/PoolIndividualView',[
-            "pool" => [
-                'id' => $idPool
-            ]
+            "pool" => $Pool->only(['id', 'name', 'is_closed']),
+            "pool_rounds" => $Pool->poolRound 
         ]);
     }
     
