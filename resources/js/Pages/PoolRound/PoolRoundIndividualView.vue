@@ -3,16 +3,11 @@
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { ref } from 'vue';
 import { Link } from "@inertiajs/vue3";
-
-//todo: changes types
-interface Games {
-    name: string;
-    calories: string;
-}
+import Game from "@/Models/Games";
 
 interface Props {
     number: number | string,
-    games: Games[],
+    games: Game[],
     predictions: [] | null
 }
 
@@ -62,9 +57,9 @@ const tab = ref(null);
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr v-for="item in games" :key="item.name">
-                                                <td>{{ item.name }}</td>
-                                                <td>{{ item.calories }}</td>
+                                            <tr v-for="item in games" :key="item.id">
+                                                <td>{{ item.description }}</td>
+                                                <td>{{ item.date_start }}</td>
                                             </tr>
                                         </tbody>
                                     </v-table>
