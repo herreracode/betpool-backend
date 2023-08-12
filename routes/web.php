@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApiControllers\PoolPostController;
+use App\Http\Controllers\ApiControllers\PoolRoundPostController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\ViewControllers\PoolViewController;
 use App\Http\Controllers\ViewControllers\PoolRoundViewController;
@@ -62,5 +63,7 @@ Route::middleware([
 
 
     Route::post('/pools', PoolPostController::class)->name('pool.store');
+
+    Route::post('/pool-rounds', PoolRoundPostController::class)->name('pool-round.store');
 
 });

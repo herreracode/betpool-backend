@@ -41,7 +41,8 @@ class PoolRoundViewController extends Controller
             'games' => $this->GetGamesForPoolRound->__invoke(
                 auth()->user(),
                 $Pool
-            ) 
+            ),
+            'id_pool' => $idPool
         ]);
     }
 }

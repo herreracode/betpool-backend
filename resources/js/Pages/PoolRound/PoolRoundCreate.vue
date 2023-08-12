@@ -1,27 +1,32 @@
 <script setup lang="ts">
-
+import { router } from "@inertiajs/vue3"
 import AppLayout from '@/Layouts/AppLayout.vue'
 import { reactive } from 'vue'
+import HttpClient from '@/Shared/HttpClient';
 
 const emit = defineEmits(['createdPoolRound', 'cancelCreatePoolRound'])
 
-const createPoolRound = () => {
+const createPoolRound = async () => {
 
-    alert("se ha creado el pool round");
+    formPoolRound.id_pool = props.id_pool
 
-    console.log("hacer fetch al backend para crear pool round");
+    const json = await HttpClient.post(route('pool-round.store'), formPoolRound);
 
-    emit("createdPoolRound");
+    alert("se ha creado el pool roud")
+
+    router.visit(route('pool.indiviual-view', props.id_pool), { method: 'get' })
 };
 
 interface Props {
     games: [],
+    id_pool: string,
 }
 
 const props = defineProps<Props>()
 
 const formPoolRound = reactive({
     games: [],
+    id_pool: ''
 })
 
 </script>
