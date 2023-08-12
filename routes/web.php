@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ApiControllers\PoolPostController;
 use App\Http\Controllers\ApiControllers\PoolRoundPostController;
+use App\Http\Controllers\ApiControllers\PredictionPostController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\ViewControllers\PoolViewController;
 use App\Http\Controllers\ViewControllers\PoolRoundViewController;
@@ -54,7 +55,7 @@ Route::middleware([
     Route::get('/pool-round-create-view/{id_pool}', [PoolRoundViewController::class, 'getPoolRoundCreateView'])->name('pool-round.create-view');
     
     //Predictions routes
-    Route::get('/create-predictions', [PredictionViewController::class, 'createPredictionsView'])->name('predictions.create-view');
+    Route::get('/create-predictions/{pool_round_id}', [PredictionViewController::class, 'createPredictionsView'])->name('predictions.create-view');
 
 
     /**
@@ -65,5 +66,7 @@ Route::middleware([
     Route::post('/pools', PoolPostController::class)->name('pool.store');
 
     Route::post('/pool-rounds', PoolRoundPostController::class)->name('pool-round.store');
+
+    Route::post('/predictions', PredictionPostController::class)->name('predictions.store');
 
 });

@@ -1,19 +1,26 @@
 <script setup lang="ts">
-
 import { ref } from 'vue';
 import { Link } from "@inertiajs/vue3";
-
-//todo: changes types
-interface Games {
-    id: string;
-    team_local: string;
-    team_away: string;
-    date_start: string;
-}
+import Game from "@/Models/Games";
+import { router } from "@inertiajs/vue3"
+import HttpClient from '@/Shared/HttpClient';
 
 interface Props {
-    games: Games[],
+    games: Game[],
+    pool_round_id: string,
 }
+
+const createPredictions = async () => {
+
+    const json = await HttpClient.post(route('predictions.store'), {
+        predictions : predictions.value,
+        pool_round_id : props.pool_round_id
+    });
+
+    alert("se han creado las predicciones")
+
+    router.visit(route('pool-round.indiviual-view', props.pool_round_id), { method: 'get' })
+};
 
 
 const props = defineProps<Props>()
@@ -55,10 +62,9 @@ const predictions = ref(JSON.parse(JSON.stringify(props.games)));
                     Cancelar
                 </v-btn>
 
-                <Link :href="route('pool-round.indiviual-view',  1)"
-                    class="v-btn v-btn--elevated v-theme--light bg-info v-btn--density-default v-btn--size-default v-btn--variant-elevated">
-                Guardar
-                </Link>
+                <v-btn color="blue-darken-1" variant="text" @click="createPredictions()">
+                                    Guardar
+                </v-btn>
             </v-card-actions>
         </v-card>
     </v-card>

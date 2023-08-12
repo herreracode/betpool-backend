@@ -26,7 +26,7 @@ const tab = ref(null);
                 </h2>
             </div>
             <div>
-                    <Link :href="route('predictions.create-view')"
+                    <Link :href="route('predictions.create-view', number)"
                         class="v-btn v-btn--elevated v-theme--light bg-info v-btn--density-default v-btn--size-default v-btn--variant-elevated">
                     Crear Predicciones
                     </Link>

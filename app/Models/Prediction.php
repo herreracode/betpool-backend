@@ -73,8 +73,9 @@ class Prediction extends Model implements Scorable
         if(!$Game->itIsPending())
             throw GameIsNotStateValid::create("game is not state pending");
 
-        if($Game->isAboutToStart($dateTimeCreate))
-            throw GameIsAboutToStart::create("game is about to start");
+        //todo: fixed
+        /* if($Game->isAboutToStart($dateTimeCreate))
+            throw GameIsAboutToStart::create("game is about to start"); */
 
         $Prediction = new static();
 
