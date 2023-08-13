@@ -25,6 +25,10 @@ class PoolRoundViewController extends Controller
     {
         $PoolRound = PoolRound::find($idPoolRound);
 
+        $ownPredictions = $this->getPredictionsByPoolRound->__invoke(
+            $PoolRound
+        ); 
+
         return Inertia::render(
             'PoolRound/PoolRoundIndividualView',
             [
@@ -33,9 +37,8 @@ class PoolRoundViewController extends Controller
                     auth()->user(),
                     $PoolRound
                 ),
-                'own_predictions' => $this->getPredictionsByPoolRound->__invoke(
-                    $PoolRound
-                ), 
+                'own_predictions' => $ownPredictions,
+                'can_create_predictions' => !$ownPredictions
             ]
         );
     }

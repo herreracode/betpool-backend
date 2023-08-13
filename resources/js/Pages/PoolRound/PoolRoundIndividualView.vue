@@ -9,7 +9,8 @@ import Prediction from "@/Models/Prediction";
 interface Props {
     number: number | string,
     games: Game[],
-    own_predictions: Prediction[] | null
+    own_predictions: Prediction[] | null,
+    can_create_predictions: boolean,
 }
 
 const props = defineProps<Props>()
@@ -28,7 +29,7 @@ const tab = ref(null);
                 </h2>
             </div>
             <div>
-                    <Link :href="route('predictions.create-view', number)"
+                    <Link v-if="can_create_predictions" :href="route('predictions.create-view', number)"
                         class="v-btn v-btn--elevated v-theme--light bg-info v-btn--density-default v-btn--size-default v-btn--variant-elevated">
                     Crear Predicciones
                     </Link>
@@ -55,14 +56,22 @@ const tab = ref(null);
                                                     Partidos
                                                 </th>
                                                 <th class="text-left">
+                                                    Resultado
+                                                </th>
+                                                <th class="text-left">
                                                     Fecha
+                                                </th>
+                                                <th class="text-left">
+                                                    Status
                                                 </th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr v-for="item in games" :key="item.id">
                                                 <td>{{ item.description }}</td>
+                                                <td>{{ item.score_local }} - {{ item.score_away }}</td>
                                                 <td>{{ item.date_start }}</td>
+                                                <td>{{ item.status }}</td>
                                             </tr>
                                         </tbody>
                                     </v-table>
@@ -78,12 +87,20 @@ const tab = ref(null);
                                                 <th class="text-left">
                                                     Resultado
                                                 </th>
+                                                <th class="text-left">
+                                                    Status
+                                                </th> 
+                                                <th class="text-left">
+                                                    Puntos obtenidos
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr v-for="item in own_predictions" :key="item.id">
                                                 <td>{{ item.description }}</td>
                                                 <td>{{ item.score_local }} - {{ item.score_away }}</td>
+                                                <td>{{ item.status }}</td>
+                                                <td>{{ item.points_earned ? item.points_earned : '-'  }}</td>
                                             </tr>
                                         </tbody>
                                     </v-table>

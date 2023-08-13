@@ -35,6 +35,7 @@ class GetPredictionsByPoolRound
                 'score_away' => $prediction->getAwayTeamScore(),
                 'team_local' => $prediction->getLocalTeam()->name,
                 'score_local' => $prediction->getLocalTeamScore(),
+                'points_earned' => $prediction->points_earned,
                 'description' => $prediction->getLocalTeam()->name . ' vs ' . $prediction->getAwayTeam()->name,
             ];
 

@@ -32,9 +32,13 @@ class GetGamesOwnerPoolRound
 
         return function (Game $Game) {
 
+            $Score = $Game->score;
+
             $array = [
                 'team_away' => $Game->awayTeam->name,
+                'score_away' => $Score ? $Score->getAwayTeamScore() : '',
                 'team_local' => $Game->localTeam->name,
+                'score_local' => $Score ? $Score->getLocalTeamScore() : '',
                 'description' => $Game->localTeam->name.' vs '.$Game->awayTeam->name,
             ];
 
