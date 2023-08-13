@@ -2,18 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Game;
-use App\Models\Pool;
+use App\Queries\Pool\GetPoolsByUser;
 use Inertia\Inertia;
 
 class TestController extends Controller
 {
+    public function __construct(public GetPoolsByUser $getPoolsByUser){
+
+    }
+
     public function hola()
     {
-        $Pool = Pool::all()->first();
+        $User = auth()->user();
 
-        dd($Pool->competitions->first()->name);
-
-        return Inertia::render('Dashboard');
+        return Inertia::render('Dashboard', [
+            'pools' => $this->getPoolsByUser->__invoke($User)
+        ]);
     }
 }
