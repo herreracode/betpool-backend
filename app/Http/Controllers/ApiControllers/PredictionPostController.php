@@ -38,8 +38,8 @@ class PredictionPostController extends Controller
                 Pool: $Pool,
                 Game: $Game,
                 PoolRound : $PoolRound,
-                localTeamScore: $prediction['score_away'],
-                awayTeamScore: $prediction['score_local']
+                localTeamScore: $prediction['score_local'],
+                awayTeamScore: $prediction['score_away']
             );
 
         }

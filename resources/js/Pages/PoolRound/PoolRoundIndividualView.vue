@@ -1,19 +1,21 @@
 <script lang="ts" setup>
 
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { Link } from "@inertiajs/vue3";
 import Game from "@/Models/Games";
+import Prediction from "@/Models/Prediction";
 
 interface Props {
     number: number | string,
     games: Game[],
-    predictions: [] | null
+    own_predictions: Prediction[] | null
 }
 
 const props = defineProps<Props>()
 
 const tab = ref(null);
+
 
 </script>
 
@@ -39,7 +41,8 @@ const tab = ref(null);
                     <v-card>
                         <v-tabs v-model="tab" bg-color="info">
                             <v-tab value="one">Partidos</v-tab>
-                            <v-tab value="two">Predicciones</v-tab>
+                            <v-tab value="two">Tus Predicciones</v-tab>
+                            <v-tab value="three">Predicciones de tus compañeros</v-tab>
                         </v-tabs>
 
                         <v-card-text>
@@ -66,6 +69,26 @@ const tab = ref(null);
                                 </v-window-item>
 
                                 <v-window-item value="two">
+                                    <v-table>
+                                        <thead>
+                                            <tr>
+                                                <th class="text-left">
+                                                    Partidos
+                                                </th>
+                                                <th class="text-left">
+                                                    Resultado
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="item in own_predictions" :key="item.id">
+                                                <td>{{ item.description }}</td>
+                                                <td>{{ item.score_local }} - {{ item.score_away }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </v-table>
+                                </v-window-item> 
+                                <v-window-item value="three">
                                     Se veran las predicciones de los demas cuando venza el plazos
                                 </v-window-item>
                             </v-window>
