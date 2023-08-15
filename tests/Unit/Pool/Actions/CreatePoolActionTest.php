@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutEvents;
 use Illuminate\Support\Facades\Event;
+use Laravel\Sanctum\Sanctum;
 use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
@@ -43,6 +44,11 @@ class CreatePoolActionTest extends TestCase
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        $UserCreator = Sanctum::actingAs(
+            $UserCreator,
+            ['*']
+        );
 
         $competitions = Competition::factory(2)->create();
 
@@ -79,6 +85,11 @@ class CreatePoolActionTest extends TestCase
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        $UserCreator = Sanctum::actingAs(
+            $UserCreator,
+            ['*']
+        );
 
         $namePool = "liverpool FC";
 
@@ -120,6 +131,11 @@ class CreatePoolActionTest extends TestCase
             'email' => 'test@example.com',
         ]);
 
+        $UserCreator = Sanctum::actingAs(
+            $UserCreator,
+            ['*']
+        );
+
         $this->CreatePoolAction->__invoke(
             $UserCreator,
             $namePool,
@@ -141,6 +157,11 @@ class CreatePoolActionTest extends TestCase
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        $UserCreator = Sanctum::actingAs(
+            $UserCreator,
+            ['*']
+        );
 
         $Pool = $this->CreatePoolAction->__invoke(
             $UserCreator,

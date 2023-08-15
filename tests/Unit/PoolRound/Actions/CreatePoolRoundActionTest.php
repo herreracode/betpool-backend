@@ -17,6 +17,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutEvents;
 use Illuminate\Support\Facades\Event;
+use Laravel\Sanctum\Sanctum;
 use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
@@ -48,6 +49,11 @@ class CreatePoolRoundActionTest extends TestCase
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        $UserCreator = Sanctum::actingAs(
+            $UserCreator,
+            ['*']
+        );
 
         $Pool = Pool::factory()->create();
 
@@ -85,6 +91,11 @@ class CreatePoolRoundActionTest extends TestCase
             'email' => 'test@example.com',
         ]);
 
+        $UserCreator = Sanctum::actingAs(
+            $UserCreator,
+            ['*']
+        );
+
         $Pool = Pool::factory()->create();
 
         $UserCreator->addRoleUserCreatorByPool($Pool);
@@ -117,10 +128,20 @@ class CreatePoolRoundActionTest extends TestCase
             'email' => 'test@example.com',
         ]);
 
+        $UserCreator = Sanctum::actingAs(
+            $UserCreator,
+            ['*']
+        );
+
         $UserCreator2 = User::factory()->create([
         'name' => 'Test User 2',
         'email' => 'tes2t@example.com',
         ]);
+
+        $UserCreator2 = Sanctum::actingAs(
+            $UserCreator2,
+            ['*']
+        );
 
 
         $Pool = Pool::factory()->create();
