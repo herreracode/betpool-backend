@@ -139,7 +139,7 @@ class Pool extends AggregateRoot
 
         $PoolRound->games()->attach($Games);
 
-        return $PoolRound;
+        return $PoolRound->refresh();
     }
 
     /**

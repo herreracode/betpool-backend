@@ -77,6 +77,9 @@ class CreatePoolRoundActionTest extends TestCase
         $this->assertInstanceOf(PoolRound::class, $PoolRound);
 
         $this->assertEquals($PoolRound->games->pluck('id'), $Games->pluck('id'));
+
+        //Pool create with status _PENDING_ with default
+        $this->assertEquals($PoolRound->status, '_PENDING_');
     }
 
     public function testThrowExceptionWhenGameIsNotPending()
