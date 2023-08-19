@@ -6,6 +6,7 @@ use App\Actions\Pool\CreatePool;
 use App\Actions\PoolRound\CreatePoolRound;
 use App\Events\CreatedPool;
 use App\Exceptions\Pool\CompetitionMustBeUniqueInAPool;
+use App\Exceptions\PoolRound\AlreadyHavePoolRoundPending;
 use App\Exceptions\PoolRound\GameIsNotPending;
 use App\Exceptions\PoolRound\UserDoesNotHaveTheRequiredRole;
 use App\Models\Competition;
@@ -137,8 +138,8 @@ class CreatePoolRoundActionTest extends TestCase
         );
 
         $UserCreator2 = User::factory()->create([
-        'name' => 'Test User 2',
-        'email' => 'tes2t@example.com',
+            'name' => 'Test User 2',
+            'email' => 'tes2t@example.com',
         ]);
 
         $UserCreator2 = Sanctum::actingAs(
@@ -168,6 +169,50 @@ class CreatePoolRoundActionTest extends TestCase
             $Games
         );
 
+    }
+
+    public function testThrowExceptionWhenAlreadyHasOnePending()
+    {
+
+        $this->expectException(AlreadyHavePoolRoundPending::class);
+
+        /**
+         * @var User $UserCreator
+         */
+        $UserCreator = User::factory()->create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+        ]);
+
+        $UserCreator = Sanctum::actingAs(
+            $UserCreator,
+            ['*']
+        );
+
+        $Pool = Pool::factory()->create();
+
+        $UserCreator->addRoleUserCreatorByPool($Pool);
+
+        $Competition = Competition::factory();
+
+        $CompetitionPhase = CompetitionPhase::factory()->for($Competition);
+
+        $Games = Game::factory(3)
+            ->for($CompetitionPhase)
+            ->inPending()
+            ->create();
+
+        PoolRound::factory()
+            ->for($Pool)
+            ->inPending()
+            ->create()
+            ->refresh();
+
+        $PoolRound = $this->CreatePoolRoundAction->__invoke(
+            $UserCreator,
+            $Pool,
+            $Games
+        );
     }
 
 }

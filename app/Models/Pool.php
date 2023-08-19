@@ -5,12 +5,14 @@ namespace App\Models;
 use App\Events\CreatedPool;
 use App\Exceptions\Pool\CompetitionMustBeUniqueInAPool;
 use App\Exceptions\Pool\UserDoesntBelongToThePool;
+use App\Exceptions\PoolRound\AlreadyHavePoolRoundPending;
 use App\Exceptions\PoolRound\GameIsNotPending;
 use App\Exceptions\PoolRound\UserDoesNotHaveTheRequiredRole;
 use App\Models\Common\AggregateRoot;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
+use App\Models\Enums\PoolRoundStatus;
 
 /**
  * @property Collection $poolInvitationsEmails
@@ -131,6 +133,8 @@ class Pool extends AggregateRoot
 
     public function createRound(User $UserCreator, iterable $Games) :PoolRound
     {
+        $this->alreadyHaveOnePending();
+        
         $this->someGameIsInNonPendingState($Games);
 
         $this->userCreatorIsPoolAdmin($UserCreator);
@@ -161,6 +165,20 @@ class Pool extends AggregateRoot
     {
         if(!$UserCreator->hasRolePoolAdmin($this))
             throw UserDoesNotHaveTheRequiredRole::create('the user dont have the require role');
+
+        return true;
+    }
+
+    protected function alreadyHaveOnePending():bool
+    {
+        $haveAlreadyOneRoundPending = $this
+        ->poolRound()
+        ->where('status', '=', PoolRoundStatus::PENDING->value)
+        ->get()
+        ->count() > 0;
+
+        if ($haveAlreadyOneRoundPending)
+            throw AlreadyHavePoolRoundPending::create('already have one pool round pending');
 
         return true;
     }
