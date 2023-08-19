@@ -57,7 +57,7 @@ const desserts = ref([
                             <v-col v-for=" poolRound in props.pool_rounds" :key="poolRound.id" cols="12" sm="4">
                                 <v-card>
                                     <v-card-title>
-                                        Round Pools {{ poolRound.id }}
+                                        Round Pools {{ poolRound.id }} | {{ poolRound.status }} 
                                     </v-card-title>
                                     <v-card-actions>
                                         <Link as="button" :href="route('pool-round.indiviual-view', poolRound.id)"
