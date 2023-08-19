@@ -7,7 +7,7 @@ import Game from "@/Models/Games";
 import Prediction from "@/Models/Prediction";
 
 interface Props {
-    number: number | string,
+    pool_round: {},
     games: Game[],
     own_predictions: Prediction[] | null,
     can_create_predictions: boolean,
@@ -25,11 +25,11 @@ const tab = ref(null);
         <template #header>
             <div>
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    Pool Round {{ number }}
+                    Pool Round {{ pool_round.id }} | {{ pool_round.status }}
                 </h2>
             </div>
             <div>
-                    <Link v-if="can_create_predictions" :href="route('predictions.create-view', number)"
+                    <Link v-if="can_create_predictions" :href="route('predictions.create-view', pool_round.id )"
                         class="v-btn v-btn--elevated v-theme--light bg-info v-btn--density-default v-btn--size-default v-btn--variant-elevated">
                     Crear Predicciones
                     </Link>

@@ -27,12 +27,14 @@ class PoolRoundViewController extends Controller
 
         $ownPredictions = $this->getPredictionsByPoolRound->__invoke(
             $PoolRound
-        ); 
+        );
 
         return Inertia::render(
             'PoolRound/PoolRoundIndividualView',
             [
-                "number" => $idPoolRound,
+                "pool_round" => $PoolRound->only([
+                    'id','pool_id','status'
+                ]),
                 "games" => $this->getGamesOwnerPoolRound->__invoke(
                     auth()->user(),
                     $PoolRound
