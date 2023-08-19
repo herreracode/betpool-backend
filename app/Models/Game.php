@@ -57,6 +57,11 @@ class Game extends AggregateRoot implements Scorable
         return $this->belongsTo(Team::class, 'away_team_id');
     }
 
+    public function poolRounds()
+    {
+        return $this->belongsToMany(PoolRound::class,'pool_round_games');
+    }
+
     /**
      * @param int $localTeamScore
      * @param int $awayTeamScore

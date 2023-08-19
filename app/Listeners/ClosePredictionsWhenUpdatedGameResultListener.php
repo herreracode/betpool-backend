@@ -2,9 +2,11 @@
 
 namespace App\Listeners;
 
+use App\Actions\PoolRound\ClosePredictionsByPoolRoundAndGame;
 use App\Actions\Prediction\ClosePrediction;
 use App\Events\CreatedPool;
 use App\Events\UpdatedGameResult;
+use App\Models\PoolRound;
 use App\Models\Prediction;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
@@ -25,7 +27,7 @@ class ClosePredictionsWhenUpdatedGameResultListener implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(protected ClosePrediction $ClosePrediction)
+    public function __construct(protected ClosePredictionsByPoolRoundAndGame $closePredictionsByPoolRoundAndGame)
     {
         //
     }
@@ -42,23 +44,12 @@ class ClosePredictionsWhenUpdatedGameResultListener implements ShouldQueue
 
         $Game = $event->getAggregate();
 
-        //buscar las predicciones para cerrar
+        //TODO: PAGINATION TO MANAGE DATA HIGH VOLUME
         $page = 1;
 
-        do{
-            $Predictions = Prediction::where([
-                'game_id' => $Game->id
-            ])
-                ->forPage($page,10)
-                ->get();
+        $PoolRounds = $Game->poolRounds;
 
-            $countPredictions = $Predictions->count();
-
-            $Predictions
-                ->each(fn (Prediction $prediction) => $this->ClosePrediction->__invoke($prediction));
-
-            $page+= 1;
-
-        }while($countPredictions != 0);
+        $PoolRounds
+            ->each(fn(PoolRound $poolRound) => $this->closePredictionsByPoolRoundAndGame->__invoke($poolRound, $Game));
     }
 }
