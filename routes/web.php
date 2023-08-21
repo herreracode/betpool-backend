@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ApiControllers\PoolPostController;
 use App\Http\Controllers\ApiControllers\PoolRoundPostController;
+use App\Http\Controllers\ApiControllers\PredictionPatchController;
 use App\Http\Controllers\ApiControllers\PredictionPostController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\ViewControllers\PoolViewController;
@@ -56,6 +57,8 @@ Route::middleware([
     
     //Predictions routes
     Route::get('/create-predictions/{pool_round_id}', [PredictionViewController::class, 'createPredictionsView'])->name('predictions.create-view');
+    
+    Route::get('/edit-predictions/{prediction_id}', [PredictionViewController::class, 'editPredictionsView'])->name('predictions.edit-view');
 
 
     /**
@@ -68,5 +71,7 @@ Route::middleware([
     Route::post('/pool-rounds', PoolRoundPostController::class)->name('pool-round.store');
 
     Route::post('/predictions', PredictionPostController::class)->name('predictions.store');
+    
+    Route::patch('/predictions/{prediction_id}', PredictionPatchController::class)->name('predictions.put');
 
 });

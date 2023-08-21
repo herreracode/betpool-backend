@@ -29,10 +29,10 @@ const tab = ref(null);
                 </h2>
             </div>
             <div>
-                    <Link v-if="can_create_predictions" :href="route('predictions.create-view', pool_round.id )"
-                        class="v-btn v-btn--elevated v-theme--light bg-info v-btn--density-default v-btn--size-default v-btn--variant-elevated">
-                    Crear Predicciones
-                    </Link>
+                <Link v-if="can_create_predictions" :href="route('predictions.create-view', pool_round.id)"
+                    class="v-btn v-btn--elevated v-theme--light bg-info v-btn--density-default v-btn--size-default v-btn--variant-elevated">
+                Crear Predicciones
+                </Link>
 
             </div>
         </template>
@@ -89,9 +89,12 @@ const tab = ref(null);
                                                 </th>
                                                 <th class="text-left">
                                                     Status
-                                                </th> 
+                                                </th>
                                                 <th class="text-left">
                                                     Puntos obtenidos
+                                                </th>
+                                                <th class="text-left">
+                                                    acciones
                                                 </th>
                                             </tr>
                                         </thead>
@@ -100,11 +103,17 @@ const tab = ref(null);
                                                 <td>{{ item.description }}</td>
                                                 <td>{{ item.score_local }} - {{ item.score_away }}</td>
                                                 <td>{{ item.status }}</td>
-                                                <td>{{ item.points_earned ? item.points_earned : '-'  }}</td>
+                                                <td>{{ item.points_earned ? item.points_earned : '-' }}</td>
+                                                <td>
+                                                    <Link :href="route('predictions.edit-view', item.id)"
+                                                        class="v-btn v-btn--elevated v-theme--light bg-info v-btn--density-default v-btn--size-default v-btn--variant-elevated">
+                                                    Editar
+                                                    </Link>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </v-table>
-                                </v-window-item> 
+                                </v-window-item>
                                 <v-window-item value="three">
                                     Se veran las predicciones de los demas cuando venza el plazos
                                 </v-window-item>
@@ -114,5 +123,4 @@ const tab = ref(null);
                 </div>
             </div>
         </div>
-    </AppLayout>
-</template>
+    </AppLayout></template>
