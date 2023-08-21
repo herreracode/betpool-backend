@@ -133,5 +133,15 @@ class Prediction extends Model implements Scorable
         return $this->game->awayTeam;
     }
 
+    public function modify($scoreLocal, $scoreAway, $idUserModifier)
+    {
+        //validate Game not finished
+        
+        //validate Game has not started yet (isAboutToStart)
+        
+        //validate scores is not the same as before
+        
+        //validate user modifier is prediction owner
+    }
 
 }
