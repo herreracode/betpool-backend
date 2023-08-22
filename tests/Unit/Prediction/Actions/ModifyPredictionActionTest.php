@@ -4,6 +4,7 @@ namespace Prediction\Actions;
 
 use App\Actions\Prediction\ModifyPrediction;
 use App\Exceptions\Prediction\GameIsNotStateValid;
+use App\Exceptions\Prediction\UserModifierNotOwner;
 use App\Models\Competition;
 use App\Models\CompetitionPhase;
 use App\Models\Game;
@@ -140,6 +141,62 @@ class ModifyPredictionActionTest extends TestCase
             scoreLocal: $scoreLocal,
             scoreAway: $scoreAway,
             idUserModifier: $idUserModifier
+        );
+
+
+    }
+
+    public function testThrowExceptionWhenUserModifyIsOwner()
+    {
+        $this->expectException(UserModifierNotOwner::class);
+
+        $User = User::factory()->create();
+
+        $Pool = Pool::factory()
+            ->hasAttached($User)
+            ->create();
+
+        $PoolRound = PoolRound::factory()
+            ->for($Pool)
+            ->create();
+
+        $timeInMinutesToExpiredPeriod = 29;
+
+        $nowTimeStampAddTime = (new \DateTime())
+            ->modify("+{$timeInMinutesToExpiredPeriod} minutes");
+
+        $Game = Game::factory([
+            'date_start' => $nowTimeStampAddTime
+        ])
+            ->inPending()
+            ->for(CompetitionPhase::factory()
+                ->for(Competition::factory()))
+            ->create();
+
+        $scoreLocal = 2;
+
+        $scoreAway = 1;
+
+        $Prediction = Prediction::factory()
+            ->for($User)
+            ->for($Pool)
+            ->for($PoolRound)
+            ->for($Game)
+            ->inPending()
+            ->create();
+
+        Score::factory([
+            'local_team_score' => 0,
+            'away_team_score' => 1,
+            'scorable_type' => $Prediction::class,
+            'scorable_id' => $Prediction->id,
+        ])->create();
+
+        $this->ModifyPredictionAction->__invoke(
+            Prediction: $Prediction,
+            scoreLocal: $scoreLocal,
+            scoreAway: $scoreAway,
+            idUserModifier: 899898989
         );
 
 
