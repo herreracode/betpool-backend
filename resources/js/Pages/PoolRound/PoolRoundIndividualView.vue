@@ -104,8 +104,8 @@ const tab = ref(null);
                                                 <td>{{ item.score_local }} - {{ item.score_away }}</td>
                                                 <td>{{ item.status }}</td>
                                                 <td>{{ item.points_earned ? item.points_earned : '-' }}</td>
-                                                <td>
-                                                    <Link :href="route('predictions.edit-view', item.id)"
+                                                <td>  
+                                                    <Link v-if="item.status !== '_CLOSE_'" :href="route('predictions.edit-view', item.id)"
                                                         class="v-btn v-btn--elevated v-theme--light bg-info v-btn--density-default v-btn--size-default v-btn--variant-elevated">
                                                     Editar
                                                     </Link>
