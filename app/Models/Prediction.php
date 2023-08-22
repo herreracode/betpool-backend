@@ -135,13 +135,25 @@ class Prediction extends Model implements Scorable
 
     public function modify($scoreLocal, $scoreAway, $idUserModifier)
     {
-        //validate Game not finished
+        $Game = $this->game;
+
+        //validate Game finished
+        if(!$Game->itIsPending())
+            throw GameIsNotStateValid::create("game is not state pending");
         
-        //validate Game has not started yet (isAboutToStart)
+        //validate Game has not started yet (isAboutToStart).leave to do at the end
         
         //validate scores is not the same as before
         
         //validate user modifier is prediction owner
+
+        $this->score->local_team_score = $scoreLocal;
+        
+        $this->score->away_team_score = $scoreAway;
+
+        $this->score->save();
+
+        return $this;
     }
 
 }
