@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApiControllers\PoolInvitationsPatchController;
 use App\Http\Controllers\ApiControllers\PoolPostController;
 use App\Http\Controllers\ApiControllers\PoolRoundPostController;
 use App\Http\Controllers\ApiControllers\PredictionPatchController;
@@ -73,5 +74,7 @@ Route::middleware([
     Route::post('/predictions', PredictionPostController::class)->name('predictions.store');
     
     Route::patch('/predictions/{prediction_id}', PredictionPatchController::class)->name('predictions.put');
+
+    Route::patch('/pool-invitations/{pools_invitations_id}', PoolInvitationsPatchController::class)->name('pools-invitations-emails.patch');
 
 });

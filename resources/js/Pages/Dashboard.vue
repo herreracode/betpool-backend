@@ -1,13 +1,39 @@
 <script setup lang="ts">
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { Link } from "@inertiajs/vue3";
+import { Link, router } from "@inertiajs/vue3";
 import Pool from "@/Models/Pool";
+import HttpClient from '@/Shared/HttpClient';
 
 interface Props {
     pools: Pool[],
+    invitations_pools: [],
 }
 
 const props = defineProps<Props>()
+
+const acceptInvitation = async (invitationId) => {
+
+    const json = await HttpClient.patch(route('pools-invitations-emails.patch', invitationId), {
+        accepted : 1
+    });
+
+    router.reload({ only: ['pools', 'invitations_pools'] })
+
+    alert("se ha aceptado la invitacion")
+
+}
+
+const rejectInvitation = async (invitationId) => {
+    
+    const json = await HttpClient.patch(route('pools-invitations-emails.patch', invitationId), {
+        accepted : 0
+    });
+
+    router.reload({ only: ['invitations_pools'] })
+
+    alert("se ha rechazado la invitacion")
+
+}
 
 </script>
 
@@ -41,6 +67,29 @@ const props = defineProps<Props>()
                                                 class="text-indigo-600 hover:text-indigo-800 w-fit self-end font-semibold">
                                             view
                                             </Link>
+                                        </v-btn>
+                                    </v-card-actions>
+                                </v-card>
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                </div>
+                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+                    <v-toolbar color="blue" title="Invitaciones a pool">
+                    </v-toolbar>
+                    <v-container class="invitations_container">
+                        <v-row>
+                            <v-col v-for=" invitation_pool in props.invitations_pools" :key="invitation_pool.id" cols="12" sm="4">
+                                <v-card>
+                                    <v-card-title class="text-h5">
+                                        Invitacion al pool {{ invitation_pool.pool_id }}
+                                    </v-card-title>
+                                    <v-card-actions>
+                                        <v-btn color="danger" prepend-icon="$vuetify" @click="rejectInvitation(invitation_pool.id)">
+                                            rechazar
+                                        </v-btn>
+                                        <v-btn color="success" prepend-icon="$vuetify" @click="acceptInvitation(invitation_pool.id)">
+                                            aceptar
                                         </v-btn>
                                     </v-card-actions>
                                 </v-card>
