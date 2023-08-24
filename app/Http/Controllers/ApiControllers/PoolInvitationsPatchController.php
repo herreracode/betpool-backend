@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\ApiControllers;
 
+use App\Actions\PoolInvitationsEmails\AcceptOrRejectInvitation;
 use App\Actions\Prediction\ModifyPrediction;
 use App\Http\Controllers\Controller;
 use App\Models\PoolInvitationsEmails;
@@ -11,23 +12,20 @@ use Illuminate\Http\Request;
 class PoolInvitationsPatchController extends Controller
 {
 
-    public function __construct()
+    public function __construct(public AcceptOrRejectInvitation $acceptOrRejectInvitation)
     {
     }
 
 
     public function __invoke($idInvitationPool, Request $request)
     {
-
-        //todo: develop domain service with bussiness rules and unit test
         $PoolInvitationsEmails = PoolInvitationsEmails::find($idInvitationPool);
 
-        //todo: when accept invitations, emit domain event to add user to pool
-        $request->get('accepted') && $PoolInvitationsEmails->pool->addUser(auth()->user());
-
-        $PoolInvitationsEmails->accepted = $request->get('accepted');
-
-        $PoolInvitationsEmails->save();
+        $this->acceptOrRejectInvitation->__invoke(
+            $PoolInvitationsEmails,
+            $request->get('accepted'),
+            auth()->user()->id
+        );
 
         return response()->json([
             'status' => 'true',

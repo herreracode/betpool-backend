@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Events\AcceptInvitationPool;
 use App\Models\Common\AggregateRoot;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property int $pool_id

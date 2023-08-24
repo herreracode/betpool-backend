@@ -2,20 +2,13 @@
 
 namespace Tests\Unit\PoolInvitationsEmails\Actions;
 
-use App\Actions\Pool\CreatePool;
 use App\Actions\PoolInvitationsEmails\AcceptOrRejectInvitation;
 use App\Events\AcceptInvitationPool;
-use App\Events\CreatedPool;
-use App\Exceptions\Pool\CompetitionMustBeUniqueInAPool;
-use App\Models\Competition;
-use App\Models\Pool;
 use App\Models\PoolInvitationsEmails;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutEvents;
 use Illuminate\Support\Facades\Event;
-use Laravel\Sanctum\Sanctum;
-use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class AcceptOrRejectInvitationTest extends TestCase

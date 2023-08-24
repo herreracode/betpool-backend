@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Events\AcceptInvitationPool;
 use App\Events\CreatedPool;
 use App\Events\UpdatedGameResult;
+use App\Listeners\AddUserPoolWhenAcceptInvitation;
 use App\Listeners\ClosePredictionsWhenUpdatedGameResultListener;
 use App\Listeners\SendEmailInvitationsUsersPool;
 use Illuminate\Auth\Events\Registered;
@@ -27,7 +29,10 @@ class EventServiceProvider extends ServiceProvider
         ],
         UpdatedGameResult::class => [
             ClosePredictionsWhenUpdatedGameResultListener::class,
-        ]
+        ],
+        AcceptInvitationPool::class => [
+            AddUserPoolWhenAcceptInvitation::class,
+        ] 
     ];
 
     /**
