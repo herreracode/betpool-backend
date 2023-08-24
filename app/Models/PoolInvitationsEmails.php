@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\AcceptInvitationPool;
 use App\Models\Common\AggregateRoot;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -40,6 +41,7 @@ class PoolInvitationsEmails extends AggregateRoot
         $this->save();
 
         //record event
+        $this->record(new AcceptInvitationPool($this));
     }
 
     public function reject($userId)
