@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { Link } from "@inertiajs/vue3";
-import { ref , computed } from 'vue';
+import { computed } from 'vue';
 import Pool from "@/Models/Pool";
 import PoolRound from "@/Models/PoolRound";
 
@@ -17,20 +17,6 @@ const positionTableOrder = computed(() => {
   return props.positions_table.sort((a, b) => a.total_points_earned < b.total_points_earned ? 1 : -1)
 })
 
-const desserts = ref([
-    {
-        name: 'Jhon doe',
-        puntos: 25,
-    },
-    {
-        name: 'Test 2',
-        puntos: 12,
-    },
-    {
-        name: 'Eclair',
-        puntos: 7,
-    },
-]);
 
 </script>
 

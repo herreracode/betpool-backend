@@ -37,9 +37,7 @@ class GetPositionTableByPool
         $query = new GetPredictionsByCriteriaQuery(user_id: $User->id, pool_id: $Pool->id);
 
         $Predictions = $this->getPredictionsByCriteria->__invoke(
-            $query,
-            PoolFilter::class,
-            UserFilter::class
+            $query
         );
 
         $sum = 0;

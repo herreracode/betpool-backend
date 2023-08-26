@@ -6,7 +6,7 @@ use App\Models\Pool;
 use App\Models\PoolRound;
 use App\Queries\Games\GetGamesForPoolRound;
 use App\Queries\Games\GetGamesOwnerPoolRound;
-use App\Queries\Prediction\GetPredictionsByPoolRound;
+use App\Queries\Prediction\GetPredictionsOwnerUserByPoolRound;
 use Inertia\Inertia;
 use App\Http\Controllers\Controller;
 
@@ -16,7 +16,7 @@ class PoolRoundViewController extends Controller
     public function __construct(
         public GetGamesForPoolRound $GetGamesForPoolRound,
         public GetGamesOwnerPoolRound $getGamesOwnerPoolRound,
-        public GetPredictionsByPoolRound $getPredictionsByPoolRound
+        public GetPredictionsOwnerUserByPoolRound $getPredictionsOwnerUserByPoolRound
         ){
 
     }
@@ -25,8 +25,11 @@ class PoolRoundViewController extends Controller
     {
         $PoolRound = PoolRound::find($idPoolRound);
 
-        $ownPredictions = $this->getPredictionsByPoolRound->__invoke(
-            $PoolRound
+        $User = auth()->user();
+
+        $ownPredictions = $this->getPredictionsOwnerUserByPoolRound->__invoke(
+            $PoolRound,
+            $User
         );
 
         return Inertia::render(
@@ -36,7 +39,7 @@ class PoolRoundViewController extends Controller
                     'id','pool_id','status'
                 ]),
                 "games" => $this->getGamesOwnerPoolRound->__invoke(
-                    auth()->user(),
+                    $User,
                     $PoolRound
                 ),
                 'own_predictions' => $ownPredictions,

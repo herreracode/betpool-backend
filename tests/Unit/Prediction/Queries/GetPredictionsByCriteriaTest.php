@@ -10,6 +10,7 @@ use App\Models\PoolRound;
 use App\Models\Prediction;
 use App\Models\User;
 use App\Queries\Prediction\Filters\PoolFilter;
+use App\Queries\Prediction\Filters\PoolRoundFilter;
 use App\Queries\Prediction\GetPredictionsByCriteria;
 use App\Queries\Prediction\GetPredictionsByCriteriaQuery;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -82,14 +83,12 @@ class GetPredictionsByCriteriaTest extends TestCase
             new GetPredictionsByCriteriaQuery(
                 pool_id: $Pool->id,
             ),
-            PoolFilter::class
         );
 
         $PredictionsRecieved2 = $this->GetPredictionsByCriteria->__invoke(
             new GetPredictionsByCriteriaQuery(
                 pool_id: $Pool2->id,
             ),
-            PoolFilter::class
         );
 
         $this->assertEquals($PredictionsRecieved->count(), $countPredictions);

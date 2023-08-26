@@ -3,6 +3,9 @@
 namespace App\Queries\Prediction;
 
 use App\Models\Prediction;
+use App\Queries\Prediction\Filters\PoolFilter;
+use App\Queries\Prediction\Filters\PoolRoundFilter;
+use App\Queries\Prediction\Filters\UserFilter;
 use Illuminate\Pipeline\Pipeline;
 use stdClass;
 
@@ -12,8 +15,7 @@ use stdClass;
 class GetPredictionsByCriteria
 {
     public function __invoke(
-        GetPredictionsByCriteriaQuery $GetPredictionByCriteriaQuery,
-        ...$filters
+        GetPredictionsByCriteriaQuery $GetPredictionByCriteriaQuery
     ) {
         $QueryBuilder = Prediction::query();
 
@@ -23,8 +25,12 @@ class GetPredictionsByCriteria
 
         return app(Pipeline::class)
             ->send($DtoPipeline)
-            ->through($filters)
-            ->thenReturn()
+            ->through([
+                PoolFilter::class,
+                UserFilter::class,
+                PoolRoundFilter::class
+            ])
+            ->then(fn($h)  => $h->QueryBuilder)
             ->get();
     }
 }
