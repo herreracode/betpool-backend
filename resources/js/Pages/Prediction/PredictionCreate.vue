@@ -24,7 +24,7 @@ const createPredictions = async () => {
 
 const props = defineProps<Props>()
 
-const predictions = ref(JSON.parse(JSON.stringify(props.games)));
+const predictions = ref(JSON.parse(JSON.stringify(props.games.filter((game: Game) => game.status != '_FINISH_'))));
 
 </script>
 
