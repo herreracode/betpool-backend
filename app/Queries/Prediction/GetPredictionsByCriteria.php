@@ -5,7 +5,6 @@ namespace App\Queries\Prediction;
 use App\Models\Prediction;
 use Illuminate\Pipeline\Pipeline;
 use stdClass;
-use Illuminate\Support\Facades\DB;
 
 /**
  * Class GetPredictionsByCriteria

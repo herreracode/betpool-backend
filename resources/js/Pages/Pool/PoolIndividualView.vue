@@ -1,16 +1,21 @@
 <script setup lang="ts">
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { Link } from "@inertiajs/vue3";
-import { ref } from 'vue';
+import { ref , computed } from 'vue';
 import Pool from "@/Models/Pool";
 import PoolRound from "@/Models/PoolRound";
 
 interface Props {
     pool: Pool,
     pool_rounds: PoolRound[],
+    positions_table: []
 }
 
 const props = defineProps<Props>()
+
+const positionTableOrder = computed(() => {
+  return props.positions_table.sort((a, b) => a.total_points_earned < b.total_points_earned ? 1 : -1)
+})
 
 const desserts = ref([
     {
@@ -85,9 +90,9 @@ const desserts = ref([
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="item in desserts" :key="item.name">
-                                <td>{{ item.name }}</td>
-                                <td>{{ item.puntos }}</td>
+                            <tr v-for="item in positionTableOrder">
+                                <td>{{ item.user_name }}</td>
+                                <td>{{ item.total_points_earned }}</td>
                             </tr>
                         </tbody>
                     </v-table>

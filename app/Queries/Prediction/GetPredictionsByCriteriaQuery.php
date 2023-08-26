@@ -8,7 +8,8 @@ namespace App\Queries\Prediction;
 class GetPredictionsByCriteriaQuery
 {
     public function __construct(
-        public ?int $pool_id
+        public ?int $pool_id = null,
+        public ?int $user_id = null
     ) {
     }
 }
