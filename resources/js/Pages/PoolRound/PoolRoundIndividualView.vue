@@ -11,6 +11,7 @@ interface Props {
     games: Game[],
     own_predictions: Prediction[] | null,
     can_create_predictions: boolean,
+    others_predictions: [],
 }
 
 const props = defineProps<Props>()
@@ -19,7 +20,7 @@ const tab = ref(null);
 
 const colorByStatus = (status) => {
 
-    return status == '_FINISH_' || status == '_CLOSE_' ?  'green' : '';
+    return status == '_FINISH_' || status == '_CLOSE_' ? 'green' : '';
 
 }
 
@@ -31,9 +32,9 @@ const colorByStatus = (status) => {
         <template #header>
             <div>
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    Pool Round {{ pool_round.id }}  <v-chip class="ma-2" :color="colorByStatus(pool_round.status)">
-                                                        {{ pool_round.status }}
-                                                    </v-chip>
+                    Pool Round {{ pool_round.id }} <v-chip class="ma-2" :color="colorByStatus(pool_round.status)">
+                        {{ pool_round.status }}
+                    </v-chip>
                 </h2>
             </div>
             <div>
@@ -132,13 +133,26 @@ const colorByStatus = (status) => {
                                     </v-table>
                                 </v-window-item>
                                 <v-window-item value="three">
-                                    Se veran las predicciones de los demas cuando venza el plazos
-                                </v-window-item>
-                            </v-window>
-                        </v-card-text>
-                    </v-card>
-                </div>
+                                    <v-expansion-panels class="mb-6">
+                                        <v-expansion-panel v-for="other_prediction in props.others_predictions">
+                                            <v-expansion-panel-title expand-icon="mdi-menu-down">
+                                                {{other_prediction.user.name}}
+                                            </v-expansion-panel-title>
+                                            <v-expansion-panel-text v-for="prediction in other_prediction.predictions">
+                                                <div>
+                                                    <span>{{prediction.team_local}} {{prediction.score_local}} vs {{prediction.score_away}} {{prediction.team_away}} </span> 
+                                                    <v-chip class="ma-2" size="small">
+                                                        puntos ganados: {{prediction.points_earned}}
+                                                    </v-chip>
+                                                </div>
+                                            </v-expansion-panel-text>
+                                        </v-expansion-panel>
+                                    </v-expansion-panels>
+                            </v-window-item>
+                        </v-window>
+                    </v-card-text>
+                </v-card>
             </div>
         </div>
-    </AppLayout>
-</template>
+    </div>
+</AppLayout></template>

@@ -17,7 +17,7 @@ class PoolRoundViewController extends Controller
         public GetGamesForPoolRound $GetGamesForPoolRound,
         public GetGamesOwnerPoolRound $getGamesOwnerPoolRound,
         public GetPredictionsOwnerUserByPoolRound $getPredictionsOwnerUserByPoolRound
-        ){
+    ) {
 
     }
 
@@ -36,14 +36,114 @@ class PoolRoundViewController extends Controller
             'PoolRound/PoolRoundIndividualView',
             [
                 "pool_round" => $PoolRound->only([
-                    'id','pool_id','status'
+                    'id',
+                    'pool_id',
+                    'status'
                 ]),
                 "games" => $this->getGamesOwnerPoolRound->__invoke(
                     $User,
                     $PoolRound
                 ),
                 'own_predictions' => $ownPredictions,
-                'can_create_predictions' => !$ownPredictions
+                'can_create_predictions' => !$ownPredictions,
+                'others_predictions' => [
+                    [
+                        'user' => [
+                            'id' => 1,
+                            'name' => "gerardo 1",
+                        ],
+                        'predictions' => [
+                            [
+                                "team_away" => "real madrid",
+                                "score_away" => "0",
+                                "team_local" => "Barcelona",
+                                "score_local" => "7",
+                                "points_earned" => "12"
+                            ],
+                            [
+                                "team_away" => "real madrid",
+                                "score_away" => "0",
+                                "team_local" => "Barcelona",
+                                "score_local" => "7",
+                                "points_earned" => "12"
+                            ],
+                        ]
+                    ],
+                    [
+                        'user' => [
+                            'id' => 2,
+                            'name' => "gerardo 2",
+                        ],
+                        'predictions' => [
+                            [
+                                "team_away" => "real madrid",
+                                "score_away" => "0",
+                                "team_local" => "Barcelona",
+                                "score_local" => "7",
+                                "points_earned" => "12"
+                            ],
+                            [
+                                "team_away" => "real madrid",
+                                "score_away" => "0",
+                                "team_local" => "Barcelona",
+                                "score_local" => "7",
+                                "points_earned" => "12"
+                            ],
+                        ]
+                    ],
+                    [
+                        'user' => [
+                            'id' => 2,
+                            'name' => "gerardo 2",
+                        ],
+                        'predictions' => [
+                            [
+                                "team_away" => "real madrid",
+                                "score_away" => "0",
+                                "team_local" => "Barcelona",
+                                "score_local" => "7",
+                                "points_earned" => "12"
+                            ],
+                            [
+                                "team_away" => "real madrid",
+                                "score_away" => "0",
+                                "team_local" => "Barcelona",
+                                "score_local" => "7",
+                                "points_earned" => "12"
+                            ],[
+                                "team_away" => "real madrid",
+                                "score_away" => "0",
+                                "team_local" => "Barcelona",
+                                "score_local" => "7",
+                                "points_earned" => "12"
+                            ],[
+                                "team_away" => "real madrid",
+                                "score_away" => "0",
+                                "team_local" => "Barcelona",
+                                "score_local" => "7",
+                                "points_earned" => "12"
+                            ],[
+                                "team_away" => "real madrid",
+                                "score_away" => "0",
+                                "team_local" => "Barcelona",
+                                "score_local" => "7",
+                                "points_earned" => "12"
+                            ],[
+                                "team_away" => "real madrid",
+                                "score_away" => "0",
+                                "team_local" => "Barcelona",
+                                "score_local" => "7",
+                                "points_earned" => "12"
+                            ],[
+                                "team_away" => "real madrid",
+                                "score_away" => "0",
+                                "team_local" => "Barcelona",
+                                "score_local" => "7",
+                                "points_earned" => "12"
+                            ],
+                        ]
+                    ],
+                ]
             ]
         );
     }
