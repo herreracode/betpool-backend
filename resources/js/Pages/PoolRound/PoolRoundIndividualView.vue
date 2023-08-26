@@ -17,6 +17,12 @@ const props = defineProps<Props>()
 
 const tab = ref(null);
 
+const colorByStatus = (status) => {
+
+    return status == '_FINISH_' || status == '_CLOSE_' ?  'green' : '';
+
+}
+
 
 </script>
 
@@ -25,7 +31,9 @@ const tab = ref(null);
         <template #header>
             <div>
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    Pool Round {{ pool_round.id }} | {{ pool_round.status }}
+                    Pool Round {{ pool_round.id }}  <v-chip class="ma-2" :color="colorByStatus(pool_round.status)">
+                                                        {{ pool_round.status }}
+                                                    </v-chip>
                 </h2>
             </div>
             <div>
@@ -71,7 +79,11 @@ const tab = ref(null);
                                                 <td>{{ item.description }}</td>
                                                 <td>{{ item.score_local }} - {{ item.score_away }}</td>
                                                 <td>{{ item.date_start }}</td>
-                                                <td>{{ item.status }}</td>
+                                                <td>
+                                                    <v-chip class="ma-2" :color="colorByStatus(item.status)">
+                                                        {{ item.status }}
+                                                    </v-chip>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </v-table>
@@ -102,10 +114,15 @@ const tab = ref(null);
                                             <tr v-for="item in own_predictions" :key="item.id">
                                                 <td>{{ item.description }}</td>
                                                 <td>{{ item.score_local }} - {{ item.score_away }}</td>
-                                                <td>{{ item.status }}</td>
+                                                <td>
+                                                    <v-chip class="ma-2" :color="colorByStatus(item.status)">
+                                                        {{ item.status }}
+                                                    </v-chip>
+                                                </td>
                                                 <td>{{ item.points_earned ? item.points_earned : '-' }}</td>
-                                                <td>  
-                                                    <Link v-if="item.status !== '_CLOSE_'" :href="route('predictions.edit-view', item.id)"
+                                                <td>
+                                                    <Link v-if="item.status !== '_CLOSE_'"
+                                                        :href="route('predictions.edit-view', item.id)"
                                                         class="v-btn v-btn--elevated v-theme--light bg-info v-btn--density-default v-btn--size-default v-btn--variant-elevated">
                                                     Editar
                                                     </Link>
@@ -123,4 +140,5 @@ const tab = ref(null);
                 </div>
             </div>
         </div>
-    </AppLayout></template>
+    </AppLayout>
+</template>

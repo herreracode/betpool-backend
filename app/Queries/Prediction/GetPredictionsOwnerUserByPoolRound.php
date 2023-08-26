@@ -5,8 +5,6 @@ namespace App\Queries\Prediction;
 use App\Models\PoolRound;
 use App\Models\Prediction;
 use App\Models\User;
-use App\Queries\Prediction\Filters\PoolRoundFilter;
-use App\Queries\Prediction\Filters\UserFilter;
 
 class GetPredictionsOwnerUserByPoolRound
 {
