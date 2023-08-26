@@ -5,6 +5,7 @@ namespace App\Queries\Prediction;
 use App\Models\Prediction;
 use Illuminate\Pipeline\Pipeline;
 use stdClass;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class GetPredictionsByCriteria
@@ -12,14 +13,14 @@ use stdClass;
 class GetPredictionsByCriteria
 {
     public function __invoke(
-        GetPredictionsByCriteryQuery $GetPredictionByCriteriaQuery,
+        GetPredictionsByCriteriaQuery $GetPredictionByCriteriaQuery,
         ...$filters
     ) {
         $QueryBuilder = Prediction::query();
 
         $DtoPipeline = new stdClass;
         $DtoPipeline->QueryBuilder = $QueryBuilder;
-        $DtoPipeline->GetGameByCriteriaQuery = $GetPredictionByCriteriaQuery;
+        $DtoPipeline->GetPredictionByCriteriaQuery = $GetPredictionByCriteriaQuery;
 
         return app(Pipeline::class)
             ->send($DtoPipeline)

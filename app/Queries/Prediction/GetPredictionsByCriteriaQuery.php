@@ -5,7 +5,7 @@ namespace App\Queries\Prediction;
 /**
  * Class GetGamesActionByCriteria
  */
-class GetPredictionsByCriteryQuery
+class GetPredictionsByCriteriaQuery
 {
     public function __construct(
         public ?int $pool_id

@@ -4,6 +4,8 @@ namespace Database\Factories;
 
 use App\Models\Enums\GameStatus;
 use App\Models\Enums\PredictionStatus;
+use App\Models\Pool;
+use App\Models\PoolRound;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
