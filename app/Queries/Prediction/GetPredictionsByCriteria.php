@@ -35,7 +35,6 @@ class GetPredictionsByCriteria
                 GameStatusFilter::class,
                 PredictionStatusFilter::class,
             ])
-            ->then(fn($h)  => $h->QueryBuilder)
-            ->get();
+            ->then(fn($h)  => $h->QueryBuilder->select('predictions.*')->get());
     }
 }
