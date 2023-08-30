@@ -46,8 +46,8 @@ const rejectInvitation = async (invitationId) => {
         </template>
 
         <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+            <div class="container-principal max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div class="container-principal--item container-pools bg-white overflow-hidden shadow-xl sm:rounded-lg">
                     <v-toolbar color="blue" title="Pools">
                         <Link :href="route('pool.create-view')"
                             class="v-btn v-btn--elevated v-theme--light bg-info v-btn--density-default v-btn--size-default v-btn--variant-elevated">
@@ -83,7 +83,7 @@ const rejectInvitation = async (invitationId) => {
                         </v-row>
                     </v-container>
                 </div>
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+                <div class="container-principal--item container-invitations bg-white overflow-hidden shadow-xl sm:rounded-lg">
                     <v-toolbar color="blue" title="Invitaciones a pool">
                     </v-toolbar>
                     <v-container class="invitations_container">
@@ -119,3 +119,19 @@ const rejectInvitation = async (invitationId) => {
         </div>
     </AppLayout>
 </template>
+
+<style lang="scss" scoped>
+
+.container-principal{
+
+    display: flex;
+    flex-direction: column;
+
+    .container-principal--item{
+
+        margin : 1%;
+
+    }
+}
+
+</style>

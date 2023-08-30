@@ -28,7 +28,7 @@ const positionTableOrder = computed(() => {
                     Pool {{ pool.name }}
                 </h2>
             </div>
-            <div>
+            <div class="container-button-actions">
                 <Link :href="route('pool-round.create-view', pool.id)"
                     class="v-btn v-btn--elevated v-theme--light bg-info v-btn--density-default v-btn--size-default v-btn--variant-elevated">
                     Crear Round
@@ -39,8 +39,8 @@ const positionTableOrder = computed(() => {
             </div>
         </template>
         <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+            <div class="container-principal max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div class="container-principal--item bg-white overflow-hidden shadow-xl sm:rounded-lg">
                     <v-toolbar color="blue" title="Round Pools">
                     </v-toolbar>
                     <v-container class="round_Zpools_container">
@@ -70,7 +70,7 @@ const positionTableOrder = computed(() => {
                         </v-row>
                     </v-container>
                 </div>
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+                <div class="container-principal--item bg-white overflow-hidden shadow-xl sm:rounded-lg">
                     <v-toolbar color="blue" title="Tabla de posiciones">
                     </v-toolbar>
                     <v-table density="compact">
@@ -96,3 +96,25 @@ const positionTableOrder = computed(() => {
         </div>
     </AppLayout>
 </template>
+
+<style lang="scss" scoped>
+
+.container-principal{
+
+    display: flex;
+    flex-direction: column;
+
+    .container-principal--item{
+
+        margin : 1%;
+
+    }
+}
+
+.container-button-actions{
+
+    display: flex;
+    gap:0.5%;
+}
+
+</style>
