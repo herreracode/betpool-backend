@@ -45,10 +45,19 @@ const positionTableOrder = computed(() => {
                     </v-toolbar>
                     <v-container class="round_Zpools_container">
                         <v-row>
+                            <v-alert
+                                v-if="props.pool_rounds.length == 0"
+                                variant="outlined"
+                                type="warning"
+                                prominent
+                                border="top"
+                            >
+                                Aún no se ha creado ningún round dentro del pool
+                            </v-alert>
                             <v-col v-for=" poolRound in props.pool_rounds" :key="poolRound.id" cols="12" sm="4">
                                 <v-card>
                                     <v-card-title>
-                                        Round Pools {{ poolRound.id }} | {{ poolRound.status }} 
+                                        Round Pools {{ poolRound.id }} | {{ poolRound.status }}
                                     </v-card-title>
                                     <v-card-actions>
                                         <Link as="button" :href="route('pool-round.indiviual-view', poolRound.id)"

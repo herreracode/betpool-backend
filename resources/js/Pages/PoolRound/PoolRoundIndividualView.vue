@@ -91,7 +91,16 @@ const colorByStatus = (status) => {
                                 </v-window-item>
 
                                 <v-window-item value="two">
-                                    <v-table>
+                                    <v-alert
+                                        v-if="props.own_predictions.length == 0"
+                                        variant="outlined"
+                                        type="warning"
+                                        prominent
+                                        border="top"
+                                    >
+                                        Aún no ha creado las predicciones
+                                    </v-alert>
+                                    <v-table v-else>
                                         <thead>
                                             <tr>
                                                 <th class="text-left">
@@ -133,14 +142,33 @@ const colorByStatus = (status) => {
                                     </v-table>
                                 </v-window-item>
                                 <v-window-item value="three">
-                                    <v-expansion-panels class="mb-6">
+                                    <v-alert
+                                        v-if="props.others_predictions.length == 0"
+                                        variant="outlined"
+                                        type="warning"
+                                        prominent
+                                        border="top"
+                                    >
+                                        Aún no hay predicciones de los demas participantes
+                                    </v-alert>
+                                    <v-expansion-panels class="mb-6" v-else>
                                         <v-expansion-panel v-for="other_prediction in props.others_predictions">
                                             <v-expansion-panel-title expand-icon="mdi-menu-down">
                                                 {{other_prediction.user.name}}
                                             </v-expansion-panel-title>
-                                            <v-expansion-panel-text v-for="prediction in other_prediction.predictions">
+                                            <v-expansion-panel-text v-if="other_prediction.predictions.length == 0">
+                                                <v-alert
+                                                    variant="outlined"
+                                                    type="warning"
+                                                    prominent
+                                                    border="top"
+                                                >
+                                                    Aún el participante no tiene predicciones finalizadas
+                                                </v-alert>
+                                            </v-expansion-panel-text>
+                                            <v-expansion-panel-text v-else v-for="prediction in other_prediction.predictions">
                                                 <div>
-                                                    <span>{{prediction.team_local}} {{prediction.score_local}} vs {{prediction.score_away}} {{prediction.team_away}} </span> 
+                                                    <span>{{prediction.team_local}} {{prediction.score_local}} vs {{prediction.score_away}} {{prediction.team_away}} </span>
                                                     <v-chip class="ma-2" size="small">
                                                         puntos ganados: {{prediction.points_earned}}
                                                     </v-chip>

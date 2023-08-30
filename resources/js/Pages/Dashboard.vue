@@ -24,7 +24,7 @@ const acceptInvitation = async (invitationId) => {
 }
 
 const rejectInvitation = async (invitationId) => {
-    
+
     const json = await HttpClient.patch(route('pools-invitations-emails.patch', invitationId), {
         accepted : 0
     });
@@ -56,6 +56,15 @@ const rejectInvitation = async (invitationId) => {
                     </v-toolbar>
                     <v-container class="pools_container">
                         <v-row>
+                            <v-alert
+                                v-if="props.pools.length == 0"
+                                variant="outlined"
+                                type="warning"
+                                border="start"
+                                prominent
+                            >
+                                Aún no forma parte de ningún pool
+                            </v-alert>
                             <v-col v-for=" pool in props.pools" :key="pool.id" cols="12" sm="4">
                                 <v-card>
                                     <v-card-title class="text-h5">
@@ -79,6 +88,15 @@ const rejectInvitation = async (invitationId) => {
                     </v-toolbar>
                     <v-container class="invitations_container">
                         <v-row>
+                            <v-alert
+                                v-if="props.invitations_pools.length == 0"
+                                variant="outlined"
+                                type="warning"
+                                prominent
+                                border="top"
+                            >
+                                No tiene invitaciones pendientes
+                            </v-alert>
                             <v-col v-for=" invitation_pool in props.invitations_pools" :key="invitation_pool.id" cols="12" sm="4">
                                 <v-card>
                                     <v-card-title class="text-h5">
