@@ -10,10 +10,8 @@ use App\Models\Game;
 use App\Models\Pool;
 use App\Models\PoolRound;
 use App\Models\Prediction;
-use App\Models\Score;
 use App\Models\Team;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutEvents;
 use Tests\TestCase;
@@ -53,6 +51,7 @@ class ClosePredictionsWhenUpdatedGameResultListenerTest extends TestCase
 
         $PoolRound = PoolRound::factory()
             ->for($Pool)
+            ->hasAttached($Game)
             ->create();
 
         Prediction::factory(50)

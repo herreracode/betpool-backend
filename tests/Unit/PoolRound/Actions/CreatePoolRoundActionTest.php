@@ -6,6 +6,7 @@ use App\Actions\Pool\CreatePool;
 use App\Actions\PoolRound\CreatePoolRound;
 use App\Events\CreatedPool;
 use App\Exceptions\Pool\CompetitionMustBeUniqueInAPool;
+use App\Exceptions\PoolRound\AlreadyHavePoolRoundPending;
 use App\Exceptions\PoolRound\GameIsNotPending;
 use App\Exceptions\PoolRound\UserDoesNotHaveTheRequiredRole;
 use App\Models\Competition;
@@ -17,6 +18,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutEvents;
 use Illuminate\Support\Facades\Event;
+use Laravel\Sanctum\Sanctum;
 use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
@@ -49,6 +51,11 @@ class CreatePoolRoundActionTest extends TestCase
             'email' => 'test@example.com',
         ]);
 
+        $UserCreator = Sanctum::actingAs(
+            $UserCreator,
+            ['*']
+        );
+
         $Pool = Pool::factory()->create();
 
         $UserCreator->addRoleUserCreatorByPool($Pool);
@@ -71,6 +78,9 @@ class CreatePoolRoundActionTest extends TestCase
         $this->assertInstanceOf(PoolRound::class, $PoolRound);
 
         $this->assertEquals($PoolRound->games->pluck('id'), $Games->pluck('id'));
+
+        //Pool create with status _PENDING_ with default
+        $this->assertEquals($PoolRound->status, '_PENDING_');
     }
 
     public function testThrowExceptionWhenGameIsNotPending()
@@ -84,6 +94,11 @@ class CreatePoolRoundActionTest extends TestCase
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        $UserCreator = Sanctum::actingAs(
+            $UserCreator,
+            ['*']
+        );
 
         $Pool = Pool::factory()->create();
 
@@ -117,10 +132,20 @@ class CreatePoolRoundActionTest extends TestCase
             'email' => 'test@example.com',
         ]);
 
+        $UserCreator = Sanctum::actingAs(
+            $UserCreator,
+            ['*']
+        );
+
         $UserCreator2 = User::factory()->create([
-        'name' => 'Test User 2',
-        'email' => 'tes2t@example.com',
+            'name' => 'Test User 2',
+            'email' => 'tes2t@example.com',
         ]);
+
+        $UserCreator2 = Sanctum::actingAs(
+            $UserCreator2,
+            ['*']
+        );
 
 
         $Pool = Pool::factory()->create();
@@ -144,6 +169,50 @@ class CreatePoolRoundActionTest extends TestCase
             $Games
         );
 
+    }
+
+    public function testThrowExceptionWhenAlreadyHasOnePending()
+    {
+
+        $this->expectException(AlreadyHavePoolRoundPending::class);
+
+        /**
+         * @var User $UserCreator
+         */
+        $UserCreator = User::factory()->create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+        ]);
+
+        $UserCreator = Sanctum::actingAs(
+            $UserCreator,
+            ['*']
+        );
+
+        $Pool = Pool::factory()->create();
+
+        $UserCreator->addRoleUserCreatorByPool($Pool);
+
+        $Competition = Competition::factory();
+
+        $CompetitionPhase = CompetitionPhase::factory()->for($Competition);
+
+        $Games = Game::factory(3)
+            ->for($CompetitionPhase)
+            ->inPending()
+            ->create();
+
+        PoolRound::factory()
+            ->for($Pool)
+            ->inPending()
+            ->create()
+            ->refresh();
+
+        $PoolRound = $this->CreatePoolRoundAction->__invoke(
+            $UserCreator,
+            $Pool,
+            $Games
+        );
     }
 
 }

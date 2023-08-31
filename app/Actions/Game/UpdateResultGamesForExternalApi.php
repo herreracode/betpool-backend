@@ -2,13 +2,11 @@
 
 namespace App\Actions\Game;
 
-use App\Actions\Game\Command\CreateGameCommand;
 use App\Actions\Game\Contract\GetterGamesExternalApi;
 use App\Actions\Team\FindOrCreateTeam;
 use App\Models\Competition;
 use App\Models\Game;
 use App\Models\Team;
-use Faker\Core\DateTime;
 
 class UpdateResultGamesForExternalApi
 {
@@ -32,6 +30,10 @@ class UpdateResultGamesForExternalApi
         $Games = [];
 
         foreach ($arrayResponses as $Response) {
+
+            if(!($Response->status ==  "STATUS_FULL_TIME")){
+                continue;
+            }
 
             $localTeamData = $Response->getDataLocalTeam();
 

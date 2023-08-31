@@ -3,11 +3,7 @@
 namespace Prediction\Actions;
 
 use App\Actions\Prediction\ClosePrediction;
-use App\Actions\Prediction\CreatePrediction;
-use App\Exceptions\Pool\UserDoesntBelongToThePool;
-use App\Exceptions\Prediction\GameIsAboutToStart;
 use App\Exceptions\Prediction\GameIsNotFinishedToClosePrediction;
-use App\Exceptions\Prediction\GameIsNotStateValid;
 use App\Models\Competition;
 use App\Models\CompetitionPhase;
 use App\Models\Game;
@@ -15,7 +11,6 @@ use App\Models\Pool;
 use App\Models\PoolRound;
 use App\Models\Prediction;
 use App\Models\Score;
-use App\Models\Team;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutEvents;

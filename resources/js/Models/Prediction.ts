@@ -8,5 +8,5 @@ export default interface Prediction {
     user_id: string;
     pool_id: string;
     game_id: string;
-    points_earnerd: string | null;
+    points_earned: string | null;
 }

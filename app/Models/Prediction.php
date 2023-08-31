@@ -6,6 +6,7 @@ use App\DomainServices\Prediction\CalculateNumberOfPointsEarned;
 use App\Exceptions\Prediction\GameIsAboutToStart;
 use App\Exceptions\Prediction\GameIsNotFinishedToClosePrediction;
 use App\Exceptions\Prediction\GameIsNotStateValid;
+use App\Exceptions\Prediction\UserModifierNotOwner;
 use App\Models\Common\Contracts\Scorable;
 use App\Models\Common\Traits\HasScore;
 use App\Models\Enums\PredictionStatus;
@@ -133,5 +134,29 @@ class Prediction extends Model implements Scorable
         return $this->game->awayTeam;
     }
 
+    public function modify($scoreLocal, $scoreAway, $idUserModifier)
+    {
+        $Game = $this->game;
+
+        //validate Game finished
+        if (!$Game->itIsPending())
+            throw GameIsNotStateValid::create("game is not state pending");
+
+        //validate Game has not started yet (isAboutToStart).leave to do at the end
+
+        //validate scores is not the same as before
+
+        //validate user modifier is prediction owner
+        if ($this->user_id !== $idUserModifier)
+            throw UserModifierNotOwner::create("game is not state pending");
+
+        $this->score->local_team_score = $scoreLocal;
+
+        $this->score->away_team_score = $scoreAway;
+
+        $this->score->save();
+
+        return $this;
+    }
 
 }

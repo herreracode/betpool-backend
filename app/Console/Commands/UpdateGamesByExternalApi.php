@@ -42,11 +42,16 @@ class UpdateGamesByExternalApi extends Command
 
             if(is_array($dates)){
 
-                foreach ($dates as $date)
+                foreach ($dates as $date){
+                    
+                    echo $date;
                     $Competitions
                         ->each(
                             $this->createGameByCompetition($UpdateResultGamesForExternalApi, $date)
                         );
+
+                }
+                    
             }else{
                 $Competitions
                     ->each(
@@ -78,7 +83,7 @@ class UpdateGamesByExternalApi extends Command
     {
         $dates = [];
 
-        foreach (range(1, static::NUMBER_DAYS_TO_UPDATE) as $numberDaysTo)
+        foreach (range(0, static::NUMBER_DAYS_TO_UPDATE) as $numberDaysTo)
         {
             $dates[] = (new \DateTime())
                 ->modify("-{$numberDaysTo} day")

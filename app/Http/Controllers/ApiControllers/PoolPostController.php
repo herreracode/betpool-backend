@@ -24,7 +24,8 @@ class PoolPostController extends Controller
         $Pool = $this->createPool->__invoke(
             auth()->user(),
             $request->get('name'),
-            $Competitions
+            $Competitions,
+            $request->get('guests')
         );
 
 

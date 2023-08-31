@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
+use App\Events\AcceptInvitationPool;
+use App\Models\Common\AggregateRoot;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property int $pool_id
@@ -14,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $created_at
  * @property string $updated_at
  */
-class PoolInvitationsEmails extends Model
+class PoolInvitationsEmails extends AggregateRoot
 {
     use HasFactory;
 
@@ -28,5 +29,26 @@ class PoolInvitationsEmails extends Model
     public function pool()
     {
         return $this->belongsTo(Pool::class);
+    }
+
+    public function accept($userId)
+    {
+        $this->accepted = true;
+
+        $this->user_id = $userId;
+
+        $this->save();
+
+        //record event
+        $this->record(new AcceptInvitationPool($this));
+    }
+
+    public function reject($userId)
+    {
+        $this->accepted = false;
+
+        $this->user_id = $userId;
+
+        $this->save();
     }
 }

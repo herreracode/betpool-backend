@@ -6,7 +6,8 @@ use App\Models\Pool;
 use App\Models\PoolRound;
 use App\Queries\Games\GetGamesForPoolRound;
 use App\Queries\Games\GetGamesOwnerPoolRound;
-use App\Queries\Prediction\GetPredictionsByPoolRound;
+use App\Queries\Prediction\GetOthersPredictionsByPoolRound;
+use App\Queries\Prediction\GetPredictionsOwnerUserByPoolRound;
 use Inertia\Inertia;
 use App\Http\Controllers\Controller;
 
@@ -16,8 +17,9 @@ class PoolRoundViewController extends Controller
     public function __construct(
         public GetGamesForPoolRound $GetGamesForPoolRound,
         public GetGamesOwnerPoolRound $getGamesOwnerPoolRound,
-        public GetPredictionsByPoolRound $getPredictionsByPoolRound
-        ){
+        public GetPredictionsOwnerUserByPoolRound $getPredictionsOwnerUserByPoolRound,
+        public GetOthersPredictionsByPoolRound $getOthersPredictionsByPoolRound
+    ) {
 
     }
 
@@ -25,17 +27,31 @@ class PoolRoundViewController extends Controller
     {
         $PoolRound = PoolRound::find($idPoolRound);
 
+        $User = auth()->user();
+
+        $ownPredictions = $this->getPredictionsOwnerUserByPoolRound->__invoke(
+            $PoolRound,
+            $User
+        );
+
         return Inertia::render(
             'PoolRound/PoolRoundIndividualView',
             [
-                "number" => $idPoolRound,
+                "pool_round" => $PoolRound->only([
+                    'id',
+                    'pool_id',
+                    'status'
+                ]),
                 "games" => $this->getGamesOwnerPoolRound->__invoke(
-                    auth()->user(),
+                    $User,
                     $PoolRound
                 ),
-                'own_predictions' => $this->getPredictionsByPoolRound->__invoke(
-                    $PoolRound
-                ), 
+                'own_predictions' => $ownPredictions,
+                'can_create_predictions' => !$ownPredictions,
+                'others_predictions' => $this->getOthersPredictionsByPoolRound->__invoke(
+                    $PoolRound,
+                    $User
+                )
             ]
         );
     }
