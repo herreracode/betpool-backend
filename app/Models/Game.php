@@ -108,12 +108,14 @@ class Game extends AggregateRoot implements Scorable
 
     public function isAboutToStart(\DateTime $dateTime): bool
     {
-        if(!($this->date_start instanceof \DateTime))
-            $dateStart = new \DateTime($this->date_start);
-        else 
-            $dateStart = $this->date_start;
+        $dateStart = !($this->date_start instanceof \DateTime)
+            ? new \DateTime($this->date_start)
+            : $this->date_start;
 
-        return $dateStart->diff($dateTime)->i >= static::MINUTES_DIFFERENCE_GAME_TO_START;
+        $diff = $dateStart->diff($dateTime);
+
+        return $diff->i <= static::MINUTES_DIFFERENCE_GAME_TO_START
+            &&  $diff->y == 0 && $diff->m == 0 && $diff->d == 0;
     }
 
     protected function finish()

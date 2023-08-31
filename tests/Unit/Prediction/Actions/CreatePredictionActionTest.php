@@ -45,12 +45,13 @@ class CreatePredictionActionTest extends TestCase
             ->for($Pool)
             ->create();
 
-        $timeInMinutesToExpiredPeriod = 29;
+        $timeInMinutesToExpiredPeriod = 31;
 
         $dateCreatePrediction = new \DateTime();
 
         $nowTimeStampAddTime = (new \DateTime())
-            ->modify("+{$timeInMinutesToExpiredPeriod} minutes");
+            ->modify("+{$timeInMinutesToExpiredPeriod} minutes")
+            ->modify("+2 days");
 
         $Game = Game::factory([
             'date_start' => $nowTimeStampAddTime
@@ -158,7 +159,7 @@ class CreatePredictionActionTest extends TestCase
     {
         $this->expectException(GameIsAboutToStart::class);
 
-        $timeInMinutesToExpiredPeriod = static::TIME_IN_MINUTES_TO_EXPIRED_PERIOD + rand(1,10);
+        $timeInMinutesToExpiredPeriod = static::TIME_IN_MINUTES_TO_EXPIRED_PERIOD - 2;
 
         $User = User::factory()->create();
 
