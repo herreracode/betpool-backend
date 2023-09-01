@@ -114,6 +114,9 @@ class Game extends AggregateRoot implements Scorable
 
         $diff = $dateStart->diff($dateTime);
 
+        if ($dateTime->getTimestamp() > $dateStart->getTimestamp())
+            return true;
+
         return $diff->i <= static::MINUTES_DIFFERENCE_GAME_TO_START
             &&  $diff->y == 0 && $diff->m == 0 && $diff->d == 0;
     }

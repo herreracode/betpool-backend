@@ -197,4 +197,47 @@ class CreatePredictionActionTest extends TestCase
             dateCreatePrediction : $dateCreatePrediction
         );
     }
+
+    public function testThrowExceptionWhenPeriodToCreatePredictionExceededAllowedTime()
+    {
+        $this->expectException(GameIsAboutToStart::class);
+
+        $timeInDaysToExceeded = 1;
+
+        $User = User::factory()->create();
+
+        $Pool = Pool::factory()
+            ->hasAttached($User)
+            ->create();
+
+        $PoolRound = PoolRound::factory()
+            ->for($Pool)
+            ->create();
+
+        $localTeamScore = rand(1, 7);
+
+        $awayTeamScore = rand(1, 7);
+
+        $nowTimeStampAddDaysToExceeded = new \DateTime();
+
+        $dateCreatePrediction = (new \DateTime())
+            ->modify("+{$timeInDaysToExceeded} days");
+
+        $Game = Game::factory([
+            'date_start' => $nowTimeStampAddDaysToExceeded
+        ])->inPending()
+            ->for(CompetitionPhase::factory()
+                ->for(Competition::factory()))
+            ->create();
+
+        $this->CreatePredictionAction->__invoke(
+            User : $User,
+            Pool : $Pool,
+            Game : $Game,
+            PoolRound :$PoolRound,
+            localTeamScore : $localTeamScore,
+            awayTeamScore : $awayTeamScore,
+            dateCreatePrediction : $dateCreatePrediction
+        );
+    }
 }
