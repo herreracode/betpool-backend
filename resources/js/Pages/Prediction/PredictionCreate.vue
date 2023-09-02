@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ref, computed} from 'vue';
+import {ref, watch } from 'vue';
 import Game from "@/Models/Games";
 import {Link, router} from "@inertiajs/vue3"
 import HttpClient from '@/Shared/HttpClient';
@@ -8,6 +8,19 @@ interface Props {
     games: Game[],
     pool_round_id: string,
 }
+
+const summaryCreations = ref([])
+
+const haveSummary = ref(false)
+
+const props = defineProps<Props>()
+
+const predictions = ref(
+    JSON.parse(
+        JSON.stringify(
+            props.games.filter((game: Game) => game.status != '_FINISH_'))
+    )
+);
 
 const createPredictions = async () => {
 
@@ -24,30 +37,24 @@ const backToPoolRound = () => {
     router.visit(route('pool-round.indiviual-view', props.pool_round_id), {method: 'get'});
 }
 
-const haveSummary = computed(() => {
-    return summaryCreations.length > 0;
-})
+const tryAgain = () => {
+    summaryCreations.value = []
+}
 
-const props = defineProps<Props>()
+watch(summaryCreations, (newName, oldName) => {
 
-const predictions = ref(JSON.parse(JSON.stringify(props.games.filter((game: Game) => game.status != '_FINISH_'))));
+    haveSummary.value = newName.length > 0
 
-const summaryCreations = ref([])
-
+});
 </script>
 
 <template>
     <v-toolbar dark color="info">
         <v-toolbar-title>Crear Predicciones</v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-toolbar-items>
-            <v-btn variant="text">
-                Guardar
-            </v-btn>
-        </v-toolbar-items>
     </v-toolbar>
     <div>
-        <v-card v-if="haveSummary">
+        <v-card v-show="haveSummary">
             <v-card-text v-for="summaryCreation in summaryCreations">
                 <v-alert
                     :type="summaryCreation.status ? 'success' : 'error'"
@@ -60,12 +67,15 @@ const summaryCreations = ref([])
             <v-card-actions>
                 <v-spacer></v-spacer>
 
+                <v-btn color="blue-darken-1" variant="text" @click="tryAgain()">
+                    intentarlo de nuevo
+                </v-btn>
                 <v-btn color="blue-darken-1" variant="text" @click="backToPoolRound()">
                     Volver al pool round
                 </v-btn>
             </v-card-actions>
         </v-card>
-        <v-card v-else>
+        <v-card v-show="!haveSummary">
             <v-card-text>
                 <v-container>
                     <v-row v-for="prediction in predictions" :key="predictions.id">
@@ -97,3 +107,4 @@ const summaryCreations = ref([])
         </v-card>
     </div>
 </template>
+

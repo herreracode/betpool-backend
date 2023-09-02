@@ -46,7 +46,7 @@ class PredictionPostController extends Controller
                     awayTeamScore: $prediction['score_away']
                 );
 
-                $summary[$Game->id] = [
+                $summary[] = [
                     'status'        => true,
                     'prediction_id' => $Prediction->id,
                     'message'       => "",
@@ -57,7 +57,7 @@ class PredictionPostController extends Controller
 
             }catch (\Exception $exception){
 
-                $summary[$Game->id] = [
+                $summary[] = [
                     'status'        => false,
                     'prediction_id' => null,
                     'message'       => $exception->getMessage(),
