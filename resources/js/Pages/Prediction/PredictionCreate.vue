@@ -16,9 +16,13 @@ const createPredictions = async () => {
         pool_round_id: props.pool_round_id
     });
 
-    alert("se han creado las predicciones")
+    //todo: alert with message summary
+    console.log(json);
 
-    router.visit(route('pool-round.indiviual-view', props.pool_round_id), { method: 'get' })
+    setTimeout(() => {
+        router.visit(route('pool-round.indiviual-view', props.pool_round_id), { method: 'get' });
+    }, 3000)
+
 };
 
 
