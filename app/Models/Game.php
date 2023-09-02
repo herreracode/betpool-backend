@@ -118,7 +118,7 @@ class Game extends AggregateRoot implements Scorable
             return true;
 
         return $diff->i <= static::MINUTES_DIFFERENCE_GAME_TO_START
-            &&  $diff->y == 0 && $diff->m == 0 && $diff->d == 0;
+            &&  $diff->y == 0 && $diff->m == 0 && $diff->d == 0 && $diff->h == 0;
     }
 
     protected function finish()

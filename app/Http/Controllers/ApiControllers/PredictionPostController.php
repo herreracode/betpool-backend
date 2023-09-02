@@ -26,28 +26,53 @@ class PredictionPostController extends Controller
         $PoolRound = PoolRound::find($request->get('pool_round_id'));
 
         $Pool = $PoolRound->pool;
-        
+
         $User = auth()->user();
+
+        $summary = [];
 
         foreach($predictions as $prediction){
 
-            $Game = Game::find($prediction['id']);
+            try{
 
-            $this->createPrediction->__invoke(
-                User: $User,
-                Pool: $Pool,
-                Game: $Game,
-                PoolRound : $PoolRound,
-                localTeamScore: $prediction['score_local'],
-                awayTeamScore: $prediction['score_away']
-            );
+                $Game = Game::find($prediction['id']);
 
+                $Prediction = $this->createPrediction->__invoke(
+                    User: $User,
+                    Pool: $Pool,
+                    Game: $Game,
+                    PoolRound : $PoolRound,
+                    localTeamScore: $prediction['score_local'],
+                    awayTeamScore: $prediction['score_away']
+                );
+
+                $summary[$Game->id] = [
+                    'status'        => true,
+                    'prediction_id' => $Prediction->id,
+                    'message'       => "",
+                    'team_local'    => $Game->getLocalTeam()->name,
+                    'team_away'     => $Game->getAwayTeam()->name,
+                    'description'   => $Game->getLocalTeam()->name . ' vs ' . $Game->getAwayTeam()->name,
+                ];
+
+            }catch (\Exception $exception){
+
+                $summary[$Game->id] = [
+                    'status'        => false,
+                    'prediction_id' => null,
+                    'message'       => $exception->getMessage(),
+                    'team_local'    => $Game->getLocalTeam()->name,
+                    'team_away'     => $Game->getAwayTeam()->name,
+                    'description'   => $Game->getLocalTeam()->name . ' vs ' . $Game->getAwayTeam()->name,
+                ];
+
+            }
         }
 
 
         return response()->json([
             'status' => 'true',
-            'item' => "hola"
+            'items' => $summary
         ], 201);
 
     }
