@@ -12,6 +12,7 @@ use App\Http\Controllers\ViewControllers\PredictionViewController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Middleware\EnsureBelongsToPool;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,22 +45,26 @@ Route::middleware([
      */
 
     Route::get('/dashboard', [TestController::class, 'hola'])->name('dashboard');
-    
-    //Pool routes
-    Route::get('/pool/{id}', [PoolViewController::class, 'getPoolIndividualView'])->name('pool.indiviual-view');
-    
-    Route::get('/pool-create-view/', [PoolViewController::class, 'getPoolCreateView'])->name('pool.create-view');
-    
-    
-    //Pool Round Routes
-    Route::get('/pool-round/{id}', [PoolRoundViewController::class, 'getPoolRoundIndividualView'])->name('pool-round.indiviual-view');
 
-    Route::get('/pool-round-create-view/{id_pool}', [PoolRoundViewController::class, 'getPoolRoundCreateView'])->name('pool-round.create-view');
-    
+    //Pool routes
+    Route::get('/pool/{id_pool}', [PoolViewController::class, 'getPoolIndividualView'])->name('pool.indiviual-view')->middleware(EnsureBelongsToPool::class);
+
+    Route::get('/pool-create-view/', [PoolViewController::class, 'getPoolCreateView'])->name('pool.create-view');
+
+    //Pool Round Routes
+    Route::get('/pool-round/{id_pool_round}', [PoolRoundViewController::class, 'getPoolRoundIndividualView'])->name('pool-round.indiviual-view')
+        ->middleware(EnsureBelongsToPool::class);
+
+    Route::get('/pool-round-create-view/{id_pool}', [PoolRoundViewController::class, 'getPoolRoundCreateView'])
+        ->name('pool-round.create-view')
+        ->middleware(EnsureBelongsToPool::class);
+
     //Predictions routes
-    Route::get('/create-predictions/{pool_round_id}', [PredictionViewController::class, 'createPredictionsView'])->name('predictions.create-view');
-    
-    Route::get('/edit-predictions/{prediction_id}', [PredictionViewController::class, 'editPredictionsView'])->name('predictions.edit-view');
+    Route::get('/create-predictions/{id_pool_round}', [PredictionViewController::class, 'createPredictionsView'])->name('predictions.create-view')
+        ->middleware(EnsureBelongsToPool::class);
+
+    Route::get('/edit-predictions/{prediction_id}', [PredictionViewController::class, 'editPredictionsView'])->name('predictions.edit-view')
+        ->middleware(EnsureBelongsToPool::class);
 
 
     /**
@@ -72,7 +77,7 @@ Route::middleware([
     Route::post('/pool-rounds', PoolRoundPostController::class)->name('pool-round.store');
 
     Route::post('/predictions', PredictionPostController::class)->name('predictions.store');
-    
+
     Route::patch('/predictions/{prediction_id}', PredictionPatchController::class)->name('predictions.put');
 
     Route::patch('/pool-invitations/{pools_invitations_id}', PoolInvitationsPatchController::class)->name('pools-invitations-emails.patch');
