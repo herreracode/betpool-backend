@@ -26,7 +26,7 @@ const createPredictions = async () => {
 
     const json = await HttpClient.post(route('predictions.store'), {
         predictions: predictions.value,
-        pool_round_id: props.pool_round_id
+        id_pool_round: props.pool_round_id
     });
 
     summaryCreations.value = json.data.items;

@@ -47,7 +47,8 @@ Route::middleware([
     Route::get('/dashboard', [TestController::class, 'hola'])->name('dashboard');
 
     //Pool routes
-    Route::get('/pool/{id_pool}', [PoolViewController::class, 'getPoolIndividualView'])->name('pool.indiviual-view')->middleware(EnsureBelongsToPool::class);
+    Route::get('/pool/{id_pool}', [PoolViewController::class, 'getPoolIndividualView'])->name('pool.indiviual-view')
+        ->middleware(EnsureBelongsToPool::class);
 
     Route::get('/pool-create-view/', [PoolViewController::class, 'getPoolCreateView'])->name('pool.create-view');
 
@@ -60,11 +61,12 @@ Route::middleware([
         ->middleware(EnsureBelongsToPool::class);
 
     //Predictions routes
-    Route::get('/create-predictions/{id_pool_round}', [PredictionViewController::class, 'createPredictionsView'])->name('predictions.create-view')
+    Route::get('/create-predictions/{id_pool_round}', [PredictionViewController::class, 'createPredictionsView'])
+        ->name('predictions.create-view')
         ->middleware(EnsureBelongsToPool::class);
 
-    Route::get('/edit-predictions/{prediction_id}', [PredictionViewController::class, 'editPredictionsView'])->name('predictions.edit-view')
-        ->middleware(EnsureBelongsToPool::class);
+    //todo: edit prediction add middelware
+    Route::get('/edit-predictions/{prediction_id}', [PredictionViewController::class, 'editPredictionsView'])->name('predictions.edit-view');
 
 
     /**
@@ -72,13 +74,20 @@ Route::middleware([
      */
 
 
-    Route::post('/pools', PoolPostController::class)->name('pool.store');
+    Route::post('/pools', PoolPostController::class)
+        ->name('pool.store');
 
-    Route::post('/pool-rounds', PoolRoundPostController::class)->name('pool-round.store');
+    Route::post('/pool-rounds', PoolRoundPostController::class)
+        ->name('pool-round.store')
+        ->middleware(EnsureBelongsToPool::class);
 
-    Route::post('/predictions', PredictionPostController::class)->name('predictions.store');
+    Route::post('/predictions', PredictionPostController::class)
+        ->name('predictions.store')
+        ->middleware(EnsureBelongsToPool::class);
 
-    Route::patch('/predictions/{prediction_id}', PredictionPatchController::class)->name('predictions.put');
+    Route::patch('/predictions/{prediction_id}', PredictionPatchController::class)
+        ->name('predictions.put')
+        ->middleware(EnsureBelongsToPool::class);
 
     Route::patch('/pool-invitations/{pools_invitations_id}', PoolInvitationsPatchController::class)->name('pools-invitations-emails.patch');
 

@@ -23,7 +23,7 @@ class PredictionPostController extends Controller
     {
         $predictions = $request->get('predictions');
 
-        $PoolRound = PoolRound::find($request->get('pool_round_id'));
+        $PoolRound = PoolRound::find($request->get('id_pool_round'));
 
         $Pool = $PoolRound->pool;
 

@@ -11,9 +11,9 @@ interface Props {
 
 const editPredictions = async () => {
 
-    const json = await HttpClient.patch(route('predictions.put',props.prediction.id), {
+    const json = await HttpClient.patch(route('predictions.put', props.prediction.id), {
         prediction: props.prediction,
-        pool_round_id: props.pool_round_id
+        id_pool_round: props.pool_round_id
     });
 
     alert("se han creado las predicciones")

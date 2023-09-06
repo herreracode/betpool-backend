@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Models\Pool;
 use App\Models\PoolRound;
+use App\Models\Prediction;
 use Closure;
 use Illuminate\Http\Request;
 
@@ -19,28 +20,50 @@ class EnsureBelongsToPool
      */
     public function handle(Request $request, Closure $next)
     {
-
         try {
 
-            if ($request->getMethod() == 'GET') {
+            $Pool = $this->getPoolByRequest($request);
 
-                $idPool = $request->route()->parameter('id_pool');
-
-                $idPoolRound = $request->route()->parameter('id_pool_round');
-
-                /** @var Pool $Pool */
-                $Pool = $idPool ? Pool::find($idPool) : PoolRound::find($idPoolRound)->pool;
-
-                if ($Pool) {
-                    $Pool->doesItbelongsToThePool(auth()->user());
-                }
-            }
+            $Pool && $Pool->doesItbelongsToThePool(auth()->user());
 
         } catch (\Exception $exception) {
-            var_dump("excepcion cayo". $exception->getMessage());
+
+            var_dump("excepcion cayo" . $exception->getMessage());
+
             die();
         }
 
         return $next($request);
+    }
+
+    private function getPoolByRequest(Request $request): Pool|null
+    {
+        if ($request->getMethod() == 'GET') {
+
+            $idPool = $request->route()->parameter('id_pool');
+
+            $idPoolRound = $request->route()->parameter('id_pool_round');
+
+            /** @var Pool $Pool */
+            $Pool = $idPool ? Pool::find($idPool) : PoolRound::find($idPoolRound)->pool;
+
+        }elseif ($request->getMethod() == 'POST' ) {
+
+            $idPool = $request->get('id_pool');
+
+            $idPoolRound = $request->get('id_pool_round');
+
+            /** @var Pool $Pool */
+            $Pool = $idPool ? Pool::find($idPool) : PoolRound::find($idPoolRound)->pool;
+        }else{
+
+            $idPrediction = $request->route()->parameter('prediction_id');
+
+            $Prediction = Prediction::find($idPrediction);
+
+            $idPrediction && $Pool = $Prediction->pool;
+        }
+
+        return $Pool ? : null;
     }
 }
