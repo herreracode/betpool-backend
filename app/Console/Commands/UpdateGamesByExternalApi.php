@@ -43,19 +43,19 @@ class UpdateGamesByExternalApi extends Command
             if(is_array($dates)){
 
                 foreach ($dates as $date){
-                    
+
                     echo $date;
                     $Competitions
                         ->each(
-                            $this->createGameByCompetition($UpdateResultGamesForExternalApi, $date)
+                            $this->updateGameByCompetition($UpdateResultGamesForExternalApi, $date)
                         );
 
                 }
-                    
+
             }else{
                 $Competitions
                     ->each(
-                        $this->createGameByCompetition($UpdateResultGamesForExternalApi, $dates)
+                        $this->updateGameByCompetition($UpdateResultGamesForExternalApi, $dates)
                     );
             }
 
@@ -67,7 +67,7 @@ class UpdateGamesByExternalApi extends Command
         return Command::SUCCESS;
     }
 
-    protected function createGameByCompetition($UpdateResultGamesForExternalApi, $date)
+    protected function updateGameByCompetition($UpdateResultGamesForExternalApi, $date)
     {
         return function (Competition $Competition) use($UpdateResultGamesForExternalApi, $date) {
 
