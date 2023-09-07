@@ -66,7 +66,7 @@ Route::middleware([
         ->middleware(EnsureBelongsToPool::class);
 
     //todo: edit prediction add middelware
-    Route::get('/edit-predictions/{prediction_id}', [PredictionViewController::class, 'editPredictionsView'])->name('predictions.edit-view');
+    Route::get('/edit-predictions/{prediction_id}', [PredictionViewController::class, 'editPredictionsView'])->name('predictions.edit-view')->middleware(\App\Http\Middleware\EnsurePredictionBelongsToUser::class);
 
 
     /**
