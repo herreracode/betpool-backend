@@ -35,14 +35,19 @@ class PoolRound extends Model
         $predictionsByGame = $this->predictions
         ->filter(fn (Prediction $Prediction) => $Prediction->game->id == $Game->id);
 
-        $predictionsByGame->each(fn(Prediction $Prediction) => $Prediction->close($calculateNumberOfPointsEarned));
+        $predictionsByGame
+            ->each(fn(Prediction $Prediction) => $Prediction->close($calculateNumberOfPointsEarned));
 
         $predictionsStatus = $this->predictions
         ->pluck('status')
         ->unique();
 
+        $allPredictionsInStatusClose = $predictionsStatus->count() == 1 &&  $predictionsStatus->first() == PredictionStatus::CLOSE->value;
+
+        $emptyPredictions = $this->predictions->count() == 0;
+
         //validate all predictions state in finish
-        if($predictionsStatus->count() == 1 &&  $predictionsStatus->first() == PredictionStatus::CLOSE->value)
+        if (($allPredictionsInStatusClose || $emptyPredictions) && $this->status !== PoolRoundStatus::FINISH->value)
             $this->finish();
 
         return $this;
