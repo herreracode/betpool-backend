@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Artisan;
 
 class DatabaseSeeder extends Seeder
 {
@@ -24,7 +25,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call(CompetitionSeeder::class);
-        $this->call(TeamSeeder::class);
-        $this->call(GameSeeder::class);
+
+        Artisan::call('games:create-games-by-external-api');
     }
 }
