@@ -14,7 +14,7 @@ class UpdateGamesByExternalApi extends Command
      *
      * @var string
      */
-    protected $signature = 'games:update-games-by-external-api';
+    protected $signature = 'games:update-games-by-external-api {--date=}';
 
     /**
      * The console command description.
@@ -36,7 +36,7 @@ class UpdateGamesByExternalApi extends Command
 
         $UpdateResultGamesForExternalApi = app(UpdateResultGamesForExternalApi::class);
 
-        $dates = $this->getDateToSearchGames();
+        $dates = $this->option('date') ? : $this->getDateToSearchGames();
 
         try {
 
@@ -53,6 +53,8 @@ class UpdateGamesByExternalApi extends Command
                 }
 
             }else{
+
+                echo $dates;
                 $Competitions
                     ->each(
                         $this->updateGameByCompetition($UpdateResultGamesForExternalApi, $dates)
