@@ -44,12 +44,22 @@ class ClosePredictionsWhenUpdatedGameResultListener implements ShouldQueue
 
         $Game = $event->getAggregate();
 
-        //TODO: PAGINATION TO MANAGE DATA HIGH VOLUME
         $page = 1;
 
-        $PoolRounds = $Game->poolRounds;
+        do{
 
-        $PoolRounds
-            ->each(fn(PoolRound $poolRound) => $this->closePredictionsByPoolRoundAndGame->__invoke($poolRound, $Game));
+            $PoolRounds = $Game
+                ->poolRounds()
+                ->forPage($page, 10)
+                ->get();
+
+            $countPredictions = $PoolRounds->count();
+
+            $PoolRounds
+                ->each(fn(PoolRound $poolRound) => $this->closePredictionsByPoolRoundAndGame->__invoke($poolRound, $Game));
+
+            $page+= 1;
+
+        }while($countPredictions != 0);
     }
 }
