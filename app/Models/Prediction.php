@@ -5,6 +5,7 @@ namespace App\Models;
 use App\DomainServices\Prediction\CalculateNumberOfPointsEarned;
 use App\Exceptions\Prediction\GameIsAboutToStart;
 use App\Exceptions\Prediction\GameIsNotFinishedToClosePrediction;
+use App\Exceptions\Prediction\GameIsNotPostponedToCancelPrediction;
 use App\Exceptions\Prediction\GameIsNotStateValid;
 use App\Exceptions\Prediction\UserModifierNotOwner;
 use App\Models\Common\Contracts\Scorable;
@@ -120,6 +121,18 @@ class Prediction extends Model implements Scorable
             $this,
             $this->game
         );
+
+        $this->save();
+    }
+
+    public function cancel()
+    {
+        if(!$this->game->itIsPostponed())
+            throw GameIsNotPostponedToCancelPrediction::create('Game is not postponed to cancel prediction');
+
+        $this->status = PredictionStatus::CANCEL->value;
+
+        $this->points_earned = 0;
 
         $this->save();
     }

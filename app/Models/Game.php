@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Events\CreatedPool;
+use App\Events\GamePostponed;
 use App\Events\UpdatedGameResult;
 use App\Models\Common\AggregateRoot;
 use App\Models\Common\Contracts\Scorable;
@@ -150,6 +151,13 @@ class Game extends AggregateRoot implements Scorable
 
     public function postpone()
     {
-        //todo: logica para posponer un partido
+        if ($this->itIsPostponed())
+            return;
+
+        $this->status = GameStatus::POSTPONED->value;
+
+        $this->record(new GamePostponed($this));
+
+        $this->save();
     }
 }

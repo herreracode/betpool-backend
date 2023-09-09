@@ -23,6 +23,7 @@ class UpdateResultGamesForExternalApi
         protected GetterGamesExternalApi $GetterGamesExternalApi,
         protected FindOrCreateTeam $FindOrCreateTeam,
         protected UpdateGameResult $UpdateGameResult,
+        protected PostponeGame $PostponeGame,
     ){
     }
 
@@ -74,7 +75,7 @@ class UpdateResultGamesForExternalApi
 
             }elseif ($Response->status == static::STATUS_POSTPONED && !$Game->itIsPostponed()){
 
-                //llamar a action para posponer el partido
+                $this->PostponeGame->__invoke($Game);
 
             }
 

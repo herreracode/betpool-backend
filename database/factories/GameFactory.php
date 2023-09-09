@@ -51,4 +51,13 @@ class GameFactory extends Factory
             ];
         });
     }
+
+    public function inPostpone()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'status' => GameStatus::POSTPONED->value,
+            ];
+        });
+    }
 }
