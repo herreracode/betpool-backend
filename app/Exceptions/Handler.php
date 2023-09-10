@@ -2,8 +2,16 @@
 
 namespace App\Exceptions;
 
+use App\Exceptions\Pool\UserDoesntBelongToThePool;
 use App\Exceptions\PoolRound\AlreadyHavePoolRoundPending;
+use App\Exceptions\PoolRound\GameIsNotPending;
+use App\Exceptions\PoolRound\UserDoesNotHaveTheRequiredRole;
 use App\Exceptions\Prediction\ExistsPrediction;
+use App\Exceptions\Prediction\GameIsAboutToStart;
+use App\Exceptions\Prediction\GameIsNotFinishedToClosePrediction;
+use App\Exceptions\Prediction\GameIsNotPostponedToCancelPrediction;
+use App\Exceptions\Prediction\GameIsNotStateValid;
+use App\Exceptions\Prediction\UserModifierNotOwner;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -43,13 +51,21 @@ class Handler extends ExceptionHandler
      */
     protected $badRequestExceptions = [
         AlreadyHavePoolRoundPending::class,
-        ExistsPrediction::class
+        ExistsPrediction::class,
+        GameIsNotPending::class,
+        GameIsAboutToStart::class,
+        GameIsNotFinishedToClosePrediction::class,
+        GameIsNotPostponedToCancelPrediction::class,
+        GameIsNotStateValid::class,
     ];
 
     /**
      * @var string[]
      */
     protected $unauthorizedExceptions = [
+        UserDoesNotHaveTheRequiredRole::class,
+        UserDoesntBelongToThePool::class,
+        UserModifierNotOwner::class
     ];
 
     /**
