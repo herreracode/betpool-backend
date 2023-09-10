@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use App\Exceptions\PoolRound\AlreadyHavePoolRoundPending;
+use App\Exceptions\Prediction\ExistsPrediction;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -41,7 +42,8 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $badRequestExceptions = [
-        AlreadyHavePoolRoundPending::class
+        AlreadyHavePoolRoundPending::class,
+        ExistsPrediction::class
     ];
 
     /**

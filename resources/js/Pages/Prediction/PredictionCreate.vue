@@ -35,8 +35,6 @@ const createPredictions = async () => {
 
         summaryCreations.value = json.data.items;
 
-        $toast.success("Se han creado las predicciones con éxito")
-
     } catch (e) {
 
     }
@@ -70,7 +68,7 @@ watch(summaryCreations, (newName, oldName) => {
                     variant="outlined"
                 >
                     La prediccion {{ summaryCreation.description }}
-                    {{ summaryCreation.status ? 'se creo con exito' : 'no se pudo crear' }}
+                    {{ summaryCreation.status ? 'se creó con exito' : "no se pudo crear. " + summaryCreation.message  }}
                 </v-alert>
             </v-card-text>
             <v-card-actions>
