@@ -11,6 +11,9 @@ import { createVuetify  } from 'vuetify';
 
 const vuetify = createVuetify();
 
+import ToastPlugin from 'vue-toast-notification';
+import 'vue-toast-notification/dist/theme-bootstrap.css';
+
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 
 createInertiaApp({
@@ -21,6 +24,7 @@ createInertiaApp({
             .use(plugin)
             .use(ZiggyVue, Ziggy)
             .use(vuetify)
+            .use(ToastPlugin)
             .mount(el);
     },
     progress: {

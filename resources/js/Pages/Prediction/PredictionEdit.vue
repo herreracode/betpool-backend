@@ -3,6 +3,8 @@ import { ref } from 'vue';
 import Prediction from "@/Models/Prediction";
 import { Link, router } from "@inertiajs/vue3"
 import HttpClient from '@/Shared/HttpClient';
+import {useToast} from 'vue-toast-notification';
+const $toast = useToast();
 
 interface Props {
     prediction: Prediction,
@@ -11,14 +13,20 @@ interface Props {
 
 const editPredictions = async () => {
 
-    const json = await HttpClient.patch(route('predictions.put', props.prediction.id), {
-        prediction: props.prediction,
-        id_pool_round: props.pool_round_id
-    });
+    try {
 
-    alert("se han creado las predicciones")
+        const json = await HttpClient.patch(route('predictions.put', props.prediction.id), {
+            prediction: props.prediction,
+            id_pool_round: props.pool_round_id
+        });
 
-    router.visit(route('pool-round.indiviual-view', props.pool_round_id), { method: 'get' })
+        $toast.success("Se han editado las predicciones con éxito")
+
+        router.visit(route('pool-round.indiviual-view', props.pool_round_id), {method: 'get'})
+
+    } catch (e) {
+
+    }
 };
 
 

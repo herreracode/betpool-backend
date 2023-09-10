@@ -4,6 +4,8 @@ import { Link, router } from "@inertiajs/vue3"
 import { reactive } from 'vue'
 import HttpClient from '@/Shared/HttpClient.ts';
 import Competition from '@/Models/Competition';
+import {useToast} from 'vue-toast-notification';
+const $toast = useToast();
 
 interface Props {
     competitions: Competition[],
@@ -13,11 +15,18 @@ const props = defineProps<Props>()
 
 const createPool = async () => {
 
-    const json = await HttpClient.post(route('pool.store'), formPool);
+    try {
 
-    alert("se ha creado el pool")
+        const json = await HttpClient.post(route('pool.store'), formPool);
 
-    router.visit(route('dashboard'), { method: 'get' })
+        $toast.success("Se ha creado el pool con éxito")
+
+        router.visit(route('dashboard'), { method: 'get' })
+
+    } catch (e) {
+
+    }
+
 };
 
 const formPool = reactive({

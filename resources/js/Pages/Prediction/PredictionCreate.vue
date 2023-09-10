@@ -3,6 +3,8 @@ import {ref, watch } from 'vue';
 import Game from "@/Models/Games";
 import {Link, router} from "@inertiajs/vue3"
 import HttpClient from '@/Shared/HttpClient';
+import {useToast} from 'vue-toast-notification';
+const $toast = useToast();
 
 interface Props {
     games: Game[],
@@ -24,13 +26,20 @@ const predictions = ref(
 
 const createPredictions = async () => {
 
-    const json = await HttpClient.post(route('predictions.store'), {
-        predictions: predictions.value,
-        id_pool_round: props.pool_round_id
-    });
+    try {
 
-    summaryCreations.value = json.data.items;
+        const json = await HttpClient.post(route('predictions.store'), {
+            predictions: predictions.value,
+            id_pool_round: props.pool_round_id
+        });
 
+        summaryCreations.value = json.data.items;
+
+        $toast.success("Se han creado las predicciones con éxito")
+
+    } catch (e) {
+
+    }
 };
 
 const backToPoolRound = () => {

@@ -3,6 +3,8 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 import { Link, router } from "@inertiajs/vue3";
 import Pool from "@/Models/Pool";
 import HttpClient from '@/Shared/HttpClient';
+import {useToast} from 'vue-toast-notification';
+const $toast = useToast();
 
 interface Props {
     pools: Pool[],
@@ -13,26 +15,38 @@ const props = defineProps<Props>()
 
 const acceptInvitation = async (invitationId) => {
 
-    const json = await HttpClient.patch(route('pools-invitations-emails.patch', invitationId), {
-        accepted : 1
-    });
+    try{
 
-    router.reload({ only: ['pools', 'invitations_pools'] })
+        const json = await HttpClient.patch(route('pools-invitations-emails.patch', invitationId), {
+            accepted : 1
+        });
 
-    alert("se ha aceptado la invitacion")
+        router.reload({ only: ['pools', 'invitations_pools'] })
+
+        $toast.success("se ha aceptado la invitación, procedar a recargar la página en unos segundos y " +
+            "le aparecerá el pool disponible")
+
+    }catch (e) {
+
+    }
 
 }
 
 const rejectInvitation = async (invitationId) => {
 
-    const json = await HttpClient.patch(route('pools-invitations-emails.patch', invitationId), {
-        accepted : 0
-    });
+    try{
 
-    router.reload({ only: ['invitations_pools'] })
+        const json = await HttpClient.patch(route('pools-invitations-emails.patch', invitationId), {
+            accepted : 0
+        });
 
-    alert("se ha rechazado la invitacion")
+        $toast.success("Invitación rechazada")
 
+        router.reload({ only: ['invitations_pools'] })
+
+    }catch (e) {
+
+    }
 }
 
 </script>

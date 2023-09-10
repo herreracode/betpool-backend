@@ -10,11 +10,16 @@ const createPoolRound = async () => {
 
     formPoolRound.id_pool = props.id_pool
 
-    const json = await HttpClient.post(route('pool-round.store'), formPoolRound);
+    try{
+        const json = await HttpClient.post(route('pool-round.store'), formPoolRound);
 
-    alert("se ha creado el pool roud")
+        alert("se ha creado el pool roud")
 
-    router.visit(route('pool.indiviual-view', props.id_pool), { method: 'get' })
+        router.visit(route('pool.indiviual-view', props.id_pool), { method: 'get' })
+
+    }catch (e){
+        console.log("error post");
+    }
 };
 
 interface Props {
