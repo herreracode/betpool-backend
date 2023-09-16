@@ -24,11 +24,12 @@ const colorByStatus = (status) => {
 
 }
 
+const breadcrumbItems = ref(['hola desde pool round', 'Bar', 'Fizz']);
 
 </script>
 
 <template>
-    <AppLayout title="PoolRound">
+    <AppLayout title="PoolRound" :breadcrumb="breadcrumbItems">
         <template #header>
             <div>
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -44,6 +45,8 @@ const colorByStatus = (status) => {
                 </Link>
 
             </div>
+        </template>
+        <template #breadcrumbs>
         </template>
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">

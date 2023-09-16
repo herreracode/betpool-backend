@@ -5,6 +5,7 @@ import Pool from "@/Models/Pool";
 import HttpClient from '@/Shared/HttpClient';
 import {useToast} from 'vue-toast-notification';
 const $toast = useToast();
+import { ref } from 'vue';
 
 interface Props {
     pools: Pool[],
@@ -49,14 +50,19 @@ const rejectInvitation = async (invitationId) => {
     }
 }
 
+const breadcrumbItems = ref(['Foo232323', 'Bar', 'Fizz']);
+
 </script>
 
 <template>
-    <AppLayout title="Dashboard">
+    <AppLayout title="Dashboard" :breadcrumb="breadcrumbItems">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Dashboard
             </h2>
+        </template>
+
+        <template #breadcrumbs>
         </template>
 
         <div class="py-12">
