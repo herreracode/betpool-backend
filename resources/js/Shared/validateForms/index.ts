@@ -1,9 +1,19 @@
+import {useToast} from 'vue-toast-notification';
+
+const $toast = useToast();
+
 const isMandatoryField = (value) => {
 
-    if (value) return true
+
+    if(typeof value == 'object' && !!value){
+        if(value.length > 0){
+            return true
+        }
+    }else{
+        if (value) return true
+    }
 
     return 'Este campo es requerido'
-
 }
 
 const moreThanCharateres =
@@ -16,7 +26,20 @@ const moreThanCharateres =
     }
 }
 
+const formValidate = async (form) : Promise<boolean> => {
+
+    let validForm = await form.value.validate()
+
+    if(!validForm.valid){
+        $toast.warning("Revise los campos de su formulario")
+        return false
+    }
+
+    return true
+}
+
 export {
     isMandatoryField,
-    moreThanCharateres
+    moreThanCharateres,
+    formValidate
 }

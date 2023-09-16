@@ -3,7 +3,7 @@ import AppLayout from '@/Layouts/AppLayout.vue'
 import {Link, router} from "@inertiajs/vue3"
 import {reactive, ref} from 'vue'
 import HttpClient from '@/Shared/HttpClient.ts';
-import {isMandatoryField, moreThanCharateres} from '@/Shared/validateForms';
+import {isMandatoryField, moreThanCharateres, formValidate} from '@/Shared/validateForms';
 import Competition from '@/Models/Competition';
 import {useToast} from 'vue-toast-notification';
 
@@ -19,16 +19,14 @@ const formCreatePool = ref(null)
 
 const createPool = async () => {
 
-    let validForm = await formCreatePool.value.validate()
+    let validForm :boolean = await formValidate(formCreatePool)
 
-    if(!validForm.valid){
-        $toast.warning("Revise los campos de su formulario")
+    if(!validForm)
         return
-    }
 
     try {
 
-        const json = await HttpClient.post(route('pool.store'), formPool);
+        const json = await HttpClient.post(route('pool.store'), formPool)
 
         $toast.success("Se ha creado el pool con éxito")
 
