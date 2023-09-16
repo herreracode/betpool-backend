@@ -53,6 +53,10 @@ const ruleFieldCompetitions = [
     isMandatoryField
 ];
 
+const ruleFieldGuest = [
+    isMandatoryField
+];
+
 </script>
 
 <template>
@@ -86,6 +90,7 @@ const ruleFieldCompetitions = [
                                             <v-col cols="12" sm="12">
                                                 <v-combobox :hide-no-data="false" hide-selected hint="Maximum of 5 tags"
                                                             label="Usuarios a invitar" multiple variant="outlined" chips
+                                                            :rules="ruleFieldGuest"
                                                             v-model="formPool.guests">
                                                 </v-combobox>
                                             </v-col>
