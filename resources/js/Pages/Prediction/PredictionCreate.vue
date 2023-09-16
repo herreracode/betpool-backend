@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import {ref, watch } from 'vue';
+import {ref, watch} from 'vue';
 import Game from "@/Models/Games";
 import {Link, router} from "@inertiajs/vue3"
 import HttpClient from '@/Shared/HttpClient';
-import {useToast} from 'vue-toast-notification';
-const $toast = useToast();
+import {isMandatoryField, formValidate} from '@/Shared/validateForms';
 
 interface Props {
     games: Game[],
@@ -17,6 +16,8 @@ const haveSummary = ref(false)
 
 const props = defineProps<Props>()
 
+const formCreatePrediction = ref(null)
+
 const predictions = ref(
     JSON.parse(
         JSON.stringify(
@@ -25,6 +26,11 @@ const predictions = ref(
 );
 
 const createPredictions = async () => {
+
+    let validForm: boolean = await formValidate(formCreatePrediction)
+
+    if (!validForm)
+        return
 
     try {
 
@@ -53,6 +59,10 @@ watch(summaryCreations, (newName, oldName) => {
     haveSummary.value = newName.length > 0
 
 });
+
+const ruleFieldScorePredictions = [
+    isMandatoryField
+];
 </script>
 
 <template>
@@ -68,7 +78,9 @@ watch(summaryCreations, (newName, oldName) => {
                     variant="outlined"
                 >
                     La prediccion {{ summaryCreation.description }}
-                    {{ summaryCreation.status ? 'se creó con exito' : "no se pudo crear. " + summaryCreation.message  }}
+                    {{
+                        summaryCreation.status ? 'se creó con exito' : "no se pudo crear. " + summaryCreation.message
+                    }}
                 </v-alert>
             </v-card-text>
             <v-card-actions>
@@ -83,34 +95,37 @@ watch(summaryCreations, (newName, oldName) => {
             </v-card-actions>
         </v-card>
         <v-card v-show="!haveSummary">
-            <v-card-text>
-                <v-container>
-                    <v-row v-for="prediction in predictions" :key="predictions.id">
-                        <v-col cols="4">
-                            <span>{{ prediction.team_local }}</span>
-                            <v-text-field v-model="prediction.score_local"
-                                          hide-details single-line type="number"/>
-                        </v-col>
-                        <v-col cols="4">
-                            <span>{{ prediction.team_away }}</span>
-                            <v-text-field v-model="prediction.score_away"
-                                          hide-details single-line type="number"/>
-                        </v-col>
-                    </v-row>
-                </v-container>
-                <small>*indicates required field</small>
-            </v-card-text>
-            <v-card-actions>
-                <v-spacer></v-spacer>
-                <Link :href="route('pool-round.indiviual-view', pool_round_id)"
-                      class="v-btn v-btn--elevated v-theme--light bg-error v-btn--density-default v-btn--size-default v-btn--variant-elevated">
-                    Cancelar
-                </Link>
+            <v-form @submit.prevent ref="formCreatePrediction">
+                <v-card-text>
+                    <v-container>
+                        <v-row v-for="prediction in predictions" :key="predictions.id">
+                            <v-col cols="4">
+                                <span>{{ prediction.team_local }}</span>
+                                <v-text-field v-model="prediction.score_local"
+                                              single-line type="number" :rules="ruleFieldScorePredictions"/>
+                            </v-col>
+                            <v-col cols="4">
+                                <span>{{ prediction.team_away }}</span>
+                                <v-text-field v-model="prediction.score_away"
+                                              single-line type="number" :rules="ruleFieldScorePredictions"/>
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                    <small>*indicates required field</small>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <Link :href="route('pool-round.indiviual-view', pool_round_id)"
+                          class="v-btn v-btn--elevated v-theme--light bg-error v-btn--density-default v-btn--size-default v-btn--variant-elevated">
+                        Cancelar
+                    </Link>
 
-                <v-btn color="blue-darken-1" variant="text" @click="createPredictions()">
-                    Guardar
-                </v-btn>
-            </v-card-actions>
+                    <v-btn color="blue-darken-1" type="submit" variant="text" @click="createPredictions()">
+                        Guardar
+                    </v-btn>
+                </v-card-actions>
+
+            </v-form>
         </v-card>
     </div>
 </template>
