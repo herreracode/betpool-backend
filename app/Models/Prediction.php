@@ -156,8 +156,8 @@ class Prediction extends Model implements Scorable
             throw GameIsNotStateValid::create("game is not state pending");
 
         //validate Game has not started yet (isAboutToStart).leave to do at the end
-
-        //validate scores is not the same as before
+        if($Game->isAboutToStart(new \DateTime()))
+            throw GameIsAboutToStart::create("game is about to start");
 
         //validate user modifier is prediction owner
         if ($this->user_id !== $idUserModifier)
