@@ -49,12 +49,17 @@ class UpdateResultGamesForExternalApi
             $awayTeamData = $Response->getDataAwayTeam();
 
             $LocalTeam = Team::where([
-                'abbreviation' => data_get($localTeamData,'abbreviation')
+                'abbreviation'  => data_get($localTeamData,'abbreviation')
             ])->first();
 
             $AwayTeam = Team::where([
                 'abbreviation' => data_get($awayTeamData,'abbreviation')
             ])->first();
+
+            if(!$LocalTeam || !$AwayTeam){
+                echo "no se encontro uno de los 2 equipos para actualizar el partido";
+                continue;
+            }
 
             $Games[] = $Game = Game::where([
                 'local_team_id' => $LocalTeam->id,
