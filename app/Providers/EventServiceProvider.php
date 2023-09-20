@@ -2,20 +2,53 @@
 
 namespace App\Providers;
 
-use Laravel\Lumen\Providers\EventServiceProvider as ServiceProvider;
+use App\Events\AcceptInvitationPool;
+use App\Events\CreatedPool;
+use App\Events\GamePostponed;
+use App\Events\UpdatedGameResult;
+use App\Listeners\AddUserPoolWhenAcceptInvitation;
+use App\Listeners\CancelPredictionsWhenPostponedGameListener;
+use App\Listeners\ClosePredictionsWhenUpdatedGameResultListener;
+use App\Listeners\SendEmailInvitationsUsersPool;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
+use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
     /**
-     * The event listener mappings for the application.
+     * The event to listener mappings for the application.
      *
-     * @var array
+     * @var array<class-string, array<int, class-string>>
      */
     protected $listen = [
-        \App\Events\ExampleEvent::class => [
-            \App\Listeners\ExampleListener::class,
+        Registered::class => [
+            SendEmailVerificationNotification::class,
         ],
+        CreatedPool::class => [
+            SendEmailInvitationsUsersPool::class,
+        ],
+        UpdatedGameResult::class => [
+            ClosePredictionsWhenUpdatedGameResultListener::class,
+        ],
+        AcceptInvitationPool::class => [
+            AddUserPoolWhenAcceptInvitation::class,
+        ],
+        GamePostponed::class  => [
+            CancelPredictionsWhenPostponedGameListener::class,
+        ]
     ];
+
+    /**
+     * Register any events for your application.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+
+    }
 
     /**
      * Determine if events and listeners should be automatically discovered.

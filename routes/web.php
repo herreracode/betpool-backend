@@ -1,18 +1,94 @@
 <?php
 
-/** @var \Laravel\Lumen\Routing\Router $router */
+use App\Http\Controllers\ApiControllers\PoolInvitationsPatchController;
+use App\Http\Controllers\ApiControllers\PoolPostController;
+use App\Http\Controllers\ApiControllers\PoolRoundPostController;
+use App\Http\Controllers\ApiControllers\PredictionPatchController;
+use App\Http\Controllers\ApiControllers\PredictionPostController;
+use App\Http\Controllers\TestController;
+use App\Http\Controllers\ViewControllers\PoolViewController;
+use App\Http\Controllers\ViewControllers\PoolRoundViewController;
+use App\Http\Controllers\ViewControllers\PredictionViewController;
+use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
+use App\Http\Middleware\EnsureBelongsToPool;
 
 /*
 |--------------------------------------------------------------------------
-| Application Routes
+| Web Routes
 |--------------------------------------------------------------------------
 |
-| Here is where you can register all of the routes for an application.
-| It is a breeze. Simply tell Lumen the URIs it should respond to
-| and give it the Closure to call when that URI is requested.
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
 |
 */
 
-$router->get('/', function () use ($router) {
-    return $router->app->version();
+Route::get('/', function () {
+    return Inertia::render('Welcome', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
+});
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
+
+    /**
+     * Views controller
+     */
+
+    Route::get('/dashboard', [TestController::class, 'hola'])->name('dashboard');
+
+    //Pool routes
+    Route::get('/pool/{id_pool}', [PoolViewController::class, 'getPoolIndividualView'])->name('pool.indiviual-view')
+        ->middleware(EnsureBelongsToPool::class);
+
+    Route::get('/pool-create-view/', [PoolViewController::class, 'getPoolCreateView'])->name('pool.create-view');
+
+    //Pool Round Routes
+    Route::get('/pool-round/{id_pool_round}', [PoolRoundViewController::class, 'getPoolRoundIndividualView'])->name('pool-round.indiviual-view')
+        ->middleware(EnsureBelongsToPool::class);
+
+    Route::get('/pool-round-create-view/{id_pool}', [PoolRoundViewController::class, 'getPoolRoundCreateView'])
+        ->name('pool-round.create-view')
+        ->middleware(EnsureBelongsToPool::class);
+
+    //Predictions routes
+    Route::get('/create-predictions/{id_pool_round}', [PredictionViewController::class, 'createPredictionsView'])
+        ->name('predictions.create-view')
+        ->middleware(EnsureBelongsToPool::class);
+
+    //todo: edit prediction add middelware
+    Route::get('/edit-predictions/{prediction_id}', [PredictionViewController::class, 'editPredictionsView'])->name('predictions.edit-view')->middleware(\App\Http\Middleware\EnsurePredictionBelongsToUser::class);
+
+
+    /**
+     * end Views controller
+     */
+
+
+    Route::post('/pools', PoolPostController::class)
+        ->name('pool.store');
+
+    Route::post('/pool-rounds', PoolRoundPostController::class)
+        ->name('pool-round.store')
+        ->middleware(EnsureBelongsToPool::class);
+
+    Route::post('/predictions', PredictionPostController::class)
+        ->name('predictions.store')
+        ->middleware(EnsureBelongsToPool::class);
+
+    Route::patch('/predictions/{prediction_id}', PredictionPatchController::class)
+        ->name('predictions.put')
+        ->middleware(EnsureBelongsToPool::class);
+
+    Route::patch('/pool-invitations/{pools_invitations_id}', PoolInvitationsPatchController::class)->name('pools-invitations-emails.patch');
+
 });

@@ -1,0 +1,603 @@
+openapi: 3.0.0
+info:
+  description: "BetPool Services"
+  version: "1.0.0"
+  title: "BetPool Services"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    name: "Gerardo Herrera"
+    email: "ghgcoder@gmail.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+
+servers:
+  - url: "http://localhost/v1"
+    description: "Development"
+
+tags:
+- name: "beetpool"
+  description: "Access to beetpool"
+
+paths:
+  /Prediction/{uuidpool}/pool:
+    get:
+      tags:
+      - "predictions"
+      summary: "get Predictions by pool"
+      description: "get Predictions by pool"
+      operationId: "getPredictionsByPool"
+      parameters:
+        - name: "uuidpool"
+          in: "path"
+          required: true
+          description: "bet pool identifier"
+          schema:
+            type: string
+          example: "89b842b1-ab2d-48b7-9b29-bc72448adcb3"
+      
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _links:
+                    type: object
+                    properties:
+                      self:
+                        type: object
+                        properties:
+                          href:
+                            type: string
+                            example: "http://localhost/v1/predictions"
+                  _embedded:
+                    type: object
+                    properties:
+                      predictions:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Prediction"
+                  pagination:
+                    type: object
+                    properties:
+                      total:
+                        type: integer
+                        example: 100
+                      count:
+                        type: integer
+                        example: 25
+                      per_page:
+                        type: integer
+                        example: 25
+                      current_page:
+                        type: integer
+                        example: 2
+                      total_pages:
+                        type: integer
+                        example: 4
+                      _links:
+                        type: object
+                        properties:
+                          previous:
+                            type: string
+                            example: "http://localhost/v1/predictions/{uuidpool}/pool?page=1"
+                          next:
+                            type: string
+                            example: "http://localhost/v1/predictions/{uuidpool}/pool?page=3"
+      
+  /Prediction/{uuidpool}/pool/{uuiduser}/user:
+    get:
+      tags:
+      - "predictions"
+      summary: "get Predictions by pool and user uuid"
+      description: "get Predictions by pool and user uuid"
+      operationId: "getPredictionsByPoolAndUser"
+      parameters:
+        - name: "uuidpool"
+          in: "path"
+          required: true
+          description: "bet pool identifier"
+          schema:
+            type: string
+          example: "89b842b1-ab2d-48b7-9b29-bc72448adcb3"
+        - name: "uuiduser"
+          in: "path"
+          required: true
+          description: "user identifier"
+          schema:
+            type: string
+          example: "89b842b1-ab2d-48b7-9b29-bc72448adcb3"
+      
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _links:
+                    type: object
+                    properties:
+                      self:
+                        type: object
+                        properties:
+                          href:
+                            type: string
+                            example: "http://localhost/v1/predictions"
+                  _embedded:
+                    type: object
+                    properties:
+                      predictions:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Prediction"
+                  pagination:
+                    type: object
+                    properties:
+                      total:
+                        type: integer
+                        example: 100
+                      count:
+                        type: integer
+                        example: 25
+                      per_page:
+                        type: integer
+                        example: 25
+                      current_page:
+                        type: integer
+                        example: 2
+                      total_pages:
+                        type: integer
+                        example: 4
+                      _links:
+                        type: object
+                        properties:
+                          previous:
+                            type: string
+                            example: "http://localhost/v1/predictions/{uuidpool}/pool/{uuidpool}/user?page=1"
+                          next:
+                            type: string
+                            example: "http://localhost/v1/predictions/{uuidpool}/pool/{uuidpool}/user?page=3"
+  
+  
+    post:
+      tags:
+      - "predictions"
+      summary: "get Predictions by pool and user uuid"
+      description: "get Predictions by pool and user uuid"
+      operationId: "CreatePrediction"
+      parameters:
+        - name: "uuidpool"
+          in: "path"
+          required: true
+          description: "bet pool identifier"
+          schema:
+            type: string
+          example: "89b842b1-ab2d-48b7-9b29-bc72448adcb3"
+        - name: "uuiduser"
+          in: "path"
+          required: true
+          description: "user identifier"
+          schema:
+            type: string
+          example: "89b842b1-ab2d-48b7-9b29-bc72448adcb3"
+      
+      requestBody:
+        description: "object to be created"
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                math_uuid:
+                  type: string
+                  description: "match identifier"
+                  example: "11f12df8-0f1f-4add-b33e-9caa4ba8c85b"
+                score:
+                  type: object
+                  properties:
+                    local_team:
+                      type: string
+                      description: "local team score"
+                    away_team:
+                      type: string
+                      description: "away team score"
+      
+      responses:
+        201:
+          description: "successfully created"
+        400:
+          description: "Bad request"
+          
+    
+  /Prediction/{uuid}/{uuidpool}/pool/{uuiduser}/user:  
+    put:
+      tags:
+      - "predictions"
+      summary: "get Predictions by pool and user uuid"
+      description: "get Predictions by pool and user uuid"
+      operationId: "UpdatedPrediction"
+      parameters:
+        - name: "uuid"
+          in: "path"
+          required: true
+          description: "uuid prediction identifier"
+          schema:
+            type: string
+          example: "89b842b1-ab2d-48b7-9b29-bc72448adcb3"
+        - name: "uuidpool"
+          in: "path"
+          required: true
+          description: "bet pool identifier"
+          schema:
+            type: string
+          example: "89b842b1-ab2d-48b7-9b29-bc72448adcb3"
+        - name: "uuiduser"
+          in: "path"
+          required: true
+          description: "user identifier"
+          schema:
+            type: string
+          example: "89b842b1-ab2d-48b7-9b29-bc72448adcb3"
+      
+      requestBody:
+        description: "object to be created"
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                score:
+                  type: object
+                  properties:
+                    local_team:
+                      type: string
+                      description: "local team score"
+                    away_team:
+                      type: string
+                      description: "away team score"
+      
+      responses:
+        201:
+          description: "successfully created"
+        400:
+          description: "Bad request"
+
+    delete:
+      tags:
+        - "predictions"
+      summary: "Delete predictions"
+      description: ""
+      operationId: "DeletePredictions"
+      parameters:
+        - name: "uuid"
+          in: "path"
+          required: true
+          description: "uuid prediction identifier"
+          schema:
+            type: string
+          example: "89b842b1-ab2d-48b7-9b29-bc72448adcb3"
+        - name: "uuidpool"
+          in: "path"
+          required: true
+          description: "bet pool identifier"
+          schema:
+            type: string
+          example: "89b842b1-ab2d-48b7-9b29-bc72448adcb3"
+        - name: "uuiduser"
+          in: "path"
+          required: true
+          description: "user identifier"
+          schema:
+            type: string
+          example: "89b842b1-ab2d-48b7-9b29-bc72448adcb3"
+      responses:
+        200:
+          description: "OK"
+        404:
+          description: "Predictions not found"
+
+  /Pool/{uuiduser}/user:
+  
+    get:
+      tags:
+        - "Pool"
+      summary: "Get Pools By User"
+      description: ""
+      operationId: "GetPoolsByUser"
+      parameters:
+        - name: "uuiduser"
+          in: "path"
+          required: true
+          description: "user identifier"
+          schema:
+            type: string
+          example: "89b842b1-ab2d-48b7-9b29-bc72448adcb3"
+      
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _links:
+                    type: object
+                    properties:
+                      self:
+                        type: object
+                        properties:
+                          href:
+                            type: string
+                            example: "http://localhost/v1/pools"
+                  _embedded:
+                    type: object
+                    properties:
+                      pool:
+                        $ref: "#/components/schemas/Pool"
+                      users:
+                        type: array
+                        items: 
+                          $ref: "#/components/schemas/User"
+                  pagination:
+                    type: object
+                    properties:
+                      total:
+                        type: integer
+                        example: 100
+                      count:
+                        type: integer
+                        example: 25
+                      per_page:
+                        type: integer
+                        example: 25
+                      current_page:
+                        type: integer
+                        example: 2
+                      total_pages:
+                        type: integer
+                        example: 4
+                      _links:
+                        type: object
+                        properties:
+                          previous:
+                            type: string
+                            example: "http://localhost/v1/predictions/{uuidpool}/pool/{uuidpool}/user?page=1"
+                          next:
+                            type: string
+                            example: "http://localhost/v1/predictions/{uuidpool}/pool/{uuidpool}/user?page=3"
+                            
+        401:
+          description: "unauthenticated"
+          
+    post:
+      tags:
+        - "Pool"
+      summary: "Create Pools By User"
+      description: ""
+      operationId: "CreatePoolByUser"
+      parameters:
+        - name: "uuiduser"
+          in: "path"
+          required: true
+          description: "user identifier"
+          schema:
+            type: string
+          example: "89b842b1-ab2d-48b7-9b29-bc72448adcb3"
+      requestBody:
+        description: "object to be created"
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_uuids:
+                  type: array
+                  items:
+                    type: string
+                    example: "0b8e5adb-57de-4443-8cd5-d13f850fa801"
+                name:
+                  type: string
+                  example: "real barca"
+      responses:
+        201:
+          description: "successfully created"
+        400:
+          description: "Bad request"
+          
+    
+  /Pool/{uuid}/{uuiduser}/user:  
+    put:
+      tags:
+        - "Pool"
+      summary: "Create Pools By User"
+      description: ""
+      operationId: "Update pool by user"
+      parameters:
+        - name: "uuiduser"
+          in: "path"
+          required: true
+          description: "user identifier"
+          schema:
+            type: string
+          example: "89b842b1-ab2d-48b7-9b29-bc72448adcb3"
+        - name: "uuid"
+          in: "path"
+          required: true
+          description: "pool identifier"
+          schema:
+            type: string
+          example: "89b842b1-ab2d-48b7-9b29-bc72448adcb3"
+
+      requestBody:
+        description: "object to be created"
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_uuids_add:
+                  type: array
+                  items:
+                    type: string
+                    example: "0b8e5adb-57de-4443-8cd5-d13f850fa801"
+                user_uuids_delete:
+                  type: array
+                  items:
+                    type: string
+                    example: "0b8e5adb-57de-4443-8cd5-d13f850fa801"
+                name:
+                  type: string
+                  example: "Real Barca"
+      responses:
+        201:
+          description: "successfully created"
+        400:
+          description: "Bad request"
+    
+    delete:
+      tags:
+        - "Pool"
+      summary: "Delete Pool"
+      description: ""
+      operationId: "DeletePool"
+      parameters:
+        - name: "uuiduser"
+          in: "path"
+          required: true
+          description: "user identifier"
+          schema:
+            type: string
+          example: "89b842b1-ab2d-48b7-9b29-bc72448adcb3"
+        - name: "uuid"
+          in: "path"
+          required: true
+          description: "pool identifier"
+          schema:
+            type: string
+          example: "89b842b1-ab2d-48b7-9b29-bc72448adcb3"
+      responses:
+        200:
+          description: "OK"
+        404:
+          description: "Pool not found"
+    
+        
+components:
+  schemas:
+    Prediction:
+      title: "Prediction object"
+      type: "object"
+      properties:
+        uuid:
+          type: string
+          description: "Internal identifier for the prediction object"
+          example: "123e4567-e89b-12d3-a456-426614174000"
+          readOnly: true
+        status:
+          example: "__FINISH__"
+          type: string
+          enum:
+            - __FINISH__
+            - __PROCESS__
+            - __OPEN__
+        user:
+          type: object
+          properties:
+            name:
+              type: string
+              example: "jhon.doe"
+            uuid:
+              type: string
+              example: "123e4567-e89b-12d3-a456-426614174000"
+        pool:
+          type: object
+          description: "Name of the Pool"
+          readOnly: true
+          properties:
+            name:
+              type: string
+              example: "Real Barcelona"
+            uuid:
+              type: string
+              example: "123e4567-e89b-12d3-a456-426614174000"
+        match:
+          $ref: "#/components/schemas/Match"
+        score:
+          $ref: "#/components/schemas/Score"
+              
+    Match:
+      title: "Match object"
+      type: "object"
+      properties:
+        uuid:
+          type: string
+          description: "Internal identifier for the match object"
+          example: "123e4567-e89b-12d3-a456-426614174000"
+          readOnly: true
+        name :
+          type: string
+          description: "name of the match with home a visitor team"
+          example: "Barcelona vs Real Madrid"
+          readOnly: true
+        name_phase :
+          type: string
+          description: "phase of the competition"
+          example: "Group Phase"
+          readOnly: true
+        local_team :
+          type: string
+          description: "phase of the competition"
+          example:  "RMD"
+          readOnly: true
+        away_team :
+          type: string
+          description: "phase of the competition"
+          example:  "BAR"
+          readOnly: true
+        direct_elimination:
+          example: false
+          type: boolean
+        score:
+          $ref: "#/components/schemas/Score"
+          
+    Score:
+      title: "Score Object"
+      type: "object"
+      properties:
+        local_team:
+          type: string
+          example: "1"
+          description: "phase of the competition"
+        away_team: 
+          type: string
+          example: "0"
+          description: "phase of the competition"
+    
+    Pool:
+      title: "Pool Object"
+      type: "object"
+      properties:
+        name:
+          type: string
+          example: "Real Barca"
+          description: "phase of the competition"
+        uuid:
+          type: string
+          example: "123e4567-e89b-12d3-a456-426614174000"
+    
+    User:
+      title: "User Object"
+      type: "object"
+      properties:
+        name:
+          type: string
+          example: "HerreraCode32"
+        uuid:
+          type: string
+          example: "123e4567-e89b-12d3-a456-426614174000"
