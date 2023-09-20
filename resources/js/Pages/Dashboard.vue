@@ -50,19 +50,14 @@ const rejectInvitation = async (invitationId) => {
     }
 }
 
-const breadcrumbItems = ref(['Foo232323', 'Bar', 'Fizz']);
-
 </script>
 
 <template>
-    <AppLayout title="Dashboard" :breadcrumb="breadcrumbItems">
+    <AppLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Dashboard
             </h2>
-        </template>
-
-        <template #breadcrumbs>
         </template>
 
         <div class="py-12">

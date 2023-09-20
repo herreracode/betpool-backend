@@ -276,16 +276,17 @@ const logout = () => {
             <header v-if="$slots.header" class="bg-white shadow">
                 <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                     <slot name="header" />
+                    <template v-if="$slots.breadcrumbs">
+                        <v-toolbar color="white">
+                            <v-breadcrumbs
+                                :items="breadcrumb"
+                                divider="/"
+                            ></v-breadcrumbs>
+                        </v-toolbar>
+                        <slot name="breadcrumbs"/>
+                    </template>
                 </div>
             </header>
-
-            <div v-if="$slots.breadcrumbs">
-                <v-breadcrumbs
-                    :items="breadcrumb"
-                    divider="-"
-                ></v-breadcrumbs>
-                <slot name="breadcrumbs"/>
-            </div>
 
             <!-- Page Content -->
             <main>

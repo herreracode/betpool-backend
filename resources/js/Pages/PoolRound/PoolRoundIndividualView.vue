@@ -2,7 +2,7 @@
 
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { ref, computed } from 'vue';
-import { Link } from "@inertiajs/vue3";
+import { Link , router } from "@inertiajs/vue3";
 import Game from "@/Models/Games";
 import Prediction from "@/Models/Prediction";
 
@@ -24,7 +24,18 @@ const colorByStatus = (status) => {
 
 }
 
-const breadcrumbItems = ref(['hola desde pool round', 'Bar', 'Fizz']);
+const breadcrumbItems = ref([
+    {
+        title: 'Dashboard',
+        disabled: false,
+        href: route('dashboard'),
+    },
+    {
+        title: 'Pool',
+        disabled: false,
+        href: route('pool.indiviual-view', props.pool_round.pool_id),
+    },
+]);
 
 </script>
 
