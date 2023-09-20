@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\Actions\PoolRound\CancelPredictionsByPoolRoundAndGame;
 use App\Actions\PoolRound\ClosePredictionsByPoolRoundAndGame;
 use App\Actions\Prediction\ClosePrediction;
 use App\Events\CreatedPool;
@@ -11,7 +12,7 @@ use App\Models\Prediction;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
-class ClosePredictionsWhenUpdatedGameResultListener implements ShouldQueue
+class CancelPredictionsWhenPostponedGameListener implements ShouldQueue
 {
     use InteractsWithQueue;
 
@@ -27,7 +28,7 @@ class ClosePredictionsWhenUpdatedGameResultListener implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(protected ClosePredictionsByPoolRoundAndGame $closePredictionsByPoolRoundAndGame)
+    public function __construct(protected CancelPredictionsByPoolRoundAndGame $cancelPredictionsByPoolRoundAndGame)
     {
         //
     }
@@ -56,7 +57,7 @@ class ClosePredictionsWhenUpdatedGameResultListener implements ShouldQueue
             $countPredictions = $PoolRounds->count();
 
             $PoolRounds
-                ->each(fn(PoolRound $poolRound) => $this->closePredictionsByPoolRoundAndGame->__invoke($poolRound, $Game));
+                ->each(fn(PoolRound $poolRound) => $this->cancelPredictionsByPoolRoundAndGame->__invoke($poolRound, $Game));
 
             $page+= 1;
 

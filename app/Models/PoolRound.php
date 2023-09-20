@@ -7,7 +7,14 @@ use App\Models\Enums\PoolRoundStatus;
 use App\Models\Enums\PredictionStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
+/**
+ * PoolRound Model
+ *
+ * @property string $status
+ * @property \Illuminate\Database\Eloquent\Collection $predictions
+ */
 class PoolRound extends Model
 {
     use HasFactory;
@@ -32,26 +39,58 @@ class PoolRound extends Model
 
     public function closePredictions(Game $Game, CalculateNumberOfPointsEarned $calculateNumberOfPointsEarned) :PoolRound
     {
-        $predictionsByGame = $this->predictions
-        ->filter(fn (Prediction $Prediction) => $Prediction->game->id == $Game->id);
+        $predictionsByGame = $this->getPredictionsByGame($Game);
 
-        $predictionsByGame->each(fn(Prediction $Prediction) => $Prediction->close($calculateNumberOfPointsEarned));
+        $predictionsByGame
+            ->each(fn(Prediction $Prediction) => $Prediction->close($calculateNumberOfPointsEarned));
 
-        $predictionsStatus = $this->predictions
-        ->pluck('status')
-        ->unique();
-
-        //validate all predictions state in finish
-        if($predictionsStatus->count() == 1 &&  $predictionsStatus->first() == PredictionStatus::CLOSE->value)
-            $this->finish();
+        $this->finish();
 
         return $this;
     }
 
+    public function cancelPredictions(Game $Game)
+    {
+        $predictionsByGame = $this->getPredictionsByGame($Game);
+
+        $predictionsByGame
+            ->each(fn(Prediction $Prediction) => $Prediction->cancel());
+
+        $this->finish();
+
+        return $this;
+    }
+
+    protected function getPredictionsByGame(Game $Game): Collection
+    {
+        return $this->predictions
+            ->filter(fn (Prediction $Prediction) => $Prediction->game->id == $Game->id);
+    }
+
+    protected function getDistinctPredictionStatus() : Collection
+    {
+        return $this->predictions
+            ->pluck('status')
+            ->unique();
+    }
+
+    protected function IsEmptyPrediction()
+    {
+        return $this->predictions->count() == 0;
+    }
+
     protected function finish()
     {
-        $this->status = PoolRoundStatus::FINISH->value;
+        $predictionsStatus = $this->getDistinctPredictionStatus();
 
-        $this->save();
+        $allPredictionsInStatusValidForFinish = !in_array('_PENDING_',$predictionsStatus->toArray());
+
+        if (($allPredictionsInStatusValidForFinish || $this->IsEmptyPrediction()) && $this->status !== PoolRoundStatus::FINISH->value){
+
+            $this->status = PoolRoundStatus::FINISH->value;
+
+            $this->save();
+
+        }
     }
 }

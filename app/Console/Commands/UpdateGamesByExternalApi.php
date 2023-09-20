@@ -14,7 +14,7 @@ class UpdateGamesByExternalApi extends Command
      *
      * @var string
      */
-    protected $signature = 'games:update-games-by-external-api';
+    protected $signature = 'games:update-games-by-external-api {--date=}';
 
     /**
      * The console command description.
@@ -36,26 +36,28 @@ class UpdateGamesByExternalApi extends Command
 
         $UpdateResultGamesForExternalApi = app(UpdateResultGamesForExternalApi::class);
 
-        $dates = $this->getDateToSearchGames();
+        $dates = $this->option('date') ? : $this->getDateToSearchGames();
 
         try {
 
             if(is_array($dates)){
 
                 foreach ($dates as $date){
-                    
+
                     echo $date;
                     $Competitions
                         ->each(
-                            $this->createGameByCompetition($UpdateResultGamesForExternalApi, $date)
+                            $this->updateGameByCompetition($UpdateResultGamesForExternalApi, $date)
                         );
 
                 }
-                    
+
             }else{
+
+                echo $dates;
                 $Competitions
                     ->each(
-                        $this->createGameByCompetition($UpdateResultGamesForExternalApi, $dates)
+                        $this->updateGameByCompetition($UpdateResultGamesForExternalApi, $dates)
                     );
             }
 
@@ -67,7 +69,7 @@ class UpdateGamesByExternalApi extends Command
         return Command::SUCCESS;
     }
 
-    protected function createGameByCompetition($UpdateResultGamesForExternalApi, $date)
+    protected function updateGameByCompetition($UpdateResultGamesForExternalApi, $date)
     {
         return function (Competition $Competition) use($UpdateResultGamesForExternalApi, $date) {
 

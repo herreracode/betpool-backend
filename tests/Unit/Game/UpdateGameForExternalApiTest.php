@@ -4,6 +4,7 @@ namespace Game;
 
 use App\Actions\Game\CreateGame;
 use App\Actions\Game\CreateGamesForExternalApi;
+use App\Actions\Game\PostponeGame;
 use App\Actions\Game\UpdateGameResult;
 use App\Actions\Game\UpdateResultGamesForExternalApi;
 use App\Actions\Team\FindOrCreateTeam;
@@ -42,6 +43,7 @@ class UpdateGameForExternalApiTest extends TestCase
             $GetterGamesExternalApi,
             app(FindOrCreateTeam::class),
             app(UpdateGameResult::class),
+            app(PostponeGame::class)
         );
 
         $Games = $this

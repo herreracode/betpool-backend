@@ -13,7 +13,7 @@ class CreateGamesByExternalApi extends Command
      *
      * @var string
      */
-    protected $signature = 'games:create-games-by-external-api';
+    protected $signature = 'games:create-games-by-external-api {--date=}';
 
     /**
      * The console command description.
@@ -35,7 +35,7 @@ class CreateGamesByExternalApi extends Command
 
         $CreateGamesForExternalApi = app(CreateGamesForExternalApi::class);
 
-        $dates = $this->getDateToSearchGames();
+        $dates = $this->option('date') ? : $this->getDateToSearchGames();
 
         try {
 
@@ -51,7 +51,7 @@ class CreateGamesByExternalApi extends Command
                     );
 
                 }
-                    
+
             }else{
                 $Competitions
                     ->each(

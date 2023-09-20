@@ -44,7 +44,7 @@ return new class extends Migration
             $table->enum('status',[
                 PredictionStatus::PENDING->value,
                 PredictionStatus::CLOSE->value,
-            ])->default(GameStatus::PENDING->value);
+            ])->default(PredictionStatus::PENDING->value);
             $table->integer('points_earned')->nullable();
             $table->softDeletes();
             $table->timestamps();

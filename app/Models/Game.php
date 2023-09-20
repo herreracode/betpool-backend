@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Events\CreatedPool;
+use App\Events\GamePostponed;
 use App\Events\UpdatedGameResult;
 use App\Models\Common\AggregateRoot;
 use App\Models\Common\Contracts\Scorable;
@@ -70,6 +71,8 @@ class Game extends AggregateRoot implements Scorable
      */
     public function updateGameResult(int $localTeamScore, int $awayTeamScore): Score
     {
+        //todo:add validation state game
+
         $Score = $this->score()->create([
             'local_team_score' => $localTeamScore,
             'away_team_score' => $awayTeamScore,
@@ -108,12 +111,17 @@ class Game extends AggregateRoot implements Scorable
 
     public function isAboutToStart(\DateTime $dateTime): bool
     {
-        if(!($this->date_start instanceof \DateTime))
-            $dateStart = new \DateTime($this->date_start);
-        else 
-            $dateStart = $this->date_start;
+        $dateStart = !($this->date_start instanceof \DateTime)
+            ? new \DateTime($this->date_start)
+            : $this->date_start;
 
-        return $dateStart->diff($dateTime)->i >= static::MINUTES_DIFFERENCE_GAME_TO_START;
+        $diff = $dateStart->diff($dateTime);
+
+        if ($dateTime->getTimestamp() > $dateStart->getTimestamp())
+            return true;
+
+        return $diff->i <= static::MINUTES_DIFFERENCE_GAME_TO_START
+            &&  $diff->y == 0 && $diff->m == 0 && $diff->d == 0 && $diff->h == 0;
     }
 
     protected function finish()
@@ -139,5 +147,17 @@ class Game extends AggregateRoot implements Scorable
             $this->setAttribute($key, $value);
 
         return $this->save();
+    }
+
+    public function postpone()
+    {
+        if ($this->itIsPostponed())
+            return;
+
+        $this->status = GameStatus::POSTPONED->value;
+
+        $this->record(new GamePostponed($this));
+
+        $this->save();
     }
 }

@@ -8,18 +8,17 @@ use Illuminate\Database\Seeder;
 class CompetitionSeeder extends Seeder
 {
     private const COMPETITIONS = [
-        'FIFA WORLD CUP',
-        'AMERICAN CUP',
-        'EUROPE CUP',
+        [
+            'name' => 'Liga Española',
+            'key'  => 'esp.1',
+        ],
+        [
+            'name' => 'Liga Inglesa',
+            'key'  => 'eng.1',
+        ],
     ];
 
-    private const COMPETITIONS_PHASES = [
-        'PHASE GROUP',
-        'ROUND OF 16',
-        'QUATERS FINALS',
-        'SEMI FINALS',
-        'FINAL',
-    ];
+    private const COMPETITION_PHASE = 'Jornada';
 
     /**
      * Run the database seeds.
@@ -31,15 +30,14 @@ class CompetitionSeeder extends Seeder
         foreach (static::COMPETITIONS as $competition) {
             $Competition = new Competition();
 
-            $Competition->name = $competition;
+            $Competition->name = $competition['name'];
+            $Competition->key_external_api = $competition['key'];
 
             $Competition->save();
 
-            foreach (static::COMPETITIONS_PHASES as $phase) {
-                $Competition->competitionPhases()->create([
-                    'name' => $phase,
-                ]);
-            }
+            $Competition->competitionPhases()->create([
+                'name' => static::COMPETITION_PHASE,
+            ]);
         }
     }
 }

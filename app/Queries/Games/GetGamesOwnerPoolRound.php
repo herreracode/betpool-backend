@@ -13,7 +13,7 @@ class GetGamesOwnerPoolRound
         User $User,
         PoolRound $PoolRound,
     ) :array {
-        
+
         $gamesFormat = $games = [];
 
             $gamesFormat = $PoolRound
@@ -40,12 +40,12 @@ class GetGamesOwnerPoolRound
                 'team_local' => $Game->localTeam->name,
                 'score_local' => $Score ? $Score->getLocalTeamScore() : '',
                 'description' => $Game->localTeam->name.' vs '.$Game->awayTeam->name,
+                'date_start' => (new \DateTime($Game->date_start))->format('Y-m-d\TH:i:s\Z'),
             ];
 
 
             $keysOnly = $Game->only([
                 'status',
-                'date_start',
                 'id',
             ]);
 

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\DomainServices\Prediction\CalculateNumberOfPointsEarned;
 use App\Exceptions\Prediction\GameIsAboutToStart;
 use App\Exceptions\Prediction\GameIsNotFinishedToClosePrediction;
+use App\Exceptions\Prediction\GameIsNotPostponedToCancelPrediction;
 use App\Exceptions\Prediction\GameIsNotStateValid;
 use App\Exceptions\Prediction\UserModifierNotOwner;
 use App\Models\Common\Contracts\Scorable;
@@ -75,8 +76,8 @@ class Prediction extends Model implements Scorable
             throw GameIsNotStateValid::create("game is not state pending");
 
         //todo: fixed
-        /* if($Game->isAboutToStart($dateTimeCreate))
-            throw GameIsAboutToStart::create("game is about to start"); */
+        if($Game->isAboutToStart($dateTimeCreate))
+            throw GameIsAboutToStart::create("game is about to start");
 
         $Prediction = new static();
 
@@ -124,6 +125,18 @@ class Prediction extends Model implements Scorable
         $this->save();
     }
 
+    public function cancel()
+    {
+        if(!$this->game->itIsPostponed())
+            throw GameIsNotPostponedToCancelPrediction::create('Game is not postponed to cancel prediction');
+
+        $this->status = PredictionStatus::CANCEL->value;
+
+        $this->points_earned = 0;
+
+        $this->save();
+    }
+
     public function getLocalTeam(): Team
     {
         return $this->game->localTeam;
@@ -143,8 +156,8 @@ class Prediction extends Model implements Scorable
             throw GameIsNotStateValid::create("game is not state pending");
 
         //validate Game has not started yet (isAboutToStart).leave to do at the end
-
-        //validate scores is not the same as before
+        if($Game->isAboutToStart(new \DateTime()))
+            throw GameIsAboutToStart::create("game is about to start");
 
         //validate user modifier is prediction owner
         if ($this->user_id !== $idUserModifier)

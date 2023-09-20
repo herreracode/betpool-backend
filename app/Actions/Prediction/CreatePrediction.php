@@ -2,11 +2,10 @@
 
 namespace App\Actions\Prediction;
 
-use App\Models\Game;
-use App\Models\Pool;
-use App\Models\PoolRound;
-use App\Models\Prediction;
-use App\Models\User;
+use App\Exceptions\Prediction\ExistsPrediction;
+use App\Models\{
+    Game, Pool, PoolRound, Prediction, User
+};
 
 class CreatePrediction
 {
@@ -24,7 +23,17 @@ class CreatePrediction
         \DateTime $dateCreatePrediction = new \DateTime()
     ): Prediction
     {
-        $Prediction = Prediction::createWithValidations(
+        $existPrediction = Prediction::where([
+            'game_id'       => $Game->id,
+            'user_id'       => $User->id,
+            'pool_round_id' => $PoolRound->id,
+        ])->count() > 0;
+
+        if($existPrediction){
+            throw ExistsPrediction::create("already exist prediction of that game");
+        }
+
+        return Prediction::createWithValidations(
             $User,
             $Pool,
             $Game,
@@ -32,8 +41,6 @@ class CreatePrediction
             $localTeamScore,
             $awayTeamScore,
             $dateCreatePrediction);
-
-        return $Prediction;
     }
 
 }

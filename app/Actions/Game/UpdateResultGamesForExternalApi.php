@@ -11,10 +11,19 @@ use App\Models\Team;
 class UpdateResultGamesForExternalApi
 {
 
+    private const STATUS_FULL_TIME = 'STATUS_FULL_TIME';
+    private const STATUS_POSTPONED = 'STATUS_POSTPONED';
+
+    private const STATE_TO_PROCESS = [
+        'STATUS_FULL_TIME',
+        'STATUS_POSTPONED',
+    ];
+
     public function __construct(
         protected GetterGamesExternalApi $GetterGamesExternalApi,
         protected FindOrCreateTeam $FindOrCreateTeam,
         protected UpdateGameResult $UpdateGameResult,
+        protected PostponeGame $PostponeGame,
     ){
     }
 
@@ -31,7 +40,7 @@ class UpdateResultGamesForExternalApi
 
         foreach ($arrayResponses as $Response) {
 
-            if(!($Response->status ==  "STATUS_FULL_TIME")){
+            if (!(in_array($Response->status, static::STATE_TO_PROCESS))) {
                 continue;
             }
 
@@ -40,12 +49,17 @@ class UpdateResultGamesForExternalApi
             $awayTeamData = $Response->getDataAwayTeam();
 
             $LocalTeam = Team::where([
-                'abbreviation' => data_get($localTeamData,'abbreviation')
+                'abbreviation'  => data_get($localTeamData,'abbreviation')
             ])->first();
 
             $AwayTeam = Team::where([
                 'abbreviation' => data_get($awayTeamData,'abbreviation')
             ])->first();
+
+            if(!$LocalTeam || !$AwayTeam){
+                echo "no se encontro uno de los 2 equipos para actualizar el partido";
+                continue;
+            }
 
             $Games[] = $Game = Game::where([
                 'local_team_id' => $LocalTeam->id,
@@ -53,9 +67,23 @@ class UpdateResultGamesForExternalApi
                 'competition_phase_id' => $Competition->competitionPhases->first()->id,
             ])->first();
 
-            $Game && $this->UpdateGameResult->__invoke(
-                $Game, data_get($localTeamData,'score'), data_get($awayTeamData,'score')
-            );
+            if(!$Game){
+                echo "no se encontro un game";
+                continue;
+            }
+
+            if($Response->status == static::STATUS_FULL_TIME && !$Game->itIsFinished()){
+
+                $this->UpdateGameResult->__invoke(
+                    $Game, data_get($localTeamData,'score'), data_get($awayTeamData,'score')
+                );
+
+            }elseif ($Response->status == static::STATUS_POSTPONED && !$Game->itIsPostponed()){
+
+                $this->PostponeGame->__invoke($Game);
+
+            }
+
         }
 
         return $Games;

@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import ApplicationMark from '@/Components/ApplicationMark.vue';
 import Banner from '@/Components/Banner.vue';
@@ -10,6 +10,7 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 
 defineProps({
     title: String,
+    breadcrumb: []
 });
 
 const showingNavigationDropdown = ref(false);
@@ -275,6 +276,15 @@ const logout = () => {
             <header v-if="$slots.header" class="bg-white shadow">
                 <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                     <slot name="header" />
+                    <template v-if="$slots.breadcrumbs">
+                        <v-toolbar color="white">
+                            <v-breadcrumbs
+                                :items="breadcrumb"
+                                divider="/"
+                            ></v-breadcrumbs>
+                        </v-toolbar>
+                        <slot name="breadcrumbs"/>
+                    </template>
                 </div>
             </header>
 
