@@ -37,6 +37,14 @@ const breadcrumbItems = ref([
     },
 ]);
 
+const getLocalStringDate = (date: string) => {
+
+    let DateOb = new Date(date)
+
+    return DateOb.toLocaleString();
+
+}
+
 </script>
 
 <template>
@@ -93,7 +101,7 @@ const breadcrumbItems = ref([
                                             <tr v-for="item in games" :key="item.id">
                                                 <td>{{ item.description }}</td>
                                                 <td>{{ item.score_local }} - {{ item.score_away }}</td>
-                                                <td>{{ item.date_start }}</td>
+                                                <td>{{ getLocalStringDate(item.date_start) }}</td>
                                                 <td>
                                                     <v-chip class="ma-2" :color="colorByStatus(item.status)">
                                                         {{ item.status }}
