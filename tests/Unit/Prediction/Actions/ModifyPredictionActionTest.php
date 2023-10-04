@@ -44,7 +44,7 @@ class ModifyPredictionActionTest extends TestCase
             ->for($Pool)
             ->create();
 
-        $timeInMinutesToExpiredPeriod = 29;
+        $timeInMinutesToExpiredPeriod = 60;
 
         $nowTimeStampAddTime = (new \DateTime())
             ->modify("+{$timeInMinutesToExpiredPeriod} minutes");
@@ -104,7 +104,7 @@ class ModifyPredictionActionTest extends TestCase
             ->for($Pool)
             ->create();
 
-        $timeInMinutesToExpiredPeriod = 29;
+        $timeInMinutesToExpiredPeriod = 40;
 
         $nowTimeStampAddTime = (new \DateTime())
             ->modify("+{$timeInMinutesToExpiredPeriod} minutes");
@@ -160,7 +160,7 @@ class ModifyPredictionActionTest extends TestCase
             ->for($Pool)
             ->create();
 
-        $timeInMinutesToExpiredPeriod = 29;
+        $timeInMinutesToExpiredPeriod = 40;
 
         $nowTimeStampAddTime = (new \DateTime())
             ->modify("+{$timeInMinutesToExpiredPeriod} minutes");
