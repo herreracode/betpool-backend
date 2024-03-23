@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use App\Exceptions\Pool\PoolHasPredictions;
 use App\Exceptions\Pool\UserDoesntBelongToThePool;
 use App\Exceptions\PoolRound\AlreadyHavePoolRoundPending;
 use App\Exceptions\PoolRound\GameIsNotPending;
@@ -57,6 +58,7 @@ class Handler extends ExceptionHandler
         GameIsNotFinishedToClosePrediction::class,
         GameIsNotPostponedToCancelPrediction::class,
         GameIsNotStateValid::class,
+        PoolHasPredictions::class
     ];
 
     /**

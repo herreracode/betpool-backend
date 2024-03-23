@@ -27,7 +27,7 @@ class PoolDeleteController extends Controller
         return response()->json([
             'status' => 'true',
             'item' => []
-        ], 201);
+        ], 204);
 
     }
 
