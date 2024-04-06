@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { Link, router } from "@inertiajs/vue3";
+import {Link, router} from "@inertiajs/vue3";
 import Pool from "@/Models/Pool";
 import HttpClient from '@/Shared/HttpClient';
 import {useToast} from 'vue-toast-notification';
+
 const $toast = useToast();
-import { ref } from 'vue';
+import {ref} from 'vue';
 
 interface Props {
     pools: Pool[],
@@ -16,18 +17,18 @@ const props = defineProps<Props>()
 
 const acceptInvitation = async (invitationId) => {
 
-    try{
+    try {
 
         const json = await HttpClient.patch(route('pools-invitations-emails.patch', invitationId), {
-            accepted : 1
+            accepted: 1
         });
 
-        router.reload({ only: ['pools', 'invitations_pools'] })
+        router.reload({only: ['pools', 'invitations_pools']})
 
         $toast.success("se ha aceptado la invitación, procedar a recargar la página en unos segundos y " +
             "le aparecerá el pool disponible")
 
-    }catch (e) {
+    } catch (e) {
 
     }
 
@@ -35,17 +36,32 @@ const acceptInvitation = async (invitationId) => {
 
 const rejectInvitation = async (invitationId) => {
 
-    try{
+    try {
 
         const json = await HttpClient.patch(route('pools-invitations-emails.patch', invitationId), {
-            accepted : 0
+            accepted: 0
         });
 
         $toast.success("Invitación rechazada")
 
-        router.reload({ only: ['invitations_pools'] })
+        router.reload({only: ['invitations_pools']})
 
-    }catch (e) {
+    } catch (e) {
+
+    }
+}
+
+const deletePool = async (poolId) => {
+
+    try {
+
+        const json = await HttpClient.delete(route('pool.delete', poolId));
+
+        $toast.success("Pool Eliminado")
+
+        router.reload({only: ['pools']})
+
+    } catch (e) {
 
     }
 }
@@ -65,8 +81,8 @@ const rejectInvitation = async (invitationId) => {
                 <div class="container-principal--item container-pools bg-white overflow-hidden shadow-xl sm:rounded-lg">
                     <v-toolbar color="blue" title="Pools">
                         <Link :href="route('pool.create-view')"
-                            class="v-btn v-btn--elevated v-theme--light bg-info v-btn--density-default v-btn--size-default v-btn--variant-elevated">
-                        Crear Pool
+                              class="v-btn v-btn--elevated v-theme--light bg-info v-btn--density-default v-btn--size-default v-btn--variant-elevated">
+                            Crear Pool
                         </Link>
                     </v-toolbar>
                     <v-container class="pools_container">
@@ -84,12 +100,15 @@ const rejectInvitation = async (invitationId) => {
                                 <v-card>
                                     <v-card-title class="text-h5">
                                         {{ pool.name }}
+                                        <v-btn size="x-small" color="red darken-1" @click="deletePool(pool.id)">
+                                            eliminar
+                                        </v-btn>
                                     </v-card-title>
                                     <v-card-actions>
                                         <v-btn color="info" prepend-icon="$vuetify">
                                             <Link :href="route('pool.indiviual-view', pool.id)"
-                                                class="text-indigo-600 hover:text-indigo-800 w-fit self-end font-semibold">
-                                            view
+                                                  class="text-indigo-600 hover:text-indigo-800 w-fit self-end font-semibold">
+                                                view
                                             </Link>
                                         </v-btn>
                                     </v-card-actions>
@@ -98,7 +117,8 @@ const rejectInvitation = async (invitationId) => {
                         </v-row>
                     </v-container>
                 </div>
-                <div class="container-principal--item container-invitations bg-white overflow-hidden shadow-xl sm:rounded-lg">
+                <div
+                    class="container-principal--item container-invitations bg-white overflow-hidden shadow-xl sm:rounded-lg">
                     <v-toolbar color="blue" title="Invitaciones a pool">
                     </v-toolbar>
                     <v-container class="invitations_container">
@@ -112,16 +132,19 @@ const rejectInvitation = async (invitationId) => {
                             >
                                 No tiene invitaciones pendientes
                             </v-alert>
-                            <v-col v-for=" invitation_pool in props.invitations_pools" :key="invitation_pool.id" cols="12" sm="4">
+                            <v-col v-for=" invitation_pool in props.invitations_pools" :key="invitation_pool.id"
+                                   cols="12" sm="4">
                                 <v-card>
                                     <v-card-title class="text-h5">
                                         Invitacion al pool {{ invitation_pool.pool_id }}
                                     </v-card-title>
                                     <v-card-actions>
-                                        <v-btn color="danger" prepend-icon="$vuetify" @click="rejectInvitation(invitation_pool.id)">
+                                        <v-btn color="danger" prepend-icon="$vuetify"
+                                               @click="rejectInvitation(invitation_pool.id)">
                                             rechazar
                                         </v-btn>
-                                        <v-btn color="success" prepend-icon="$vuetify" @click="acceptInvitation(invitation_pool.id)">
+                                        <v-btn color="success" prepend-icon="$vuetify"
+                                               @click="acceptInvitation(invitation_pool.id)">
                                             aceptar
                                         </v-btn>
                                     </v-card-actions>
@@ -137,14 +160,14 @@ const rejectInvitation = async (invitationId) => {
 
 <style lang="scss" scoped>
 
-.container-principal{
+.container-principal {
 
     display: flex;
     flex-direction: column;
 
-    .container-principal--item{
+    .container-principal--item {
 
-        margin : 1%;
+        margin: 1%;
 
     }
 }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Events\CreatedPool;
 use App\Exceptions\Pool\CompetitionMustBeUniqueInAPool;
+use App\Exceptions\Pool\PoolHasPredictions;
 use App\Exceptions\Pool\UserDoesntBelongToThePool;
 use App\Exceptions\PoolRound\AlreadyHavePoolRoundPending;
 use App\Exceptions\PoolRound\GameIsNotPending;
@@ -56,6 +57,11 @@ class Pool extends AggregateRoot
     public function poolRound()
     {
         return $this->hasMany(PoolRound::class);
+    }
+
+    public function predictions()
+    {
+        return $this->hasMany(Prediction::class);
     }
 
     /**
@@ -134,7 +140,7 @@ class Pool extends AggregateRoot
     public function createRound(User $UserCreator, iterable $Games) :PoolRound
     {
         $this->alreadyHaveOnePending();
-        
+
         $this->someGameIsInNonPendingState($Games);
 
         $this->userCreatorIsPoolAdmin($UserCreator);
@@ -181,5 +187,18 @@ class Pool extends AggregateRoot
             throw AlreadyHavePoolRoundPending::create('already have one pool round pending');
 
         return true;
+    }
+
+    public function delete():bool
+    {
+        if($this->hasPredictions())
+            throw new PoolHasPredictions("pool has predictions");
+
+        return parent::delete();
+    }
+
+    protected function hasPredictions(): bool
+    {
+        return $this->predictions->count() > 0;
     }
 }

@@ -91,4 +91,7 @@ Route::middleware([
 
     Route::patch('/pool-invitations/{pools_invitations_id}', PoolInvitationsPatchController::class)->name('pools-invitations-emails.patch');
 
+    Route::delete('/pools/{pool_id}', \App\Http\Controllers\ApiControllers\PoolDeleteController::class)
+        ->name('pool.delete');
+
 });
