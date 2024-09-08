@@ -14,6 +14,11 @@ class UpdateResultGamesForExternalApi
     private const STATUS_FULL_TIME = 'STATUS_FULL_TIME';
     private const STATUS_POSTPONED = 'STATUS_POSTPONED';
 
+    private const STATUS_FINISHED = [
+        'STATUS_FINAL_PEN',
+        'STATUS_FINAL_AET',
+    ];
+
     private const STATE_TO_PROCESS = [
         'STATUS_FULL_TIME',
         'STATUS_POSTPONED',
@@ -72,7 +77,7 @@ class UpdateResultGamesForExternalApi
                 continue;
             }
 
-            if($Response->status == static::STATUS_FULL_TIME && !$Game->itIsFinished()){
+            if((in_array($Response->status, static::STATE_TO_PROCESS)) && !$Game->itIsFinished()){
 
                 $this->UpdateGameResult->__invoke(
                     $Game, data_get($localTeamData,'score'), data_get($awayTeamData,'score')
