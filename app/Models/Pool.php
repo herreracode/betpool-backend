@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Events\CreatedPool;
 use App\Exceptions\Pool\CompetitionMustBeUniqueInAPool;
 use App\Exceptions\Pool\PoolHasPredictions;
+use App\Exceptions\Pool\UserAlreadyAdded;
 use App\Exceptions\Pool\UserDoesntBelongToThePool;
 use App\Exceptions\PoolRound\AlreadyHavePoolRoundPending;
 use App\Exceptions\PoolRound\GameIsNotPending;
@@ -89,6 +90,10 @@ class Pool extends AggregateRoot
 
     public function addUser(User $User)
     {
+        if($this->userIsAdded($User)){
+            throw new UserAlreadyAdded("Users is already added in Pool");
+        }
+
         $this->users()->attach($User);
     }
 
@@ -127,14 +132,17 @@ class Pool extends AggregateRoot
      */
     public function doesItbelongsToThePool(User $User) :bool
     {
-        $doesItBelongsToThePool = $this->users()->where([
-            static::NAME_TABLE_INTERMEDIATE_USER .'.user_id' => $User->id
-        ])->count() > 0;
-
-        if (!$doesItBelongsToThePool)
+        if (!$this->userIsAdded($User))
             throw UserDoesntBelongToThePool::create("User {$User->id} doesnt belong to pool {$this->id}");
 
         return true;
+    }
+
+    protected function userIsAdded(User $user):bool
+    {
+        return $this->users()->where([
+                static::NAME_TABLE_INTERMEDIATE_USER .'.user_id' => $user->id
+            ])->count() > 0;
     }
 
     public function createRound(User $UserCreator, iterable $Games) :PoolRound

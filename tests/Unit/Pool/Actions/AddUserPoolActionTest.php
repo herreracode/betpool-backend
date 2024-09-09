@@ -5,6 +5,7 @@ namespace Tests\Unit\Pool\Actions;
 use App\Actions\Pool\AddUserToPool;
 use App\Actions\Pool\DeletePool;
 use App\Exceptions\Pool\PoolHasPredictions;
+use App\Exceptions\Pool\UserAlreadyAdded;
 use App\Models\Competition;
 use App\Models\CompetitionPhase;
 use App\Models\Game;
@@ -31,7 +32,7 @@ class AddUserPoolActionTest extends TestCase
         $this->AddUserToPool = app(AddUserToPool::class);
     }
 
-    public function testAddUserToPoolHappyPath()
+    public function testGivenNeedAddUserWhenTheUserDoesNotBelongToPoolThenAddUserToPool()
     {
         $UserAdder = User::factory()->create();
 
@@ -51,9 +52,25 @@ class AddUserPoolActionTest extends TestCase
         $this->assertTrue($status);
     }
 
-    public function testDeletePoolExpectExceptionPoolWithPredictionsCreated()
+    public function testGivenNeedAddUserWhenUserIsAlreadyAddedToPoolThenThrowUserAlreadyAddedException()
     {
+        $this->expectException(UserAlreadyAdded::class);
 
+        $UserAdder = User::factory()->create();
+
+        $UserAdder = Sanctum::actingAs(
+            $UserAdder,
+            ['*']
+        );
+
+        $Pool = Pool::factory()
+            ->hasAttached($UserAdder)
+            ->create();
+
+        $this->AddUserToPool->__invoke(
+            $UserAdder,
+            $Pool
+        );
     }
 
 }
