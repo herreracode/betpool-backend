@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { Link } from "@inertiajs/vue3";
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import Pool from "@/Models/Pool";
 import PoolRound from "@/Models/PoolRound";
+import AddUsersToPool from "../../CustomComponents/AddUsersToPool.vue";
 
 interface Props {
     pool: Pool,
@@ -13,10 +14,15 @@ interface Props {
 
 const props = defineProps<Props>()
 
+const viewModelAddUsersToPool = ref(false);
+
 const positionTableOrder = computed(() => {
   return props.positions_table.sort((a, b) => a.total_points_earned < b.total_points_earned ? 1 : -1)
 })
 
+const funct = () => {
+    console.log("viewModelAddUsersToPool.value")
+}
 
 </script>
 
@@ -33,9 +39,14 @@ const positionTableOrder = computed(() => {
                     class="v-btn v-btn--elevated v-theme--light bg-info v-btn--density-default v-btn--size-default v-btn--variant-elevated">
                     Crear Round
                 </Link>
-                <v-btn color="info">
+                <v-btn color="info" @click="viewModelAddUsersToPool = true" >
                     Invitar Usuario
                 </v-btn>
+                <add-users-to-pool :show-dialog="viewModelAddUsersToPool"
+                                   @input="viewModelAddUsersToPool = false"
+                                   :pool_id="pool.id"
+                >
+                </add-users-to-pool>
             </div>
         </template>
         <div class="py-12">

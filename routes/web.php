@@ -9,6 +9,7 @@ use App\Http\Controllers\TestController;
 use App\Http\Controllers\ViewControllers\PoolViewController;
 use App\Http\Controllers\ViewControllers\PoolRoundViewController;
 use App\Http\Controllers\ViewControllers\PredictionViewController;
+use App\Http\Controllers\ApiControllers\PoolAddUsersController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -94,4 +95,7 @@ Route::middleware([
     Route::delete('/pools/{pool_id}', \App\Http\Controllers\ApiControllers\PoolDeleteController::class)
         ->name('pool.delete');
 
+    Route::post('/pool/{id_pool}/add-user', PoolAddUsersController::class)
+        ->name('pool.post.add-user')
+        ->middleware(EnsureBelongsToPool::class);
 });

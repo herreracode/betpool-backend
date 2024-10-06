@@ -49,7 +49,7 @@ class EnsureBelongsToPool
 
         }elseif ($request->getMethod() == 'POST' ) {
 
-            $idPool = $request->get('id_pool');
+            $idPool = $request->get('id_pool') ?  : $request->route()->parameter('id_pool');
 
             $idPoolRound = $request->get('id_pool_round');
 
