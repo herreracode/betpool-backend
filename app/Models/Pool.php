@@ -136,7 +136,20 @@ class Pool extends AggregateRoot
 
     public function inviteGuestByEmailsOrFail(string $email)
     {
+        $Invitation = PoolInvitationsEmails::where('email', $email)
+            ->where('pool_id', $this->id)
+            ->first();
+
+        if ($Invitation) {
+            throw new UserAlreadyAdded("USER_ALREADY_INVITED_POOL");
+        }
+
         $User = User::where('email', $email)->first();
+
+        if (!$User) {
+            $this->createPoolInvitationsByEmails($email);
+            return;
+        }
 
         if ($this->userIsAdded($User)) {
             throw new UserAlreadyAdded("Users is already added in Pool");

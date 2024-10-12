@@ -46,7 +46,7 @@ const addUsersToPool = async () => {
 
     try {
 
-        await HttpClient.post(route('pool.post.add-user', props.pool_id), formAddUsers)
+        let response = await HttpClient.post(route('pool.post.invite-user', props.pool_id), formAddUsers)
 
         $toast.success("Se ha agregado a los usuarios con éxito")
 

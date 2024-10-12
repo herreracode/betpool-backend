@@ -98,4 +98,8 @@ Route::middleware([
     Route::post('/pool/{id_pool}/add-user', PoolAddUsersController::class)
         ->name('pool.post.add-user')
         ->middleware(EnsureBelongsToPool::class);
+
+    Route::post('/pool/{id_pool}/invite-user', \App\Http\Controllers\ApiControllers\InviteGuestToPoolController::class)
+        ->name('pool.post.invite-user')
+        ->middleware(EnsureBelongsToPool::class);
 });

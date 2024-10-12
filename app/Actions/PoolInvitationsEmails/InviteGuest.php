@@ -6,7 +6,6 @@ use App\Actions\PoolInvitationsEmails\DTO\RequestInviteGuest;
 use App\Actions\PoolInvitationsEmails\DTO\ResponseInviteGuest;
 use App\Exceptions\Pool\UserAlreadyAdded;
 use App\Models\Pool;
-use App\Models\User;
 
 class InviteGuest
 {
@@ -23,12 +22,7 @@ class InviteGuest
 
         foreach ($request->emails as $emailGuest) {
             try {
-
-                $User = User::where('email', $emailGuest)->first();
-
-                if ($User) {
-                    $Pool->inviteGuestByEmailsOrFail($emailGuest);
-                }
+                $Pool->inviteGuestByEmailsOrFail($emailGuest);
 
                 $response->summary[] = [
                     'email' => $emailGuest,
@@ -36,7 +30,7 @@ class InviteGuest
                     'status' => true
                 ];
 
-            } catch (UserAlreadyAdded $e) {
+            } catch (\Exception $e) {
 
                 $response->summary[] = [
                     'email' => $emailGuest,
