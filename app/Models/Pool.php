@@ -88,7 +88,7 @@ class Pool extends AggregateRoot
         return $Pool;
     }
 
-    public function addUser(User $User)
+    public function addUser(User $User) :void
     {
         if($this->userIsAdded($User)){
             throw new UserAlreadyAdded("Users is already added in Pool");

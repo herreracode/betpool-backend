@@ -2,14 +2,31 @@
 
 namespace App\Actions\Pool;
 
+use App\Actions\Pool\DTO\RequestAddUserPool;
+use App\Exceptions\Pool\UserAlreadyAdded;
 use App\Models\Pool;
 use App\Models\User;
 
 class AddUserToPool
 {
-    public function __invoke(User $User, Pool $Pool) :bool
+    /**
+     * @throws UserAlreadyAdded
+     */
+    public function __invoke(RequestAddUserPool $requestAddUserPool) :bool
     {
-        $Pool->addUser($User);
+        /**
+         * @var Pool $Pool
+         */
+        $Pool = Pool::find($requestAddUserPool->poolId);
+
+
+        foreach ($requestAddUserPool->guestsEmails as $guest) {
+            $User = User::where('email', $guest)->first();
+
+            if ($User) {
+                $Pool->addUser($User);
+            }
+        }
 
         return true;
     }

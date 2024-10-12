@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\ApiControllers;
 
 use App\Actions\Pool\AddUserToPool;
+use App\Actions\Pool\DTO\RequestAddUserPool;
+use App\Exceptions\Pool\UserAlreadyAdded;
 use App\Models\Pool;
 use App\Models\User;
+use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
 
 class PoolAddUsersController
@@ -13,23 +16,17 @@ class PoolAddUsersController
     {
     }
 
+    /**
+     * @throws UserAlreadyAdded
+     */
     public function __invoke($poolId, Request $request)
     {
-        $guests = $request->get("guests");
+        $Request = new RequestAddUserPool(
+            $poolId,
+            $request->get("guests")
+        );
 
-        $Pool = Pool::find($poolId);
-
-        foreach ($guests as $guest) {
-
-            $User = User::where('email', $guest)->first();
-
-            if ($User) {
-                $this->addUserToPool->__invoke(
-                    $User,
-                    $Pool
-                );
-            }
-        }
+        $this->addUserToPool->__invoke($Request);
 
         return response()->json([
             'status' => 'true',

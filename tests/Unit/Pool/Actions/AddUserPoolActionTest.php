@@ -4,6 +4,7 @@ namespace Tests\Unit\Pool\Actions;
 
 use App\Actions\Pool\AddUserToPool;
 use App\Actions\Pool\DeletePool;
+use App\Actions\Pool\DTO\RequestAddUserPool;
 use App\Exceptions\Pool\PoolHasPredictions;
 use App\Exceptions\Pool\UserAlreadyAdded;
 use App\Models\Competition;
@@ -44,10 +45,12 @@ class AddUserPoolActionTest extends TestCase
         $Pool = Pool::factory()
             ->create();
 
-        $status = $this->AddUserToPool->__invoke(
-            $UserAdder,
-            $Pool
+        $RequestDto = new RequestAddUserPool(
+            $Pool->id,
+            [$UserAdder->email]
         );
+
+        $status = $this->AddUserToPool->__invoke($RequestDto);
 
         $this->assertTrue($status);
     }
@@ -67,10 +70,12 @@ class AddUserPoolActionTest extends TestCase
             ->hasAttached($UserAdder)
             ->create();
 
-        $this->AddUserToPool->__invoke(
-            $UserAdder,
-            $Pool
+        $RequestDto = new RequestAddUserPool(
+            $Pool->id,
+            [$UserAdder->email]
         );
+
+        $this->AddUserToPool->__invoke($RequestDto);
     }
 
 }
