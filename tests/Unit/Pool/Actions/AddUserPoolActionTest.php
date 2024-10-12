@@ -3,16 +3,9 @@
 namespace Tests\Unit\Pool\Actions;
 
 use App\Actions\Pool\AddUserToPool;
-use App\Actions\Pool\DeletePool;
 use App\Actions\Pool\DTO\RequestAddUserPool;
-use App\Exceptions\Pool\PoolHasPredictions;
 use App\Exceptions\Pool\UserAlreadyAdded;
-use App\Models\Competition;
-use App\Models\CompetitionPhase;
-use App\Models\Game;
 use App\Models\Pool;
-use App\Models\PoolRound;
-use App\Models\Prediction;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutEvents;

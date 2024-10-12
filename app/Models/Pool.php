@@ -118,13 +118,38 @@ class Pool extends AggregateRoot
             throw new CompetitionMustBeUniqueInAPool('Have competition unique');
     }
 
-    public function createInvitationsPoolEmails(iterable $emails)
+    public function inviteGuestByEmails(string $email)
     {
-        foreach ($emails as $email){
-            $this->poolInvitationsEmails()->create([
-                'email' => $email,
-            ]);
+        $User = User::where('email', $email)->first();
+
+        if (!$User) {
+            $this->createPoolInvitationsByEmails($email);
+            return;
         }
+
+        if ($this->userIsAdded($User)) {
+            return;
+        }
+
+        $this->createPoolInvitationsByEmails($email);
+    }
+
+    public function inviteGuestByEmailsOrFail(string $email)
+    {
+        $User = User::where('email', $email)->first();
+
+        if ($this->userIsAdded($User)) {
+            throw new UserAlreadyAdded("Users is already added in Pool");
+        }
+
+        $this->createPoolInvitationsByEmails($email);
+    }
+
+    protected function createPoolInvitationsByEmails(string $email)
+    {
+        $this->poolInvitationsEmails()->create([
+            'email' => $email,
+        ]);
     }
 
     /**

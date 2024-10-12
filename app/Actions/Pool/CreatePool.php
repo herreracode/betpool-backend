@@ -36,7 +36,7 @@ class CreatePool
         $competitions && $Pool->addCompetitions($competitions);
 
         //add invitations pool users
-        $emailsPossiblesUsersPools && $Pool->createInvitationsPoolEmails($emailsPossiblesUsersPools);
+        $emailsPossiblesUsersPools && array_walk($emailsPossiblesUsersPools, fn ($email) => $Pool->inviteGuestByEmails($email));
 
         $this->eventBus->dispatch($Pool->pullDomainEvents());
 
