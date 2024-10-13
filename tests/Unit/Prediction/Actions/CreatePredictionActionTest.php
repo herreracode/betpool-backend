@@ -3,7 +3,6 @@
 namespace Prediction\Actions;
 
 use App\Actions\Prediction\CreatePrediction;
-use App\Exceptions\Pool\UserDoesntBelongToThePool;
 use App\Exceptions\Prediction\GameIsAboutToStart;
 use App\Exceptions\Prediction\GameIsNotStateValid;
 use App\Models\Competition;
@@ -12,6 +11,7 @@ use App\Models\Game;
 use App\Models\PoolRound;
 use App\Models\Prediction;
 use App\Models\User;
+use Betpool\Pool\Domain\Exceptions\UserDoesntBelongToThePool;
 use Betpool\Pool\Domain\Pool;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutEvents;

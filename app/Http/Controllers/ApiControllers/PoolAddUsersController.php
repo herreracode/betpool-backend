@@ -4,7 +4,7 @@ namespace App\Http\Controllers\ApiControllers;
 
 use App\Actions\Pool\AddUserToPool;
 use App\Actions\Pool\DTO\RequestAddUserPool;
-use App\Exceptions\Pool\UserAlreadyAdded;
+use Betpool\Pool\Domain\Exceptions\UserAlreadyAdded;
 use Illuminate\Http\Request;
 
 class PoolAddUsersController

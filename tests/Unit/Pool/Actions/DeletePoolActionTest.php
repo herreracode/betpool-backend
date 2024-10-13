@@ -3,13 +3,13 @@
 namespace Tests\Unit\Pool\Actions;
 
 use App\Actions\Pool\DeletePool;
-use App\Exceptions\Pool\PoolHasPredictions;
 use App\Models\Competition;
 use App\Models\CompetitionPhase;
 use App\Models\Game;
 use App\Models\PoolRound;
 use App\Models\Prediction;
 use App\Models\User;
+use Betpool\Pool\Domain\Exceptions\PoolHasPredictions;
 use Betpool\Pool\Domain\Pool;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutEvents;

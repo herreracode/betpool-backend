@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Betpool\Pool\Features\InviteGuest\InviteGuestToPoolController;
+use Betpool\Pool\Features\Create\PoolCreateController;
 use App\Http\Middleware\EnsureBelongsToPool;
 
 Route::middleware([
@@ -14,4 +15,7 @@ Route::middleware([
     Route::post('/pool/{id_pool}/invite-guest', InviteGuestToPoolController::class)
         ->name('pool.post.invite-guest')
         ->middleware(EnsureBelongsToPool::class);
+
+    Route::post('/pools', PoolCreateController::class)
+        ->name('pool.store');
 });

@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Events\CreatedPool;
+use Betpool\Pool\Domain\Events\CreatedPool;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
@@ -30,7 +30,7 @@ class SendEmailInvitationsUsersPool implements ShouldQueue
     /**
      * Handle the event.
      *
-     * @param  \App\Events\CreatedPool  $event
+     * @param  \Betpool\Pool\Domain\Events\CreatedPool  $event
      * @return void
      */
     public function handle(CreatedPool $event)

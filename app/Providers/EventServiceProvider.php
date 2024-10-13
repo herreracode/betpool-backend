@@ -3,17 +3,16 @@
 namespace App\Providers;
 
 use App\Events\AcceptInvitationPool;
-use App\Events\CreatedPool;
 use App\Events\GamePostponed;
 use App\Events\UpdatedGameResult;
 use App\Listeners\AddUserPoolWhenAcceptInvitation;
 use App\Listeners\CancelPredictionsWhenPostponedGameListener;
 use App\Listeners\ClosePredictionsWhenUpdatedGameResultListener;
 use App\Listeners\SendEmailInvitationsUsersPool;
+use Betpool\Pool\Domain\Events\CreatedPool;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {

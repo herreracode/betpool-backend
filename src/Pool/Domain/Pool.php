@@ -2,12 +2,6 @@
 
 namespace Betpool\Pool\Domain;
 
-use App\Events\CreatedPool;
-use App\Exceptions\Pool\CompetitionMustBeUniqueInAPool;
-use App\Exceptions\Pool\GuestAlreadyInvited;
-use App\Exceptions\Pool\PoolHasPredictions;
-use App\Exceptions\Pool\UserAlreadyAdded;
-use App\Exceptions\Pool\UserDoesntBelongToThePool;
 use App\Exceptions\PoolRound\AlreadyHavePoolRoundPending;
 use App\Exceptions\PoolRound\GameIsNotPending;
 use App\Exceptions\PoolRound\UserDoesNotHaveTheRequiredRole;
@@ -19,6 +13,12 @@ use App\Models\PoolInvitationsEmails;
 use App\Models\PoolRound;
 use App\Models\Prediction;
 use App\Models\User;
+use Betpool\Pool\Domain\Events\CreatedPool;
+use Betpool\Pool\Domain\Exceptions\CompetitionMustBeUniqueInAPool;
+use Betpool\Pool\Domain\Exceptions\GuestAlreadyInvited;
+use Betpool\Pool\Domain\Exceptions\PoolHasPredictions;
+use Betpool\Pool\Domain\Exceptions\UserAlreadyAdded;
+use Betpool\Pool\Domain\Exceptions\UserDoesntBelongToThePool;
 use Database\Factories\PoolFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;

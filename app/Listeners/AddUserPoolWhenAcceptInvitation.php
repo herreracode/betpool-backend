@@ -31,7 +31,7 @@ class AddUserPoolWhenAcceptInvitation implements ShouldQueue
     /**
      * Handle the event.
      *
-     * @param  \App\Events\CreatedPool  $event
+     * @param  \Betpool\Pool\Domain\Events\CreatedPool  $event
      * @return void
      */
     public function handle(AcceptInvitationPool $event)

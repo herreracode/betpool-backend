@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\ViewControllers;
+namespace Betpool\Pool\Features\View;
 
 use App\Http\Controllers\Controller;
 use App\Models\Competition;
@@ -12,11 +12,6 @@ class PoolViewController extends Controller
 {
     public function __construct(public GetPositionTableByPool $getPositionTableByPool){
 
-    }
-
-    public function hola()
-    {
-        return Inertia::render('Dashboard');
     }
 
     public function getPoolIndividualView($idPool)

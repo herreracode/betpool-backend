@@ -3,8 +3,8 @@
 namespace App\Actions\Pool;
 
 use App\Actions\Pool\DTO\RequestAddUserPool;
-use App\Exceptions\Pool\UserAlreadyAdded;
 use App\Models\User;
+use Betpool\Pool\Domain\Exceptions\UserAlreadyAdded;
 use Betpool\Pool\Domain\Pool;
 
 class AddUserToPool

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\Pool;
+namespace Betpool\Pool\Features\Create;
 
 use App\Events\Common\Contracts\EventBus;
 use App\Models\User;

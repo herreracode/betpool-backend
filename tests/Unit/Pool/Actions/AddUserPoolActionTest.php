@@ -4,8 +4,8 @@ namespace Tests\Unit\Pool\Actions;
 
 use App\Actions\Pool\AddUserToPool;
 use App\Actions\Pool\DTO\RequestAddUserPool;
-use App\Exceptions\Pool\UserAlreadyAdded;
 use App\Models\User;
+use Betpool\Pool\Domain\Exceptions\UserAlreadyAdded;
 use Betpool\Pool\Domain\Pool;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutEvents;

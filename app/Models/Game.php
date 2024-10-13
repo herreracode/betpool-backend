@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Events\CreatedPool;
 use App\Events\GamePostponed;
 use App\Events\UpdatedGameResult;
 use App\Models\Common\AggregateRoot;
@@ -11,7 +10,6 @@ use App\Models\Common\Traits\HasScore;
 use App\Models\Common\Traits\HasTimestamp;
 use App\Models\Enums\GameStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
 /**
  * Game Model

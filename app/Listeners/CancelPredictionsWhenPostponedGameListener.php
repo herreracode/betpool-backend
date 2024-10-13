@@ -3,12 +3,8 @@
 namespace App\Listeners;
 
 use App\Actions\PoolRound\CancelPredictionsByPoolRoundAndGame;
-use App\Actions\PoolRound\ClosePredictionsByPoolRoundAndGame;
-use App\Actions\Prediction\ClosePrediction;
-use App\Events\CreatedPool;
 use App\Events\UpdatedGameResult;
 use App\Models\PoolRound;
-use App\Models\Prediction;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
@@ -36,7 +32,7 @@ class CancelPredictionsWhenPostponedGameListener implements ShouldQueue
     /**
      * Handle the event.
      *
-     * @param  \App\Events\CreatedPool  $event
+     * @param  \Betpool\Pool\Domain\Events\CreatedPool  $event
      * @return void
      */
     public function handle(UpdatedGameResult $event)

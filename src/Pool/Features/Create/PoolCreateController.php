@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\ApiControllers;
+namespace Betpool\Pool\Features\Create;
 
-use App\Actions\Pool\CreatePool;
 use App\Http\Controllers\Controller;
 use App\Models\Competition;
 use Illuminate\Http\Request;
 
-class PoolPostController extends Controller
+class PoolCreateController extends Controller
 {
     public function __construct(public CreatePool $createPool)
     {

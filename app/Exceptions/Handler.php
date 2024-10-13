@@ -2,8 +2,6 @@
 
 namespace App\Exceptions;
 
-use App\Exceptions\Pool\PoolHasPredictions;
-use App\Exceptions\Pool\UserDoesntBelongToThePool;
 use App\Exceptions\PoolRound\AlreadyHavePoolRoundPending;
 use App\Exceptions\PoolRound\GameIsNotPending;
 use App\Exceptions\PoolRound\UserDoesNotHaveTheRequiredRole;
@@ -13,6 +11,8 @@ use App\Exceptions\Prediction\GameIsNotFinishedToClosePrediction;
 use App\Exceptions\Prediction\GameIsNotPostponedToCancelPrediction;
 use App\Exceptions\Prediction\GameIsNotStateValid;
 use App\Exceptions\Prediction\UserModifierNotOwner;
+use Betpool\Pool\Domain\Exceptions\PoolHasPredictions;
+use Betpool\Pool\Domain\Exceptions\UserDoesntBelongToThePool;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;

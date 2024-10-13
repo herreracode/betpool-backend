@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Pool\Actions;
 
-use App\Actions\Pool\CreatePool;
-use App\Events\CreatedPool;
-use App\Exceptions\Pool\CompetitionMustBeUniqueInAPool;
 use App\Models\Competition;
 use App\Models\User;
+use Betpool\Pool\Domain\Events\CreatedPool;
+use Betpool\Pool\Domain\Exceptions\CompetitionMustBeUniqueInAPool;
 use Betpool\Pool\Domain\Pool;
+use Betpool\Pool\Features\Create\CreatePool;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutEvents;
 use Illuminate\Support\Facades\Event;
