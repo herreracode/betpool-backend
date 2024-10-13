@@ -10,6 +10,7 @@ use App\Http\Controllers\ViewControllers\PoolViewController;
 use App\Http\Controllers\ViewControllers\PoolRoundViewController;
 use App\Http\Controllers\ViewControllers\PredictionViewController;
 use App\Http\Controllers\ApiControllers\PoolAddUsersController;
+use App\Http\Controllers\ApiControllers\InviteGuestToPoolController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -99,7 +100,7 @@ Route::middleware([
         ->name('pool.post.add-user')
         ->middleware(EnsureBelongsToPool::class);
 
-    Route::post('/pool/{id_pool}/invite-user', \App\Http\Controllers\ApiControllers\InviteGuestToPoolController::class)
-        ->name('pool.post.invite-user')
+    Route::post('/pool/{id_pool}/invite-guest', InviteGuestToPoolController::class)
+        ->name('pool.post.invite-guest')
         ->middleware(EnsureBelongsToPool::class);
 });

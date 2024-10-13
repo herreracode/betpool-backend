@@ -4,7 +4,7 @@ import { Link } from "@inertiajs/vue3";
 import { computed, ref } from 'vue';
 import Pool from "@/Models/Pool";
 import PoolRound from "@/Models/PoolRound";
-import AddUsersToPool from "../../CustomComponents/AddUsersToPool.vue";
+import InviteGuestToPoolModal from "../../CustomComponents/InviteGuestToPoolModal.vue";
 
 interface Props {
     pool: Pool,
@@ -20,9 +20,6 @@ const positionTableOrder = computed(() => {
   return props.positions_table.sort((a, b) => a.total_points_earned < b.total_points_earned ? 1 : -1)
 })
 
-const funct = () => {
-    console.log("viewModelAddUsersToPool.value")
-}
 
 </script>
 
@@ -42,11 +39,11 @@ const funct = () => {
                 <v-btn color="info" @click="viewModelAddUsersToPool = true" >
                     Invitar Usuario
                 </v-btn>
-                <add-users-to-pool :show-dialog="viewModelAddUsersToPool"
+                <invite-guest-to-pool-modal :show-dialog="viewModelAddUsersToPool"
                                    @input="viewModelAddUsersToPool = false"
-                                   :pool_id="pool.id"
+                                   :pool-id="pool.id"
                 >
-                </add-users-to-pool>
+                </invite-guest-to-pool-modal>
             </div>
         </template>
         <div class="py-12">

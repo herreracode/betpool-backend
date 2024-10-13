@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Events\CreatedPool;
 use App\Exceptions\Pool\CompetitionMustBeUniqueInAPool;
+use App\Exceptions\Pool\GuestAlreadyInvited;
 use App\Exceptions\Pool\PoolHasPredictions;
 use App\Exceptions\Pool\UserAlreadyAdded;
 use App\Exceptions\Pool\UserDoesntBelongToThePool;
@@ -141,7 +142,7 @@ class Pool extends AggregateRoot
             ->first();
 
         if ($Invitation) {
-            throw new UserAlreadyAdded("USER_ALREADY_INVITED_POOL");
+            throw new GuestAlreadyInvited("USER_ALREADY_INVITED_POOL");
         }
 
         $User = User::where('email', $email)->first();

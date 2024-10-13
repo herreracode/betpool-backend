@@ -1,20 +1,19 @@
 <script setup lang="ts">
 
 import {computed, reactive, ref} from "vue";
-import {router} from "@inertiajs/vue3";
 import {isMandatoryField, formValidate} from '@/Shared/validateForms';
 import HttpClient from "../Shared/HttpClient";
 
 interface Props {
     showDialog: boolean,
-    pool_id: number
+    poolId: number
 }
 
 const props = defineProps<Props>()
 
 const emit = defineEmits(['input'])
 
-const formAddUsers = reactive({
+const formAddGuest = reactive({
     guests: null,
 })
 
@@ -38,7 +37,7 @@ const ruleFieldGuest = [
     isMandatoryField
 ];
 
-const addUsersToPool = async () => {
+const inviteGuestToPool = async () => {
 
     let validForm: boolean = await formValidate(form)
 
@@ -47,15 +46,11 @@ const addUsersToPool = async () => {
 
     try {
 
-        let response = await HttpClient.post(route('pool.post.invite-user', props.pool_id), formAddUsers)
+        let response = await HttpClient.post(route('pool.post.invite-guest', props.poolId), formAddGuest)
 
         summaryResult.value = response.data.summary;
 
         cleanForm();
-
-        $toast.success("Se ha agregado a los usuarios con éxito")
-
-        router.visit(route('dashboard'), {method: 'get'})
 
     } catch (e) {
 
@@ -63,7 +58,7 @@ const addUsersToPool = async () => {
 }
 
 const cleanForm = () => {
-    formAddUsers.guests = null;
+    formAddGuest.guests = null;
     form.value = null;
 }
 
@@ -91,7 +86,7 @@ const closeDialog = () => {
                             <v-col
                                 cols="12" sm="12"
                             >
-                                <v-combobox :hide-no-data="false" :rules="ruleFieldGuest" v-model="formAddUsers.guests"
+                                <v-combobox :hide-no-data="false" :rules="ruleFieldGuest" v-model="formAddGuest.guests"
                                             label="Usuarios a invitar" multiple variant="outlined" chips>
                                 </v-combobox>
                             </v-col>
@@ -115,12 +110,12 @@ const closeDialog = () => {
                         </thead>
                         <tbody>
                         <tr
-                            v-for="item in summaryResult"
-                            :key="item.name"
+                            v-for="summaryRow in summaryResult"
+                            :key="summaryRow.name"
                         >
-                            <td>{{ item.email }}</td>
-                            <td>{{ item.message }}</td>
-                            <td>{{ item.status ? "Invitado" : "Hubo un inconveniente"  }}</td>
+                            <td>{{ summaryRow.email }}</td>
+                            <td>{{ summaryRow.message }}</td>
+                            <td>{{ summaryRow.status ? "Invitado" : "Hubo un inconveniente"  }}</td>
                         </tr>
                         </tbody>
                     </v-table>
@@ -139,7 +134,7 @@ const closeDialog = () => {
                             color="primary"
                             text="Invitar"
                             variant="tonal"
-                            @click="addUsersToPool"
+                            @click="inviteGuestToPool"
                         ></v-btn>
                     </v-card-actions>
 
