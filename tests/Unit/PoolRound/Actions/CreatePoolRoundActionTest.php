@@ -2,24 +2,19 @@
 
 namespace Tests\Unit\PoolRound\Actions;
 
-use App\Actions\Pool\CreatePool;
 use App\Actions\PoolRound\CreatePoolRound;
-use App\Events\CreatedPool;
-use App\Exceptions\Pool\CompetitionMustBeUniqueInAPool;
 use App\Exceptions\PoolRound\AlreadyHavePoolRoundPending;
 use App\Exceptions\PoolRound\GameIsNotPending;
 use App\Exceptions\PoolRound\UserDoesNotHaveTheRequiredRole;
 use App\Models\Competition;
 use App\Models\CompetitionPhase;
 use App\Models\Game;
-use App\Models\Pool;
 use App\Models\PoolRound;
 use App\Models\User;
+use Betpool\Pool\Domain\Pool;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutEvents;
-use Illuminate\Support\Facades\Event;
 use Laravel\Sanctum\Sanctum;
-use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class CreatePoolRoundActionTest extends TestCase

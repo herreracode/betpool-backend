@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Events\AcceptInvitationPool;
 use App\Models\Common\AggregateRoot;
+use Betpool\Pool\Domain\Pool;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**

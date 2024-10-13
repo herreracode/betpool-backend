@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\DomainServices\Prediction\CalculateNumberOfPointsEarned;
 use App\Models\Enums\PoolRoundStatus;
-use App\Models\Enums\PredictionStatus;
+use Betpool\Pool\Domain\Pool;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;

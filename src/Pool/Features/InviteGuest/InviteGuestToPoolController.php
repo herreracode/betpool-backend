@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\ApiControllers;
+namespace Betpool\Pool\Features\InviteGuest;
 
-use App\Actions\PoolInvitationsEmails\DTO\RequestInviteGuest;
-use App\Actions\PoolInvitationsEmails\InviteGuest;
 use App\Http\Controllers\Controller;
+use Betpool\Pool\Features\InviteGuest\DTO\RequestInviteGuest;
 use Illuminate\Http\Request;
 
 class InviteGuestToPoolController extends Controller

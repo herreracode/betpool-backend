@@ -2,8 +2,8 @@
 
 namespace App\Actions\Pool;
 
-use App\Models\Pool;
 use App\Models\User;
+use Betpool\Pool\Domain\Pool;
 
 class DeletePool
 {

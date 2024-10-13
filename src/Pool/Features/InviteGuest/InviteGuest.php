@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Actions\PoolInvitationsEmails;
+namespace Betpool\Pool\Features\InviteGuest;
 
-use App\Actions\PoolInvitationsEmails\DTO\RequestInviteGuest;
-use App\Actions\PoolInvitationsEmails\DTO\ResponseInviteGuest;
-use App\Exceptions\Pool\UserAlreadyAdded;
-use App\Models\Pool;
+use Betpool\Pool\Features\InviteGuest\DTO\RequestInviteGuest;
+use Betpool\Pool\Features\InviteGuest\DTO\ResponseInviteGuest;
+use Betpool\Pool\Domain\Pool;
 
 class InviteGuest
 {

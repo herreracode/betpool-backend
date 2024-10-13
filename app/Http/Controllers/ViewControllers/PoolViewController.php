@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\ViewControllers;
 
-use App\Models\Pool;
-use App\Queries\Pool\GetPositionTableByPool;
-use Inertia\Inertia;
 use App\Http\Controllers\Controller;
 use App\Models\Competition;
+use App\Queries\Pool\GetPositionTableByPool;
+use Betpool\Pool\Domain\Pool;
+use Inertia\Inertia;
 
 class PoolViewController extends Controller
 {
@@ -18,7 +18,7 @@ class PoolViewController extends Controller
     {
         return Inertia::render('Dashboard');
     }
-    
+
     public function getPoolIndividualView($idPool)
     {
         $Pool = Pool::find($idPool);
@@ -29,7 +29,7 @@ class PoolViewController extends Controller
             "positions_table" => $this->getPositionTableByPool->__invoke($Pool)
         ]);
     }
-    
+
     public function getPoolCreateView()
     {
         return Inertia::render('Pool/PoolCreate',[

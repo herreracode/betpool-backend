@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\ViewControllers;
 
-use App\Models\Pool;
+use App\Http\Controllers\Controller;
 use App\Models\PoolRound;
 use App\Queries\Games\GetGamesForPoolRound;
 use App\Queries\Games\GetGamesOwnerPoolRound;
 use App\Queries\Prediction\GetOthersPredictionsByPoolRound;
 use App\Queries\Prediction\GetPredictionsOwnerUserByPoolRound;
+use Betpool\Pool\Domain\Pool;
 use Inertia\Inertia;
-use App\Http\Controllers\Controller;
 
 class PoolRoundViewController extends Controller
 {

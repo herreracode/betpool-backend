@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace Betpool\Pool\Domain;
 
 use App\Events\CreatedPool;
 use App\Exceptions\Pool\CompetitionMustBeUniqueInAPool;
@@ -12,10 +12,17 @@ use App\Exceptions\PoolRound\AlreadyHavePoolRoundPending;
 use App\Exceptions\PoolRound\GameIsNotPending;
 use App\Exceptions\PoolRound\UserDoesNotHaveTheRequiredRole;
 use App\Models\Common\AggregateRoot;
+use App\Models\Competition;
+use App\Models\Enums\PoolRoundStatus;
+use App\Models\Game;
+use App\Models\PoolInvitationsEmails;
+use App\Models\PoolRound;
+use App\Models\Prediction;
+use App\Models\User;
+use Database\Factories\PoolFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
-use App\Models\Enums\PoolRoundStatus;
 
 /**
  * @property Collection $poolInvitationsEmails
@@ -36,6 +43,16 @@ class Pool extends AggregateRoot
         'name',
         'isClosed',
     ];
+
+    /**
+     * Create a new factory instance for the model.
+     *
+     * @return PoolFactory
+     */
+    protected static function newFactory(): PoolFactory
+    {
+        return PoolFactory::new();
+    }
 
     /**
      * get Pools user

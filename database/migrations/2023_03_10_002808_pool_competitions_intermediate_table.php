@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\Competition;
-use App\Models\Pool;
+use Betpool\Pool\Domain\Pool;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;

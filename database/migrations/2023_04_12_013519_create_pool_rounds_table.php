@@ -1,9 +1,9 @@
 <?php
 
+use App\Models\Enums\PoolRoundStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Models\Enums\PoolRoundStatus;
 
 return new class extends Migration
 {
@@ -16,7 +16,7 @@ return new class extends Migration
     {
         Schema::create('pool_rounds', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(\App\Models\Pool::class)->references('id')->on('pools');
+            $table->foreignIdFor(Betpool\Pool\Domain\Pool::class)->references('id')->on('pools');
             $table->enum('status',[
                 PoolRoundStatus::PENDING->value,
                 PoolRoundStatus::FINISH->value,

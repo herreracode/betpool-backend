@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\PoolInvitationsEmails\Actions;
 
-use App\Actions\PoolInvitationsEmails\DTO\RequestInviteGuest;
-use App\Actions\PoolInvitationsEmails\DTO\ResponseInviteGuest;
-use App\Actions\PoolInvitationsEmails\InviteGuest;
-use App\Models\Pool;
 use App\Models\PoolInvitationsEmails;
+use Betpool\Pool\Features\InviteGuest\DTO\RequestInviteGuest;
+use Betpool\Pool\Features\InviteGuest\DTO\ResponseInviteGuest;
+use Betpool\Pool\Features\InviteGuest\InviteGuest;
+use Betpool\Pool\Domain\Pool;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutEvents;
 use Tests\TestCase;

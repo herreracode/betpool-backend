@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Pool;
+use Betpool\Pool\Domain\Pool;
 use Illuminate\Database\Seeder;
 
 class PoolSeeder extends Seeder

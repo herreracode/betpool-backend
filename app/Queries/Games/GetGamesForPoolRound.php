@@ -2,10 +2,10 @@
 
 namespace App\Queries\Games;
 
-use App\Models\Game;
-use App\Models\Pool;
-use App\Models\User;
 use App\Models\Enums\GameStatus;
+use App\Models\Game;
+use App\Models\User;
+use Betpool\Pool\Domain\Pool;
 
 class GetGamesForPoolRound
 {
@@ -13,7 +13,7 @@ class GetGamesForPoolRound
         User $User,
         Pool $Pool,
     ) :array {
-        
+
         $Competitions = $Pool->competitions;
         $gamesFormat = $games = [];
 

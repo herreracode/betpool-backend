@@ -6,11 +6,11 @@ use App\DomainServices\Prediction\CalculateNumberOfPointsEarned;
 use App\Models\Competition;
 use App\Models\CompetitionPhase;
 use App\Models\Game;
-use App\Models\Pool;
 use App\Models\PoolRound;
 use App\Models\Prediction;
 use App\Models\Score;
 use App\Models\User;
+use Betpool\Pool\Domain\Pool;
 use Tests\TestCase;
 
 class CalculateNumberOfPointsEarnedTest extends TestCase

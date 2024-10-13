@@ -4,9 +4,8 @@ namespace App\Http\Controllers\ApiControllers;
 
 use App\Actions\PoolRound\CreatePoolRound;
 use App\Http\Controllers\Controller;
-use App\Models\Competition;
 use App\Models\Game;
-use App\Models\Pool;
+use Betpool\Pool\Domain\Pool;
 use Illuminate\Http\Request;
 
 class PoolRoundPostController extends Controller

@@ -4,8 +4,7 @@ namespace App\Http\Controllers\ApiControllers;
 
 use App\Actions\Pool\DeletePool;
 use App\Http\Controllers\Controller;
-use App\Models\Pool;
-use Illuminate\Http\Request;
+use Betpool\Pool\Domain\Pool;
 
 class PoolDeleteController extends Controller
 {

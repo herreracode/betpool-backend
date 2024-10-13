@@ -2,13 +2,11 @@
 
 namespace App\Queries\Pool;
 
-use App\Models\Pool;
 use App\Models\Prediction;
 use App\Models\User;
-use App\Queries\Prediction\Filters\PoolFilter;
-use App\Queries\Prediction\Filters\UserFilter;
 use App\Queries\Prediction\GetPredictionsByCriteria;
 use App\Queries\Prediction\GetPredictionsByCriteriaQuery;
+use Betpool\Pool\Domain\Pool;
 
 class GetPositionTableByPool
 {
@@ -20,7 +18,7 @@ class GetPositionTableByPool
     public function __invoke(
         Pool $pool
     ) :iterable {
-        
+
         $Users = $pool->users;
 
         return $Users->map(function (User $User) use($pool){

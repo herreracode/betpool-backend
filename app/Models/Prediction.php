@@ -11,6 +11,7 @@ use App\Exceptions\Prediction\UserModifierNotOwner;
 use App\Models\Common\Contracts\Scorable;
 use App\Models\Common\Traits\HasScore;
 use App\Models\Enums\PredictionStatus;
+use Betpool\Pool\Domain\Pool;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 

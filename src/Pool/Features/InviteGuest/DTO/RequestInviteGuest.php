@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\PoolInvitationsEmails\DTO;
+namespace Betpool\Pool\Features\InviteGuest\DTO;
 
 readonly class RequestInviteGuest
 {

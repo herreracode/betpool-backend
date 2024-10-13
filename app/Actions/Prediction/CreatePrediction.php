@@ -3,9 +3,8 @@
 namespace App\Actions\Prediction;
 
 use App\Exceptions\Prediction\ExistsPrediction;
-use App\Models\{
-    Game, Pool, PoolRound, Prediction, User
-};
+use App\Models\{Game, PoolRound, Prediction, User};
+use Betpool\Pool\Domain\Pool;
 
 class CreatePrediction
 {

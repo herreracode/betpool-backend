@@ -9,14 +9,12 @@ use App\Exceptions\Prediction\GameIsNotStateValid;
 use App\Models\Competition;
 use App\Models\CompetitionPhase;
 use App\Models\Game;
-use App\Models\Pool;
 use App\Models\PoolRound;
 use App\Models\Prediction;
-use App\Models\Team;
 use App\Models\User;
+use Betpool\Pool\Domain\Pool;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutEvents;
-use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class CreatePredictionActionTest extends TestCase

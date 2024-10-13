@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Enums\PoolRoundStatus;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Pool>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\Betpool\Pool\Domain\Pool>
  */
 class PoolRoundFactory extends Factory
 {

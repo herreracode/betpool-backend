@@ -3,8 +3,8 @@
 namespace App\Actions\Pool;
 
 use App\Events\Common\Contracts\EventBus;
-use App\Models\Pool;
 use App\Models\User;
+use Betpool\Pool\Domain\Pool;
 
 /**
  * Class CreatePool

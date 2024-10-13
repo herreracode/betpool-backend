@@ -2,11 +2,11 @@
 
 namespace Database\Factories;
 
-use App\Models\Pool;
+use Betpool\Pool\Domain\Pool;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Pool>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\Betpool\Pool\Domain\Pool>
  */
 class PoolFactory extends Factory
 {

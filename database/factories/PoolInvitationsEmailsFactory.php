@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Pool;
+use Betpool\Pool\Domain\Pool;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

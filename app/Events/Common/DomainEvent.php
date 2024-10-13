@@ -2,9 +2,7 @@
 
 namespace App\Events\Common;
 
-use AllowDynamicProperties;
 use App\Events\Common\Contracts\DomainEvent as DomainEventContract;
-use App\Models\Pool;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;

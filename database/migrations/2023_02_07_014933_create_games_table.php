@@ -1,14 +1,14 @@
 <?php
 
 use App\Models\CompetitionPhase;
+use App\Models\Enums\GameStatus;
+use App\Models\Enums\PredictionStatus;
 use App\Models\Game;
-use App\Models\Pool;
 use App\Models\User;
+use Betpool\Pool\Domain\Pool;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Models\Enums\GameStatus;
-use App\Models\Enums\PredictionStatus;
 
 return new class extends Migration
 {

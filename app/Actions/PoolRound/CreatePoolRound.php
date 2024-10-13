@@ -2,9 +2,9 @@
 
 namespace App\Actions\PoolRound;
 
-use App\Models\Pool;
 use App\Models\PoolRound;
 use App\Models\User;
+use Betpool\Pool\Domain\Pool;
 
 class CreatePoolRound
 {

@@ -8,14 +8,14 @@ use App\Exceptions\Prediction\UserModifierNotOwner;
 use App\Models\Competition;
 use App\Models\CompetitionPhase;
 use App\Models\Game;
-use App\Models\Pool;
 use App\Models\PoolRound;
 use App\Models\Prediction;
 use App\Models\Score;
+use App\Models\User;
+use Betpool\Pool\Domain\Pool;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutEvents;
 use Tests\TestCase;
-use App\Models\User;
 
 class ModifyPredictionActionTest extends TestCase
 {

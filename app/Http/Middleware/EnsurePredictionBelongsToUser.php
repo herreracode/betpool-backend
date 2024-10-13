@@ -2,10 +2,9 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\Pool;
-use App\Models\PoolRound;
 use App\Models\Prediction;
 use Closure;
+use Betpool\Pool\Domain\Pool;
 use Illuminate\Http\Request;
 
 class EnsurePredictionBelongsToUser
